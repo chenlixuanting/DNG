@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.guet.navigator.web.pojo.Administrator" table="d_administrator">
+
+        <id name="id" column="id">
+            <generator class="increment"/>
+        </id>
+
+        <property name="account" type="string" column="account" unique="true"/>
+
+        <property name="password" type="string" column="password"/>
+
+        <property name="position" type="string" column="position"/>
+
+        <property name="username" type="string" column="user_name"/>
+
+        <property name="headPic" type="string" column="pic_address"/>
+
+        <property name="createTime" type="timestamp" column="create_time"/>
+
+        <property name="updateTime" type="timestamp" column="update_time"/>
+
+    </class>
+
+</hibernate-mapping>

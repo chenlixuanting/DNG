@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.guet.navigator.web.pojo.Device" table="d_device">
+        <id name="deviceId" column="device_id">
+            <generator class="uuid"/>
+        </id>
+        <property name="hdId" type="string" column="hd_id" unique="true"/>
+    </class>
+</hibernate-mapping>

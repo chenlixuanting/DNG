@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.guet.navigator.web.pojo.DeviceRecord" table="d_device_record">
+
+        <id name="recordId" column="record_id">
+            <generator class="uuid"/>
+        </id>
+
+        <property name="userId" column="user_id" type="string" unique="true"/>
+        <property name="deviceId" column="device_Id" type="string" unique="true"/>
+        <property name="createTime" column="create_time"/>
+        <property name="updateTime" column="update_time"/>
+
+    </class>
+</hibernate-mapping>

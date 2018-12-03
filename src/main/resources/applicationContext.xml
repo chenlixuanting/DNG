@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/tx
+       http://www.springframework.org/schema/tx/spring-tx.xsd
+       http://www.springframework.org/schema/mvc
+       http://www.springframework.org/schema/mvc/spring-mvc.xsd
+       http://www.springframework.org/schema/websocket
+       http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+
+    <!--自动扫描com.guet.myblog包下标注@Controller等注解的类控制器类-->
+    <context:component-scan base-package="com.guet.navigator.web"/>
+
+    <!--注解驱动，自动帮我们注入最新版的处理器映射器和处理器适配器-->
+    <!--<mvc:annotation-driven conversion-service="conversionService"/>-->
+    <mvc:annotation-driven conversion-service="conversionService"/>
+
+    <!-- websocket处理类 -->
+    <bean id="connectWebSocketHandler" class="com.guet.navigator.web.websocket.WDWebSocket"/>
+
+    <!-- 握手接口/拦截器 -->
+    <bean id="webSocketInterceptor" class="com.guet.navigator.web.interceptor.HandshakeInterceptor"/>
+
+    <!--配置日期转换器-->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean class="com.guet.navigator.web.converter.DateConverter"/>
+            </set>
+        </property>
+    </bean>
+
+    <!-- 文件上传 -->
+    <bean id="multipartResolver"
+          class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!-- 设置上传文件的最大尺寸为5MB -->
+        <property name="maxUploadSize" value="5242880"/>
+        <property name="defaultEncoding" value="utf-8"/>
+        <property name="maxInMemorySize" value="40960"/>
+    </bean>
+
+    <!--加载config.properties配置文件-->
+    <context:property-placeholder location="classpath:config.properties"/>
+
+    <!--配置C3P0连接池-->
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+
+        <!--驱动-->
+        <property name="driverClass" value="${jdbc.driver}"/>
+
+        <!--URL-->
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+
+        <!--用户名-->
+        <property name="user" value="${jdbc.username}"/>
+
+        <!--密码-->
+        <property name="password" value="${jdbc.password}"/>
+
+        <!--初始化时池的大小-->
+        <property name="initialPoolSize" value="${jdbc.initialPoolSize}"/>
+
+        <!--池中最多的连接数-->
+        <property name="maxPoolSize" value="${jdbc.maxPoolSize}"/>
+
+        <!--池中最少的连接数-->
+        <property name="minPoolSize" value="${jdbc.minPoolSize}"/>
+
+        <!--连接池为数据源缓存的PreparedStatement的总数。由于PreparedStatement属于单个Connection,
+        所以这个数量应该根据应用中平均连接数乘以每个连接的平均PreparedStatement来计算。
+        同时maxStatementsPerConnection的配置无效。default : 0（不建议使用）-->
+        <property name="maxStatements" value="${jdbc.maxStatements}"/>
+
+        <!--连接池为数据源单个Connection缓存的PreparedStatement数，这个配置比maxStatements更有意义，因为它缓存的服务对象是单个数据连接，
+        如果设置的好，肯定是可以提高性能的。为0的时候不缓存。default : 0（看情况而论）-->
+        <property name="maxStatementsPerConnection" value="${jdbc.maxStatementsPerConnection}"/>
+
+        <!--连接池在无空闲连接可用时一次性创建的新数据库连接数-->
+        <property name="acquireIncrement" value="${jdbc.acquireIncrement}"/>
+
+        <!--连接池在获得新连接失败时重试的次数，如果小于等于0则无限重试直至连接获得成功。default : 30（建议使用）-->
+        <property name="acquireRetryAttempts" value="${jdbc.acquireRetryAttempts}"/>
+
+        <!--:连接池在回收数据库连接时是否自动提交事务。如果为false，则会回滚未提交的事务，如果为true，则会自动提交事务。default : false（不建议使用）-->
+        <property name="autoCommitOnClose" value="${jdbc.autoCommitOnClose}"/>
+
+        <!--连接池在获得新连接时的间隔时间 -->
+        <property name="acquireRetryDelay" value="${jdbc.acquireRetryDelay}"/>
+
+        <!--这个配置主要是为了快速减轻连接池的负载，比如连接池中连接数因为某次数据访问高峰导致创建了很多数据连接，但是后面的时间段需要的数据库连接数很少，
+        需要快速释放，必须小于maxIdleTime。其实这个没必要配置，maxIdleTime已经配置了。default : 0 单位 s（不建议使用）-->
+        <property name="maxIdleTimeExcessConnections" value="${jdbc.maxIdleTimeExcessConnections}"/>
+
+        <!--连接的最大空闲时间，如果超过这个时间，某个数据库连接还没有被使用，则会断开掉这个连接。如果为0，则永远不会断开连接,即回收此连接。
+        default : 0 单位 s（建议使用）-->
+        <property name="maxIdleTime" value="${jdbc.maxIdleTime}"/>
+
+        <!--:用来配置测试空闲连接的间隔时间。测试方式还是上面的两种之一，可以用来解决MySQL8小时断开连接的问题。因为它保证连接池会每隔一定时间对空闲连接进行一次测试，
+        从而保证有效的空闲连接能每隔一定时间访问一次数据库，将于MySQL8小时无会话的状态打破。为0则不测试。default : 0(建议使用)-->
+        <property name="idleConnectionTestPeriod" value="${jdbc.idleConnectionTestPeriod}"/>
+
+        <!--如果为true，则当连接获取失败时自动关闭数据源，除非重新启动应用程序。所以一般不用。default : false（不建议使用）-->
+        <property name="breakAfterAcquireFailure" value="${jdbc.breakAfterAcquireFailure}"/>
+
+    </bean>
+
+    <!--配置SessionFactory 需要导入Spring-jdbc.jar 否则会报错-->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="hibernateProperties">
+            <props>
+                <!--配置Hibernate的方言-->
+                <prop key="hibernate.dialect">${hibernate.dialect}</prop>
+
+                <!--是否在控制台上显示SQL语句-->
+                <prop key="show_sql">${hibernate.show_sql}</prop>
+
+                <!--格式化SQL语句-->
+                <prop key="format_sql">${hibernate.format_sql}</prop>
+
+                <!--配置hbm2ddl-->
+                <prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl}</prop>
+
+                <!--配置不使用单纯的JDBC连接-->
+                <prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+            </props>
+        </property>
+
+        <property name="mappingLocations" value="classpath:*.hbm.xml"/>
+    </bean>
+
+    <!--配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+
+    <!--事务增强-->
+    <tx:advice id="txAdvice"
+               transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="find*" isolation="DEFAULT" read-only="true"/>
+            <tx:method name="*" isolation="SERIALIZABLE"
+                       propagation="REQUIRED"/>
+        </tx:attributes>
+    </tx:advice>
+
+    <!--aop配置切面和切点的信息 -->
+    <aop:config>
+        <aop:pointcut id="txPointcut"
+                      expression="execution(* com.guet.navigator.web.service.impl.*.*(..))"/>
+        <aop:advisor advice-ref="txAdvice"
+                     pointcut-ref="txPointcut"/>
+    </aop:config>
+
+    <!--需要放到applicationContext.xml，放置在springmvc-servlet.xml下无效-->
+    <!--<mvc:interceptors>-->
+        <!--<mvc:interceptor>-->
+            <!--&lt;!&ndash;拦截指定的路径&ndash;&gt;-->
+            <!--&lt;!&ndash;/ 代表网站根目录&ndash;&gt;-->
+            <!--&lt;!&ndash;/* &ndash;&gt;-->
+            <!--&lt;!&ndash;/** 拦截所有路径&ndash;&gt;-->
+            <!--<mvc:mapping path="/mobile/user/**"/>-->
+            <!--<bean class="com.guet.navigator.web.interceptor.LoginInterceptor"/>-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
+
+    <!--<websocket:handlers >-->
+        <!--<websocket:mapping path="/common/websocket/connect" handler="connectWebSocketHandler"/>-->
+        <!--<websocket:handshake-interceptors>-->
+            <!--<ref bean="webSocketInterceptor"/>-->
+        <!--</websocket:handshake-interceptors>-->
+    <!--</websocket:handlers>-->
+
+    <!--  注册 sockJS -->
+    <!--<websocket:handlers>-->
+        <!--<websocket:mapping path="/sockjs/websocket" handler="wdWebSocketHandler"/>-->
+        <!--<websocket:handshake-interceptors>-->
+            <!--<ref bean="wdWebSocketInterceptor"/>-->
+        <!--</websocket:handshake-interceptors>-->
+        <!--<websocket:sockjs />-->
+    <!--</websocket:handlers>-->
+
+</beans>
