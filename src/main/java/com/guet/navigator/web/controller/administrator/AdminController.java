@@ -1,7 +1,7 @@
 package com.guet.navigator.web.controller.administrator;
 
 import com.guet.navigator.web.constant.Messages;
-import com.guet.navigator.web.constant.NavIndexConstant;
+import com.guet.navigator.web.constant.AdministratorConstant;
 import com.guet.navigator.web.constant.SessionKey;
 import com.guet.navigator.web.pojo.Administrator;
 import com.guet.navigator.web.service.AdministratorService;
@@ -35,7 +35,7 @@ public class AdminController {
     @RequestMapping(value = "/login",method = RequestMethod.GET)
     public String login(HttpSession session, HttpServletResponse response) {
         //跳转到登陆页面
-        return NavIndexConstant.ADMIN_LOGIN;
+        return AdministratorConstant.ADMIN_LOGIN;
     }
 
     /**
@@ -45,7 +45,7 @@ public class AdminController {
      */
     @RequestMapping(value = "/index",method = RequestMethod.GET)
     public String index() {
-        return NavIndexConstant.ADMIN_INDEX;
+        return AdministratorConstant.ADMIN_INDEX;
     }
 
     /**
@@ -65,7 +65,7 @@ public class AdminController {
      */
     @RequestMapping(value = "/infoDetails",method = RequestMethod.GET)
     public String adminDetails(){
-        return NavIndexConstant.ADMIN_DETAILS;
+        return AdministratorConstant.ADMIN_DETAILS;
     }
 
     /**

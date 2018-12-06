@@ -13,20 +13,14 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao{
     @Override
     public User findByUserAccount(String account) {
 
-        String hql = "from com.guet.navigator.web.pojo.User as u where u.account=:account";
-
         User user = null;
-
+        String hql = "from com.guet.navigator.web.pojo.User as u where u.account=:account";
         try {
             Query query = getCurrentSession().createQuery(hql).setParameter("account",account);
-            List<User> userList = query.list();
-            if(!userList.isEmpty()){
-                user = userList.get(0);
-            }
+            user = (User) query.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
-
-    }
+        }
         return user;
     }
 

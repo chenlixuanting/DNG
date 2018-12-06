@@ -15,9 +15,9 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
  * 设备和微信小程序websocket连接配置类
  *
  */
-//@Configuration
-//@EnableWebMvc
-//@EnableWebSocket
+@Configuration
+@EnableWebMvc
+@EnableWebSocket
 public class WDWebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer{
 
     @Override

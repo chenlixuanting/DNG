@@ -95,57 +95,57 @@
     <script type="text/javascript">
         $(function () {
 
-//            var websocket;
-//
-//            // 首先判断是否 支持 WebSocket
-//            if('WebSocket' in window) {
-//                websocket = new WebSocket("ws://localhost:8080/navigator/device/user/websocket");
-//            } else if('MozWebSocket' in window) {
-//                websocket = new MozWebSocket("ws://n227u79429.imwork.net/navigator/device/user/websocket");
-//            } else {
-//                websocket = new SockJS("http://n227u79429.imwork.net/navigator/sockjs/websocket");
-//            }
-//
-//            // 打开时
-//            websocket.onopen = function(evnt) {
-//                console.log("  websocket.onopen  ");
-//            };
-//
-//            // 处理消息时
-//            websocket.onmessage = function(evnt) {
-//                $("#msg").append("<p>(<font color='red'>" + evnt.data + "</font>)</p>");
-//                console.log("  websocket.onmessage   ");
-//            };
-//
-//            websocket.onerror = function(evnt) {
-//                console.log("  websocket.onerror  ");
-//            };
-//
-//            websocket.onclose = function(evnt) {
-//                console.log("  websocket.onclose  ");
-//            };
+            var websocket;
 
-//            // 点击了发送消息按钮的响应事件
-//            $("#signBtn").click(function(){
-//
-//                // 获取消息内容
-//                var text = $("#username").val();
-//
-//                // 判断
-//                if(text == null || text == ""){
-//                    alert(" content  can not empty!!");
-//                    return false;
-//                }
-//
-//                var msg = {
-//                    msgContent: text,
-//                    postsId: 1
-//                };
-//
-//                // 发送消息
-//                websocket.send(JSON.stringify(msg));
-//
-//            });
+            // 首先判断是否 支持 WebSocket
+            if('WebSocket' in window) {
+                websocket = new WebSocket("ws://localhost:8080/navigator/common/websocket/connect");
+            } else if('MozWebSocket' in window) {
+                websocket = new MozWebSocket("ws://n227u79429.imwork.net/navigator/device/user/websocket");
+            } else {
+                websocket = new SockJS("http://n227u79429.imwork.net/navigator/sockjs/websocket");
+            }
+
+            // 打开时
+            websocket.onopen = function(evnt) {
+                console.log("  websocket.onopen  ");
+            };
+
+            // 处理消息时
+            websocket.onmessage = function(evnt) {
+                $("#msg").append("<p>(<font color='red'>" + evnt.data + "</font>)</p>");
+                console.log("  websocket.onmessage   ");
+            };
+
+            websocket.onerror = function(evnt) {
+                console.log("  websocket.onerror  ");
+            };
+
+            websocket.onclose = function(evnt) {
+                console.log("  websocket.onclose  ");
+            };
+
+            // 点击了发送消息按钮的响应事件
+            $("#signBtn").click(function(){
+
+                // 获取消息内容
+                var text = $("#username").val();
+
+                // 判断
+                if(text == null || text == ""){
+                    alert(" content  can not empty!!");
+                    return false;
+                }
+
+                var msg = {
+                    msgContent: text,
+                    postsId: 1
+                };
+
+                // 发送消息
+                websocket.send(JSON.stringify(msg));
+
+            });
 
             $("#signBtn").click(function(){
 

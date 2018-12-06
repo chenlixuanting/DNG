@@ -9,6 +9,8 @@ public class WebConstant {
     //外网地址
     public static final String OUTER_NET_WEB = "http://n227u79429.imwork.net";
 
+    public static final String LOCAL_NET_WEB = "http://localhost:8080/navigator";
+
     //用户头像目录
     public static final String USER_PROFILE_PIC = "/images/user/profile_pic/";
 

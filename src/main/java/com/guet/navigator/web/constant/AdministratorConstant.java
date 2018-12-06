@@ -1,6 +1,6 @@
 package com.guet.navigator.web.constant;
 
-public class NavIndexConstant {
+public class AdministratorConstant {
 
     //管理员登录界面
     public static final String ADMIN_LOGIN = "administrator/login";

@@ -12,6 +12,7 @@ import java.util.Map;
  *
  */
 public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor{
+
     @Override
     public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
         return super.beforeHandshake(request, response, wsHandler, attributes);
@@ -21,4 +22,5 @@ public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor{
     public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception ex) {
         super.afterHandshake(request, response, wsHandler, ex);
     }
+
 }

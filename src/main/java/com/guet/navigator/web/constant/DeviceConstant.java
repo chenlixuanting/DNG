@@ -11,7 +11,4 @@ public class DeviceConstant {
     //二维码状态状
     public static final String QRCODE_STATUS = "qrCodeStatus";
 
-    //当前时间
-    public static final String CURRENT_TIME = "currentTime";
-
 }

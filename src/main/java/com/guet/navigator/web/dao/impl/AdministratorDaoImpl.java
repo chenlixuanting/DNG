@@ -16,18 +16,12 @@ public class AdministratorDaoImpl extends BaseDaoImpl<Administrator> implements 
     @Override
     public Administrator findByUserAccount(String account) {
 
-        String hql = "from com.guet.navigator.web.pojo.Administrator as t where t.account=:account";
-
         Administrator administrator = null;
+        String hql = "from com.guet.navigator.web.pojo.Administrator as t where t.account=:account";
 
         try {
             Query query = getCurrentSession().createQuery(hql).setParameter("account", account);
-
-            List<Administrator> administratorList = query.list();
-
-            if (administratorList.size() > 0)
-                administrator = administratorList.get(0);
-
+            administrator = (Administrator) query.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
         }

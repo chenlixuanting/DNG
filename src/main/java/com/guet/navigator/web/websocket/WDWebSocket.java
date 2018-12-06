@@ -46,8 +46,10 @@ public class WDWebSocket implements WebSocketHandler {
      */
     @Override
     public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
-        webSocketSession.sendMessage(new TextMessage("welcome websocket!"));
         System.out.println(webSocketMessage.getPayload());
+        webSocketSession.sendMessage(new TextMessage("welcome websocket!"));
+        System.out.println("websocket send:"+webSocketSession.getId());
+        System.out.println(webSocketSession.isOpen());
     }
 
     /**
@@ -58,7 +60,7 @@ public class WDWebSocket implements WebSocketHandler {
      */
     @Override
     public void handleTransportError(WebSocketSession webSocketSession, Throwable throwable) throws Exception {
-
+        System.out.println("websocket send error:"+webSocketSession.getId());
     }
 
     /**
