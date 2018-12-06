@@ -34,7 +34,7 @@ public class HibernateTest {
         administrator.setPassword("123456");
         administrator.setUsername("陈宣锦");
         administrator.setPosition("后台开发人员");
-        administrator.setHeadPic(WebConstant.OUTER_NET_WEB+"/navigator"+WebConstant.ADMIN_PROFILE_PIC+ UUID.randomUUID().toString()+".jpg");
+        administrator.setHeadPic(WebConstant.LOCAL_NET_WEB+"/navigator"+WebConstant.ADMIN_PROFILE_PIC+ UUID.randomUUID().toString()+".jpg");
         administrator.setCreateTime(new Timestamp(System.currentTimeMillis()));
         administrator.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 

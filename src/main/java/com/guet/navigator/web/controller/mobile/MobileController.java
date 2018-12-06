@@ -208,7 +208,7 @@ public class MobileController {
                 //从数据库中获取user
                 User u = userService.findByUserId(user.getUserId());
                 //创建登录记录
-                DeviceRecord deviceRecord = new DeviceRecord(u.getUserId(), device.getDeviceId(), crruentTime, crruentTime);
+                DeviceRecord deviceRecord = new DeviceRecord(u, device, crruentTime, crruentTime);
                 //存入设备登录状态表
                 deviceRecordService.createDeviceRecord(deviceRecord);
                 //二维码过期

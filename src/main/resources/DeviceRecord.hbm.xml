@@ -9,10 +9,8 @@
             <generator class="uuid"/>
         </id>
 
-        <property name="userId" column="user_id" type="string" unique="true"/>
-        <property name="deviceId" column="device_Id" type="string" unique="true"/>
-        <property name="createTime" column="create_time"/>
-        <property name="updateTime" column="update_time"/>
+        <many-to-one name="user" column="user_id" unique="true" class="com.guet.navigator.web.pojo.User" cascade="none" lazy="false"/>
+        <many-to-one name="device" column="device_id" unique="true" class="com.guet.navigator.web.pojo.Device" cascade="none" lazy="false"/>
 
     </class>
 </hibernate-mapping>

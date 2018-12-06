@@ -22,7 +22,7 @@ public class StatusCodeConstant {
     public static final Integer ACCOUNT_EXIST = 300;
 
     //账号不存在
-    public static final Integer ACCOUNT_NOT_EXIST = 301;
+    public static final Integer ACCOUNT_NOT_EXIST = 310;
 
     //存在空项
     public static final Integer EXIST_EMPTY_ITME = 404;

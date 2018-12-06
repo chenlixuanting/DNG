@@ -11,9 +11,9 @@ public class DeviceRecord implements Serializable{
 
     private static final long serialVersionUID = -8730116173418419595L;
 
-    private String recordId;    //主键
-    private String userId;  //用户id
-    private String deviceId;    //设备id
+    private String recordId;
+    private User user;  //用户id
+    private Device device;    //设备id
     private Timestamp createTime;   //创建时间
     private Timestamp updateTime;   //更新时间
 
@@ -25,20 +25,20 @@ public class DeviceRecord implements Serializable{
         this.recordId = recordId;
     }
 
-    public String getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
-    public String getDeviceId() {
-        return deviceId;
+    public Device getDevice() {
+        return device;
     }
 
-    public void setDeviceId(String deviceId) {
-        this.deviceId = deviceId;
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
     public Timestamp getCreateTime() {
@@ -57,9 +57,9 @@ public class DeviceRecord implements Serializable{
         this.updateTime = updateTime;
     }
 
-    public DeviceRecord(String userId, String deviceId, Timestamp createTime, Timestamp updateTime) {
-        this.userId = userId;
-        this.deviceId = deviceId;
+    public DeviceRecord(User user, Device device, Timestamp createTime, Timestamp updateTime) {
+        this.user = user;
+        this.device = device;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }

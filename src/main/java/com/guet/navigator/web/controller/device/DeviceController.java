@@ -125,15 +125,23 @@ public class DeviceController {
         return new DeviceLoginMessageVo(3);
     }
 
+    /**
+     *  设备获取用户的详细信息
+     *
+     * @param request
+     * @param response
+     * @param deviceId
+     * @return
+     */
     @RequestMapping("/detail/{deviceId}")
     @ResponseBody
     public User getDetailInfo(HttpServletRequest request,HttpServletResponse response,@PathVariable(value = "deviceId")String deviceId){
 
         DeviceRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
 
-        String userId = deviceRecord.getUserId();
+        User u = deviceRecord.getUser();
 
-        User user = userService.findByUserId(userId);
+        User user = userService.findByUserId(u.getUserId());
 
         return user;
 
