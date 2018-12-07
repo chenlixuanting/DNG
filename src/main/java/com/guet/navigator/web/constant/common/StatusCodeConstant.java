@@ -1,4 +1,4 @@
-package com.guet.navigator.web.constant;
+package com.guet.navigator.web.constant.common;
 
 /**
  * 状态码常量集合

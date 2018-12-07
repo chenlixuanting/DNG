@@ -4,7 +4,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 @Controller
 public class CommonController {
@@ -15,9 +14,6 @@ public class CommonController {
      */
     @RequestMapping(value = {"/","/index.html","/index"})
     public String webRootIndex(HttpServletRequest request){
-
-        HttpSession session = request.getSession();
-
         return "redirect:administrator/login";
     }
 

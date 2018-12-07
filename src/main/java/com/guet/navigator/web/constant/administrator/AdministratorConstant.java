@@ -1,4 +1,4 @@
-package com.guet.navigator.web.constant;
+package com.guet.navigator.web.constant.administrator;
 
 public class AdministratorConstant {
 
@@ -8,10 +8,10 @@ public class AdministratorConstant {
     //管理员后台首页
     public static final String ADMIN_INDEX = "administrator/index";
 
-    //错误提示页面
-    public static final String ADMIN_NOTIFICATIONS = "administrator/form-notifications";
-
     //管理员详情界面
     public static final String ADMIN_DETAILS = "administrator/administrator-details";
+
+    //管理员SessionKey
+    public static final String ADMINISTRATOR = "administrator";
 
 }

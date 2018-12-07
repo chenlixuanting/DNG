@@ -6,7 +6,6 @@ import java.util.Date;
 
 /**
  * 用户信息
- *
  */
 public class User implements Serializable{
 

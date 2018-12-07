@@ -1,8 +1,7 @@
 package com.guet.navigator.web.controller.administrator;
 
 import com.guet.navigator.web.constant.Messages;
-import com.guet.navigator.web.constant.AdministratorConstant;
-import com.guet.navigator.web.constant.SessionKey;
+import com.guet.navigator.web.constant.administrator.AdministratorConstant;
 import com.guet.navigator.web.pojo.Administrator;
 import com.guet.navigator.web.service.AdministratorService;
 import com.guet.navigator.web.vo.LoginMessageVo;
@@ -111,7 +110,7 @@ public class AdminController {
 
                             //清除密码
                             admin.setPassword("");
-                            session.setAttribute(SessionKey.ADMINISTRATOR, admin);
+                            session.setAttribute(AdministratorConstant.ADMINISTRATOR, admin);
                             return LoginMessageVo.loginSuccessMessage(Messages.LOGIN_SUCCESS);
 
                         } else {

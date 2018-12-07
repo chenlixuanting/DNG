@@ -1,6 +1,6 @@
 package com.guet.navigator.web.controller.device;
 
-import com.guet.navigator.web.constant.DeviceConstant;
+import com.guet.navigator.web.constant.user.DeviceConstant;
 import com.guet.navigator.web.pojo.DeviceRecord;
 import com.guet.navigator.web.pojo.User;
 import com.guet.navigator.web.service.DeviceRecordService;

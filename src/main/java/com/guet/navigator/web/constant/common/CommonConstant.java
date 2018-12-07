@@ -1,14 +1,11 @@
-package com.guet.navigator.web.constant;
+package com.guet.navigator.web.constant.common;
 
-/**
- * WEB常量
- *
- */
-public class WebConstant {
+public class CommonConstant {
 
     //外网地址
     public static final String OUTER_NET_WEB = "http://n227u79429.imwork.net";
 
+    //内网地址
     public static final String LOCAL_NET_WEB = "http://localhost:8080/navigator";
 
     //用户头像目录

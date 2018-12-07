@@ -1,4 +1,4 @@
-package com.guet.navigator.web.constant;
+package com.guet.navigator.web.constant.user;
 
 public class MobileConstant {
 
@@ -7,8 +7,6 @@ public class MobileConstant {
     public static final String SESSION_ID = "sessionId";
 
     public static final String STATUS_CODE = "statusCode";
-
-    public static final String USER = "user";
 
     public static final int USER_PIC_HEAD = 1;
 

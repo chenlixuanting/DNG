@@ -11,6 +11,4 @@ public interface AdministratorService {
 
     public Administrator findByUserAccount(String account);
 
-    public boolean isRepeatSubmit(HttpSession session, String postToken);
-
 }

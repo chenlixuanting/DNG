@@ -1,4 +1,4 @@
-package com.guet.navigator.web.constant;
+package com.guet.navigator.web.constant.user;
 
 public class DeviceConstant {
 

@@ -1,6 +1,6 @@
 package com.guet.navigator.web.test;
 
-import com.guet.navigator.web.constant.WebConstant;
+import com.guet.navigator.web.constant.common.CommonConstant;
 import com.guet.navigator.web.pojo.Administrator;
 import com.guet.navigator.web.pojo.Device;
 import org.hibernate.Session;
@@ -34,7 +34,7 @@ public class HibernateTest {
         administrator.setPassword("123456");
         administrator.setUsername("陈宣锦");
         administrator.setPosition("后台开发人员");
-        administrator.setHeadPic(WebConstant.LOCAL_NET_WEB+"/navigator"+WebConstant.ADMIN_PROFILE_PIC+ UUID.randomUUID().toString()+".jpg");
+        administrator.setHeadPic(CommonConstant.LOCAL_NET_WEB+"/navigator"+CommonConstant.ADMIN_PROFILE_PIC+ UUID.randomUUID().toString()+".jpg");
         administrator.setCreateTime(new Timestamp(System.currentTimeMillis()));
         administrator.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 
@@ -47,7 +47,6 @@ public class HibernateTest {
     @Test
     public void insertDevice(){
         Device d = new Device();
-        d.setHdId("377930e3-8fe8-3c89-8311-b8f71c6e008b");
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         session.save(d);

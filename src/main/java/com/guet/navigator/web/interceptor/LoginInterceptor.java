@@ -1,6 +1,7 @@
 package com.guet.navigator.web.interceptor;
 
-import com.guet.navigator.web.constant.MobileConstant;
+import com.guet.navigator.web.constant.user.MobileConstant;
+import com.guet.navigator.web.constant.user.UserConstant;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -29,7 +30,7 @@ public class LoginInterceptor implements HandlerInterceptor{
 
         HttpSession httpSession = httpServletRequest.getSession(false);
 
-        if(StringUtils.isEmpty(httpSession) || StringUtils.isEmpty(httpSession.getAttribute(MobileConstant.USER))){
+        if(StringUtils.isEmpty(httpSession) || StringUtils.isEmpty(httpSession.getAttribute(UserConstant.USER))){
             return false;
         }
 

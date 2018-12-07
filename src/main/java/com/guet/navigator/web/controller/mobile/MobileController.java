@@ -1,9 +1,10 @@
 package com.guet.navigator.web.controller.mobile;
 
-import com.guet.navigator.web.constant.DeviceConstant;
+import com.guet.navigator.web.constant.common.CommonConstant;
+import com.guet.navigator.web.constant.user.DeviceConstant;
 import com.guet.navigator.web.constant.Messages;
-import com.guet.navigator.web.constant.MobileConstant;
-import com.guet.navigator.web.constant.WebConstant;
+import com.guet.navigator.web.constant.user.MobileConstant;
+import com.guet.navigator.web.constant.user.UserConstant;
 import com.guet.navigator.web.pojo.Device;
 import com.guet.navigator.web.pojo.DeviceRecord;
 import com.guet.navigator.web.pojo.User;
@@ -87,7 +88,7 @@ public class MobileController {
                         //存入sessionId
                         msg.put(MobileConstant.SESSION_ID, httpSession.getId());
                         //账户登录
-                        httpSession.setAttribute(MobileConstant.USER, u);
+                        httpSession.setAttribute(UserConstant.USER, u);
                         return msg;
                     } else {
                         //密码不正确
@@ -156,7 +157,7 @@ public class MobileController {
                 //存入sessionId
                 msg.put(MobileConstant.SESSION_ID, request.getSession().getId());
                 //注册成功后自动进行登录
-                httpSession.setAttribute(MobileConstant.USER, user);
+                httpSession.setAttribute(UserConstant.USER, user);
                 return msg;
             }
 
@@ -200,7 +201,7 @@ public class MobileController {
                 //获取设备的硬件id
                 String deviceId = (String) deviceSession.getAttribute(DeviceConstant.DEVICE_ID);
                 //获取userId
-                User user = (User) request.getSession().getAttribute(MobileConstant.USER);
+                User user = (User) request.getSession().getAttribute(UserConstant.USER);
                 //currentTime
                 Timestamp crruentTime = new Timestamp(System.currentTimeMillis());
                 //从数据库中获取device
@@ -303,9 +304,9 @@ public class MobileController {
             //上传的是用户头像
             case MobileConstant.USER_PIC_HEAD: {
                 try {
-                    String imgAddress = WebConstant.OUTER_NET_WEB+WebConstant.USER_PROFILE_PIC+newImgName;
+                    String imgAddress = CommonConstant.OUTER_NET_WEB+CommonConstant.USER_PROFILE_PIC+newImgName;
 //                    user.setHeadPic(imgAddress);
-                    img.transferTo(new File(session.getServletContext().getRealPath(WebConstant.USER_PROFILE_PIC)+"\\"+newImgName));
+                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC)+"\\"+newImgName));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -314,9 +315,9 @@ public class MobileController {
             //上传的时候身份证正面
             case MobileConstant.USER_ID_CARD_FRONT_PIC: {
                 try {
-                    String imgAddress = WebConstant.OUTER_NET_WEB+WebConstant.USER_ID_CARD_PIC+newImgName;
+                    String imgAddress = CommonConstant.OUTER_NET_WEB+CommonConstant.USER_ID_CARD_PIC+newImgName;
 //                    user.setIdCardFrontPic(imgAddress);
-                    img.transferTo(new File(session.getServletContext().getRealPath(WebConstant.USER_PROFILE_PIC)+"\\"+newImgName));
+                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC)+"\\"+newImgName));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -325,9 +326,9 @@ public class MobileController {
             //上传的是身份证反面
             case MobileConstant.USER_IC_CARD_REVERSE_PIC: {
                 try {
-                    String imgAddress = WebConstant.OUTER_NET_WEB+WebConstant.USER_ID_CARD_PIC+newImgName;
+                    String imgAddress = CommonConstant.OUTER_NET_WEB+CommonConstant.USER_ID_CARD_PIC+newImgName;
 //                    user.setIdCardReversePic(imgAddress);
-                    img.transferTo(new File(session.getServletContext().getRealPath(WebConstant.USER_PROFILE_PIC)+"\\"+newImgName));
+                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC)+"\\"+newImgName));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -336,9 +337,9 @@ public class MobileController {
             //上传的是驾驶证
             case MobileConstant.USER_DRIVER_LICENSER_PIC: {
                 try {
-                    String imgAddress = WebConstant.OUTER_NET_WEB+WebConstant.USER_LICENSER_PIC+newImgName;
+                    String imgAddress = CommonConstant.OUTER_NET_WEB+CommonConstant.USER_LICENSER_PIC+newImgName;
 //                    user.setDriverLicenserPic(imgAddress);
-                    img.transferTo(new File(session.getServletContext().getRealPath(WebConstant.USER_PROFILE_PIC)+"\\"+newImgName));
+                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC)+"\\"+newImgName));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -347,9 +348,9 @@ public class MobileController {
             //上传的是行车证
             case MobileConstant.USER_DRIVER_PERMIST_PIC: {
                 try {
-                    String imgAddress = WebConstant.OUTER_NET_WEB+WebConstant.USER_DRIVER_PERMIST_PIC+newImgName;
+                    String imgAddress = CommonConstant.OUTER_NET_WEB+CommonConstant.USER_DRIVER_PERMIST_PIC+newImgName;
 //                    user.setDriverPermistPic(imgAddress);
-                    img.transferTo(new File(session.getServletContext().getRealPath(WebConstant.USER_PROFILE_PIC)+"\\"+newImgName));
+                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC)+"\\"+newImgName));
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -379,7 +380,7 @@ public class MobileController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
         //从当前会话中获取User对象
-        User user = (User) session.getAttribute(MobileConstant.USER);
+        User user = (User) session.getAttribute(UserConstant.USER);
 
         msg.put("account", user.getAccount());
         msg.put("icCardNumber", user.getIdCardNumber());

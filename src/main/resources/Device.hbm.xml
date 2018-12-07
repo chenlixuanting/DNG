@@ -7,6 +7,5 @@
         <id name="deviceId" column="device_id">
             <generator class="uuid"/>
         </id>
-        <property name="hdId" type="string" column="hd_id" unique="true"/>
     </class>
 </hibernate-mapping>

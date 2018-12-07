@@ -1,6 +1,6 @@
 package com.guet.navigator.web.listener;
 
-import com.guet.navigator.web.constant.DeviceConstant;
+import com.guet.navigator.web.constant.user.DeviceConstant;
 import org.springframework.util.StringUtils;
 
 import javax.servlet.ServletContext;

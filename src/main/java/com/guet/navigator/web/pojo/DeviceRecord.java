@@ -5,7 +5,6 @@ import java.sql.Timestamp;
 
 /**
  * 设备登录状态
- *
  */
 public class DeviceRecord implements Serializable{
 
