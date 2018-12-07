@@ -44,7 +44,7 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
         try {
             session = getSessionFactory().getCurrentSession();
         } catch (Exception e) {
-            throw new Exception("getCurrentSession Error" + e);
+            e.printStackTrace();
         }
 
         return session;
@@ -61,7 +61,7 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
             getHibernateTemplate().save(entity);
             flag = true;
         } catch (HibernateException e) {
-            throw new HibernateException("保存新用户信息异常!", e);
+            e.printStackTrace();
         }
 
         return flag;
@@ -76,7 +76,7 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
             getHibernateTemplate().delete(entity);
             flag = true;
         }catch (HibernateException e){
-            throw new HibernateException("删除用户信息异常!", e);
+            e.printStackTrace();
         }
 
         return flag;
@@ -96,7 +96,7 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
             getHibernateTemplate().update(entity);
             flag = true;
         }catch (HibernateException e){
-            throw new HibernateException("更新用户信息异常!", e);
+            e.printStackTrace();
         }
 
         return flag;

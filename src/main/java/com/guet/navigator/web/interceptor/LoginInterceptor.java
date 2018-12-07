@@ -1,6 +1,5 @@
 package com.guet.navigator.web.interceptor;
 
-import com.guet.navigator.web.constant.user.MobileConstant;
 import com.guet.navigator.web.constant.user.UserConstant;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.HandlerInterceptor;

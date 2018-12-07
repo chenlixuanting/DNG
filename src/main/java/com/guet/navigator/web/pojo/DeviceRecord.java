@@ -10,7 +10,7 @@ public class DeviceRecord implements Serializable{
 
     private static final long serialVersionUID = -8730116173418419595L;
 
-    private String recordId;
+    private String recordId;    //主键
     private User user;  //用户id
     private Device device;    //设备id
     private Timestamp createTime;   //创建时间
