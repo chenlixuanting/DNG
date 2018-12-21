@@ -4,17 +4,20 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.guet.navigator.web.pojo.PositionData" table="d_position_data">
+    <class name="com.guet.navigator.web.pojo.Position" table="d_position">
 
-        <id name="positionDataId" column="pd_id" >
+        <id name="positionId" column="pd_id">
             <generator class="uuid"/>
         </id>
 
         <property name="latitude" column="latitude" type="double"/>
         <property name="longitude" column="longitude" type="double"/>
-        <property name="createTime" column="create_time" type="timestamp"/>
 
-        <many-to-one name="device" column="deviceId" />
+        <property name="createTime" type="timestamp">
+            <column name="create_time" sql-type="datetime"/>
+        </property>
+
+        <many-to-one name="device" column="deviceId"/>
 
     </class>
 

@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 /**
  * 登录拦截器
  *
+ * @author Administrator
  */
 public class LoginInterceptor implements HandlerInterceptor{
 

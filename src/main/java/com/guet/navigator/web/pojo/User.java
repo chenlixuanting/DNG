@@ -11,25 +11,90 @@ public class User implements Serializable{
 
     private static final long serialVersionUID = 7629060401141713559L;
 
-    private String userId; //主键
-    private String account; //账户
-    private String password; //密码
-    private String idCardNumber; //身份证号码
-    private String plateNumber; //车牌号码
-    private String username; //真实姓名
-    private String cdKey;//产品激活码
+    /**
+     * 主键
+     */
+    private String userId;
 
-    private Date birthday; //出生年月日
-    private String sex; //性别
-    private String mobile; //电话号码
-    private String headPic; //头像
-    private String idCardFrontPic; //身份证正面
-    private String idCardReversePic; //身份证反面
-    private String driverLicenserPic; //驾驶证
-    private String driverPermistPic; //行车证
+    /**
+     * 账户
+     */
+    private String account;
 
-    private Timestamp createTime; //创建时间
-    private Timestamp updateTime; //更新时间
+    /**
+     * 密码
+     */
+    private String password;
+
+    /**
+     * 身份证号码
+     */
+    private String idCardNumber;
+
+    /**
+     * 车牌号码
+     */
+    private String plateNumber;
+
+    /**
+     * 真实姓名
+     */
+    private String username;
+
+    /**
+     * 产品激活码
+     */
+    private String cdKey;
+
+    /**
+     * 出生年月日
+     */
+    private Date birthday;
+
+    /**
+     * 性别
+     */
+    private String sex;
+
+    /**
+     * 电话号码
+     */
+    private String mobile;
+
+    /**
+     * 头像
+     */
+    private String headPic;
+
+    /**
+     * 身份证正面
+     */
+    private String idCardFrontPic;
+
+    /**
+     * 身份证反面
+     */
+    private String idCardReversePic;
+
+    /**
+     * 驾驶证
+     */
+    private String driverLicenserPic;
+
+    /**
+     * 行车证
+     */
+    private String driverPermistPic;
+
+    /**
+     * 生成时间
+     */
+    private Timestamp createTime;
+
+    /**
+     * 时间戳
+     */
+    private Timestamp updateTime;
 
     public String getCdKey() {
         return cdKey;
@@ -157,14 +222,6 @@ public class User implements Serializable{
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    public Timestamp getUpdateTime() {
-        return updateTime;
-    }
-
-    public void setUpdateTime(Timestamp updateTime) {
-        this.updateTime = updateTime;
     }
 
     @Override

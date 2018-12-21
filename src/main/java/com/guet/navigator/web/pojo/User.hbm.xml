@@ -9,6 +9,8 @@
             <generator class="uuid"/>
         </id>
 
+        <timestamp name="updateTime" access="field"/>
+
         <property name="account" type="string" column="account"/>
         <property name="password" type="string" column="password"/>
         <property name="username" type="string" column="user_name"/>
@@ -22,8 +24,10 @@
         <property name="idCardReversePic" type="string" column="id_card_reverse_pic"/>
         <property name="driverLicenserPic" type="string" column="driver_licenser_pic"/>
         <property name="driverPermistPic" type="string" column="driver_permist_pic"/>
-        <property name="createTime" type="timestamp" column="create_time"/>
-        <property name="updateTime" type="timestamp" column="update_time"/>
+
+        <property name="createTime" type="timestamp">
+            <column name="create_time" sql-type="datetime"/>
+        </property>
 
     </class>
 </hibernate-mapping>

@@ -15,8 +15,14 @@
         <property name="position" type="string" column="position"/>
         <property name="username" type="string" column="user_name"/>
         <property name="headPic" type="string" column="pic_address"/>
-        <property name="createTime" type="timestamp" column="create_time"/>
-        <property name="updateTime" type="timestamp" column="update_time"/>
+
+        <property name="createTime" type="timestamp">
+            <column name="create_time" sql-type="datetime"/>
+        </property>
+
+        <property name="updateTime" type="timestamp">
+            <column name="update_time" sql-type="datetime"/>
+        </property>
 
     </class>
 

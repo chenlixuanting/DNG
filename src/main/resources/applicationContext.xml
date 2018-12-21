@@ -26,7 +26,7 @@
     <mvc:annotation-driven conversion-service="conversionService"/>
 
     <!-- websocket处理类 -->
-    <bean id="connectWebSocketHandler" class="com.guet.navigator.web.websocket.WDWebSocket"/>
+    <bean id="connectWebSocketHandler" class="com.guet.navigator.web.websocket.WechatDeviceWebSocket"/>
 
     <!-- 握手接口/拦截器 -->
     <bean id="webSocketInterceptor" class="com.guet.navigator.web.interceptor.HandshakeInterceptor"/>
@@ -136,7 +136,7 @@
             </props>
         </property>
 
-        <property name="mappingLocations" value="classpath:*.hbm.xml"/>
+        <property name="mappingLocations" value="classpath:com/guet/navigator/web/pojo/*.hbm.xml"/>
     </bean>
 
     <!--配置事务管理器-->

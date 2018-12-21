@@ -10,7 +10,9 @@ import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import java.lang.reflect.ParameterizedType;
 
 /**
- * Created by Administrator on 9/13/2018.
+ *
+ * @author Administrator
+ * @date 9/13/2018
  */
 public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
 

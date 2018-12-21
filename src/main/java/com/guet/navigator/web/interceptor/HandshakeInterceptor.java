@@ -10,6 +10,7 @@ import java.util.Map;
 /**
  * websocket连接握手拦截器
  *
+ * @author Administrator
  */
 public class HandshakeInterceptor extends HttpSessionHandshakeInterceptor{
 

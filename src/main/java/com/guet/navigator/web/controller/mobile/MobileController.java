@@ -31,6 +31,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author Administrator
+ */
 @Controller
 @RequestMapping("/mobile/user")
 public class MobileController {
@@ -145,7 +148,6 @@ public class MobileController {
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 //设置账户的创建时间和更新时间
                 user.setCreateTime(timestamp);
-                user.setUpdateTime(timestamp);
                 //存入数据库
                 userService.createUser(user);
                 //从数据库中获取刚存入的user
@@ -395,7 +397,6 @@ public class MobileController {
         msg.put("driverLicenserPic", user.getDriverLicenserPic());
         msg.put("driverPermistPic", user.getDriverPermistPic());
         msg.put("createTime", sdf.format(user.getCreateTime()));
-        msg.put("updateTime", sdf.format(user.getUpdateTime()));
 
         return msg;
     }

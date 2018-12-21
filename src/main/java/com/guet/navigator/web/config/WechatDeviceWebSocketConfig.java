@@ -1,7 +1,7 @@
 package com.guet.navigator.web.config;
 
 import com.guet.navigator.web.interceptor.HandshakeInterceptor;
-import com.guet.navigator.web.websocket.WDWebSocket;
+import com.guet.navigator.web.websocket.WechatDeviceWebSocket;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -14,17 +14,18 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 /**
  * 设备和微信小程序websocket连接配置类
  *
+ * @author Administrator
  */
 @Configuration
 @EnableWebMvc
 @EnableWebSocket
-public class WDWebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer{
+public class WechatDeviceWebSocketConfig extends WebMvcConfigurerAdapter implements WebSocketConfigurer{
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry webSocketHandlerRegistry) {
 
         //前台 可以使用websocket环境
-        webSocketHandlerRegistry.addHandler(getWDWebSocketHandler(),"/common/websocket/connect").addInterceptors(new HandshakeInterceptor());
+        webSocketHandlerRegistry.addHandler(getWechatDeviceWebSocketHandler(),"/common/websocket/connect").addInterceptors(new HandshakeInterceptor());
 
         //前台 不可以使用websocket环境，则使用sockjs进行模拟连接
 //        webSocketHandlerRegistry.addHandler(myWebSocketHandler(), "/sockjs/websocket").addInterceptors(new HandshakeInterceptor())
@@ -33,7 +34,7 @@ public class WDWebSocketConfig extends WebMvcConfigurerAdapter implements WebSoc
     }
 
     @Bean
-    public WebSocketHandler getWDWebSocketHandler(){
-        return new WDWebSocket();
+    public WebSocketHandler getWechatDeviceWebSocketHandler(){
+        return new WechatDeviceWebSocket();
     }
 }

@@ -3,26 +3,44 @@ package com.guet.navigator.web.pojo;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class PositionData implements Serializable{
+/**
+ * @author Administrator
+ */
+public class Position implements Serializable {
 
     private static final long serialVersionUID = -7064651417990704311L;
 
-    private String positionDataId;  //主键
+    /**
+     * 主键
+     */
+    private String positionId;
 
-    private Device device;  //外键
+    /**
+     * 设备Id
+     */
+    private Device device;
 
-    private Double longitude;   //经度
+    /**
+     * 经度
+     */
+    private Double longitude;
 
-    private Double latitude;    //纬度
+    /**
+     * 纬度
+     */
+    private Double latitude;
 
-    private Timestamp createTime;   //当前时间
+    /**
+     * 创建时间
+     */
+    private Timestamp createTime;
 
-    public String getPositionDataId() {
-        return positionDataId;
+    public String getPositionId() {
+        return positionId;
     }
 
-    public void setPositionDataId(String positionDataId) {
-        this.positionDataId = positionDataId;
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
     }
 
     public Device getDevice() {
@@ -57,6 +75,6 @@ public class PositionData implements Serializable{
         this.createTime = createTime;
     }
 
-    public PositionData() {
+    public Position() {
     }
 }

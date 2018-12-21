@@ -2,6 +2,7 @@ package com.guet.navigator.web.controller.device;
 
 import com.guet.navigator.web.constant.user.DeviceConstant;
 import com.guet.navigator.web.pojo.DeviceRecord;
+import com.guet.navigator.web.pojo.Position;
 import com.guet.navigator.web.pojo.User;
 import com.guet.navigator.web.service.DeviceRecordService;
 import com.guet.navigator.web.service.UserService;
@@ -10,17 +11,19 @@ import com.guet.navigator.web.vo.QRCodeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author Administrator
+ */
 @Controller
 @RequestMapping("/device/user")
 public class DeviceController {
@@ -38,9 +41,9 @@ public class DeviceController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/login/{deviceId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/login/{deviceId}", method = RequestMethod.GET)
     @ResponseBody
-    public QRCodeVo requestQRCode(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId")String deviceId){
+    public QRCodeVo requestQRCode(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId") String deviceId) {
 
         //生成qrCodeStr唯一标识
         String qrCodeStr = UUID.randomUUID().toString();
@@ -52,19 +55,19 @@ public class DeviceController {
         httpSession.setMaxInactiveInterval(60);
 
         //将当前的qrCodeStr存储到session中
-        httpSession.setAttribute(DeviceConstant.QRCODE_STR,qrCodeStr);
+        httpSession.setAttribute(DeviceConstant.QRCODE_STR, qrCodeStr);
 
         //将当前的hdId存储到session中
-        httpSession.setAttribute(DeviceConstant.DEVICE_ID,deviceId);
+        httpSession.setAttribute(DeviceConstant.DEVICE_ID, deviceId);
 
         //设置二维码状态为用户未扫码
-        httpSession.setAttribute(DeviceConstant.QRCODE_STATUS,false);
+        httpSession.setAttribute(DeviceConstant.QRCODE_STATUS, false);
 
         //获取ServerContext
         ServletContext servletContext = request.getServletContext();
 
         //将当前的qrCodeStr和session存入ServletContext中
-        servletContext.setAttribute(qrCodeStr,httpSession);
+        servletContext.setAttribute(qrCodeStr, httpSession);
 
         //封装qrCodeStr以json格式返回
         return new QRCodeVo(qrCodeStr);
@@ -78,21 +81,21 @@ public class DeviceController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/login/{deviceId}",method = RequestMethod.PUT)
+    @RequestMapping(value = "/login/{deviceId}", method = RequestMethod.PUT)
     @ResponseBody
-    public DeviceLoginMessageVo login(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId")String deviceId){
+    public DeviceLoginMessageVo login(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId") String deviceId) {
 
         //获取Session,若session失效则不创建
         HttpSession httpSession = request.getSession(false);
 
         //若session未失效
-        if(!StringUtils.isEmpty(httpSession)){
+        if (!StringUtils.isEmpty(httpSession)) {
 
             long recordTime = httpSession.getCreationTime();
             long currentTime = System.currentTimeMillis();
 
             //session的时间超过60秒
-            if((currentTime-recordTime)>=60000*60){
+            if ((currentTime - recordTime) >= 60000 * 60) {
 
                 //设置Session失效
                 httpSession.invalidate();
@@ -100,20 +103,20 @@ public class DeviceController {
                 //若session失效
                 return new DeviceLoginMessageVo(3);
 
-            }else{
+            } else {
                 //查询数据库
                 DeviceRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
 
                 //判断数据库中是否存在登录记录
-                if(!StringUtils.isEmpty(deviceRecord)){
+                if (!StringUtils.isEmpty(deviceRecord)) {
                     return new DeviceLoginMessageVo(2);
                 }
 
                 Boolean qrCodeFlag = (Boolean) httpSession.getAttribute(DeviceConstant.QRCODE_STATUS);
 
-                if(qrCodeFlag){
+                if (qrCodeFlag) {
                     return new DeviceLoginMessageVo(1);
-                }else{
+                } else {
                     return new DeviceLoginMessageVo(0);
                 }
 
@@ -126,16 +129,16 @@ public class DeviceController {
     }
 
     /**
-     *  设备获取用户的详细信息
+     * 设备获取用户的详细信息
      *
      * @param request
      * @param response
      * @param deviceId
      * @return
      */
-    @RequestMapping("/detail/{deviceId}")
+    @RequestMapping(value = "/detail/{deviceId}",method = RequestMethod.GET)
     @ResponseBody
-    public User getDetailInfo(HttpServletRequest request,HttpServletResponse response,@PathVariable(value = "deviceId")String deviceId){
+    public User getDetailInfo(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId") String deviceId) {
 
         DeviceRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
 
@@ -145,6 +148,19 @@ public class DeviceController {
 
         return user;
 
+    }
+
+    /**
+     * 存储小车实时(间隔为1秒)的定位数据
+     *
+     * @param positionData
+     * @return
+     */
+    @RequestMapping(value = "/drivingdata", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> stroeDrivingData(@RequestBody Position positionData) {
+        Map<String,Object> msg = new HashMap<String,Object>();
+        return msg;
     }
 
 }
