@@ -156,9 +156,9 @@ public class DeviceController {
      * @param positionData
      * @return
      */
-    @RequestMapping(value = "/drivingdata", method = RequestMethod.POST)
+    @RequestMapping(value = "/drivedata", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> stroeDrivingData(@RequestBody Position positionData) {
+    public Map<String, Object> stroeDriveData(@RequestBody Position positionData) {
         Map<String,Object> msg = new HashMap<String,Object>();
         return msg;
     }

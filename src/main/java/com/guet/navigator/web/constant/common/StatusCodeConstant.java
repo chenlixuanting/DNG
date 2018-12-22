@@ -3,6 +3,7 @@ package com.guet.navigator.web.constant.common;
 /**
  * 状态码常量集合
  *
+ * @author Administrator
  */
 public class StatusCodeConstant {
 

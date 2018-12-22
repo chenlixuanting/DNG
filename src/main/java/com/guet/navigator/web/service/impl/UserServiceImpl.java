@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+/**
+ * @author Administrator
+ */
 @Service
 public class UserServiceImpl implements UserService{
 
@@ -19,16 +22,14 @@ public class UserServiceImpl implements UserService{
      * @param account
      * @return
      */
+    @Override
     public boolean accountRegistered(String account){
-
         User user = userDao.findByUserAccount(account);
 
         if(!StringUtils.isEmpty(user)){
             return true;
         }
-
         return false;
-
     }
 
     @Override

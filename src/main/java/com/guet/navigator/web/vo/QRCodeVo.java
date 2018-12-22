@@ -2,6 +2,9 @@ package com.guet.navigator.web.vo;
 
 import java.io.Serializable;
 
+/**
+ * @author Administrator
+ */
 public class QRCodeVo implements Serializable{
 
     private static final long serialVersionUID = 6871548502322643330L;

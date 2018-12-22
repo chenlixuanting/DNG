@@ -1,5 +1,8 @@
 package com.guet.navigator.web.constant.user;
 
+/**
+ * @author Administrator
+ */
 public class MobileConstant {
 
     public static final String MESSAGES = "messages";

@@ -10,7 +10,9 @@ import org.springframework.util.StringUtils;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by Administrator on 9/13/2018.
+ *
+ * @author Administrator
+ * @date 9/13/2018
  */
 @Service
 public class AdministratorServiceImpl implements AdministratorService {
@@ -22,6 +24,5 @@ public class AdministratorServiceImpl implements AdministratorService {
     public Administrator findByUserAccount(String account) {
         return administratorDao.findByUserAccount(account);
     }
-
 
 }

@@ -10,7 +10,6 @@ import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import java.lang.reflect.ParameterizedType;
 
 /**
- *
  * @author Administrator
  * @date 9/13/2018
  */
@@ -53,7 +52,6 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
 
     }
 
-
     @Override
     public Boolean save(T entity) {
 
@@ -70,8 +68,7 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
     }
 
     @Override
-    public Boolean delete(T entity)
-    {
+    public Boolean delete(T entity) {
         Boolean flag = false;
 
         try {

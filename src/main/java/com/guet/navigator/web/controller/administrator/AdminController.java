@@ -15,7 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 /**
- * Created by Administrator on 9/10/2018.
+ *
+ * @author Administrator
+ * @date 9/10/2018
  */
 @Controller
 @RequestMapping("/administrator")

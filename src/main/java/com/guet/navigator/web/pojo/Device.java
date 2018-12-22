@@ -9,7 +9,10 @@ public class Device implements Serializable{
 
     private static final long serialVersionUID = 6729556043534645649L;
 
-    private String deviceId;    //主键
+    /**
+     * 主键
+     */
+    private String deviceId;
 
     public String getDeviceId() {
         return deviceId;

@@ -1,5 +1,8 @@
 package com.guet.navigator.web.constant.administrator;
 
+/**
+ * @author Administrator
+ */
 public class AdministratorConstant {
 
     //管理员登录界面

@@ -1,5 +1,8 @@
 package com.guet.navigator.web.constant.common;
 
+/**
+ * @author Administrator
+ */
 public class CommonConstant {
 
     //外网地址

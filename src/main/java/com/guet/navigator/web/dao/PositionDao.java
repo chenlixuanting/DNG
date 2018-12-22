@@ -5,7 +5,7 @@ import com.guet.navigator.web.pojo.Position;
 /**
  * @author Administrator
  */
-public interface PositionDataDao {
+public interface PositionDao {
 
     /**
      * @param positionData

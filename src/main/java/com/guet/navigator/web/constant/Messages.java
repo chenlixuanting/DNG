@@ -2,6 +2,9 @@ package com.guet.navigator.web.constant;
 
 import java.io.Serializable;
 
+/**
+ * @author Administrator
+ */
 public class Messages implements Serializable {
 
     private static final long serialVersionUID = -9161502566630163366L;

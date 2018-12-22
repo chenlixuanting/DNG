@@ -1,5 +1,8 @@
 package com.guet.navigator.web.constant.user;
 
+/**
+ * @author Administrator
+ */
 public class DeviceConstant {
 
     //设备ID

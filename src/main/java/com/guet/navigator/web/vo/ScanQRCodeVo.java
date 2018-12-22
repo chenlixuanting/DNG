@@ -2,8 +2,12 @@ package com.guet.navigator.web.vo;
 
 import java.io.Serializable;
 
+/**
+ * @author Administrator
+ */
 public class ScanQRCodeVo implements Serializable{
 
+    private static final long serialVersionUID = 7480578782838674503L;
     private String qrCodeStr;
     private Boolean scanFlag;
 

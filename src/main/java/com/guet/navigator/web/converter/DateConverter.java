@@ -9,6 +9,7 @@ import java.util.Date;
 /**
  * spring mvc 日期转换器
  *
+ * @author Administrator
  */
 public class DateConverter implements Converter<String,Date>{
 

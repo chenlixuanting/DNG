@@ -5,6 +5,9 @@ import com.guet.navigator.web.pojo.Device;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
+/**
+ * @author Administrator
+ */
 @Repository
 public class DeviceDaoImpl extends BaseDaoImpl<Device> implements DeviceDao{
 

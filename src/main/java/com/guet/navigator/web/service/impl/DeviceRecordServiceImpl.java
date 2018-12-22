@@ -6,6 +6,9 @@ import com.guet.navigator.web.service.DeviceRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author Administrator
+ */
 @Service
 public class DeviceRecordServiceImpl implements DeviceRecordService{
 
