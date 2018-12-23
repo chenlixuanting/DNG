@@ -1,10 +1,10 @@
 package com.guet.navigator.web.controller.device;
 
 import com.guet.navigator.web.constant.user.DeviceConstant;
-import com.guet.navigator.web.pojo.DeviceRecord;
+import com.guet.navigator.web.pojo.DeviceLoginRecord;
 import com.guet.navigator.web.pojo.Position;
 import com.guet.navigator.web.pojo.User;
-import com.guet.navigator.web.service.DeviceRecordService;
+import com.guet.navigator.web.service.DeviceLoginRecordService;
 import com.guet.navigator.web.service.UserService;
 import com.guet.navigator.web.vo.DeviceLoginMessageVo;
 import com.guet.navigator.web.vo.QRCodeVo;
@@ -29,7 +29,7 @@ import java.util.UUID;
 public class DeviceController {
 
     @Autowired
-    private DeviceRecordService deviceRecordService;
+    private DeviceLoginRecordService deviceRecordService;
 
     @Autowired
     private UserService userService;
@@ -105,7 +105,7 @@ public class DeviceController {
 
             } else {
                 //查询数据库
-                DeviceRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
+                DeviceLoginRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
 
                 //判断数据库中是否存在登录记录
                 if (!StringUtils.isEmpty(deviceRecord)) {
@@ -140,7 +140,7 @@ public class DeviceController {
     @ResponseBody
     public User getDetailInfo(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId") String deviceId) {
 
-        DeviceRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
+        DeviceLoginRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
 
         User u = deviceRecord.getUser();
 

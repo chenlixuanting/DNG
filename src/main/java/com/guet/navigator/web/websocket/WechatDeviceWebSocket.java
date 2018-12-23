@@ -1,6 +1,6 @@
 package com.guet.navigator.web.websocket;
 
-import com.guet.navigator.web.service.DeviceRecordService;
+import com.guet.navigator.web.service.DeviceLoginRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.*;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WechatDeviceWebSocket implements WebSocketHandler {
 
     @Autowired
-    private DeviceRecordService deviceRecordService;
+    private DeviceLoginRecordService deviceRecordService;
 
     /**
      * 线程安全的sesionMap

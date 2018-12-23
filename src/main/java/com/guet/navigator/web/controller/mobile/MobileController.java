@@ -6,9 +6,9 @@ import com.guet.navigator.web.constant.Messages;
 import com.guet.navigator.web.constant.user.MobileConstant;
 import com.guet.navigator.web.constant.user.UserConstant;
 import com.guet.navigator.web.pojo.Device;
-import com.guet.navigator.web.pojo.DeviceRecord;
+import com.guet.navigator.web.pojo.DeviceLoginRecord;
 import com.guet.navigator.web.pojo.User;
-import com.guet.navigator.web.service.DeviceRecordService;
+import com.guet.navigator.web.service.DeviceLoginRecordService;
 import com.guet.navigator.web.service.DeviceService;
 import com.guet.navigator.web.service.UserService;
 import com.guet.navigator.web.vo.DeviceConfirmVo;
@@ -45,7 +45,7 @@ public class MobileController {
     private DeviceService deviceService;
 
     @Autowired
-    private DeviceRecordService deviceRecordService;
+    private DeviceLoginRecordService deviceRecordService;
 
     /**
      * 微信小程序通过账号密码登录
@@ -211,7 +211,7 @@ public class MobileController {
                 //从数据库中获取user
                 User u = userService.findByUserId(user.getUserId());
                 //创建登录记录
-                DeviceRecord deviceRecord = new DeviceRecord(u, device, crruentTime, crruentTime);
+                DeviceLoginRecord deviceRecord = new DeviceLoginRecord(u, device, crruentTime, crruentTime);
                 //存入设备登录状态表
                 deviceRecordService.createDeviceRecord(deviceRecord);
                 //二维码过期

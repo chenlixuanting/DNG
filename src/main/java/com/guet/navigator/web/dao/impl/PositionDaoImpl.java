@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * @author Administrator
  */
 @Repository
-public class PositionImpl extends BaseDaoImpl<Position> implements PositionDao {
+public class PositionDaoImpl extends BaseDaoImpl<Position> implements PositionDao {
 }

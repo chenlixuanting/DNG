@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 /**
  * 设备
+ * @author Administrator
  */
 public class Device implements Serializable{
 
