@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.guet.navigator.web.pojo.Road" table="d_road">
+
+        <id name="roadId" column="road_id">
+            <generator class="uuid"/>
+        </id>
+
+        <timestamp name="updateTime" column="update_time" access="field"/>
+
+        <property name="roadName" type="string" column="road_name"/>
+        <property name="startLongitude" type="double" column="start_longitude"/>
+        <property name="startLatitude" type="double" column="start_latitude"/>
+        <property name="endLongitude" type="double" column="end_longitude"/>
+        <property name="endLatitude" type="double" column="end_latitude"/>
+
+        <property name="createTime">
+            <column name="create_time" sql-type="datetime"/>
+        </property>
+
+    </class>
+</hibernate-mapping>

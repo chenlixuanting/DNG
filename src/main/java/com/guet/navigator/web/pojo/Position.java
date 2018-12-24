@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
+ * 设备实时坐标
+ *
  * @author Administrator
  */
 public class Position implements Serializable {
@@ -31,9 +33,30 @@ public class Position implements Serializable {
     private Double latitude;
 
     /**
+     * 当前路况
+     */
+    private Boolean roadState;
+
+    /**
      * 创建时间
      */
-    private Timestamp createTime;
+    private Timestamp currentTime;
+
+    public Boolean getRoadState() {
+        return roadState;
+    }
+
+    public void setRoadState(Boolean roadState) {
+        this.roadState = roadState;
+    }
+
+    public Timestamp getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(Timestamp currentTime) {
+        this.currentTime = currentTime;
+    }
 
     public String getPositionId() {
         return positionId;
@@ -65,14 +88,6 @@ public class Position implements Serializable {
 
     public void setLatitude(Double latitude) {
         this.latitude = latitude;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
     }
 
     public Position() {

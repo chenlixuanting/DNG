@@ -7,7 +7,7 @@ import java.util.Date;
 /**
  * 用户信息
  */
-public class User implements Serializable{
+public class User implements Serializable {
 
     private static final long serialVersionUID = 7629060401141713559L;
 

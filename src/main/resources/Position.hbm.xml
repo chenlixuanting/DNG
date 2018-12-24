@@ -12,12 +12,13 @@
 
         <property name="latitude" column="latitude" type="double"/>
         <property name="longitude" column="longitude" type="double"/>
+        <property name="roadState" column="road_state" type="boolean"/>
 
-        <property name="createTime" type="timestamp">
-            <column name="create_time" sql-type="datetime"/>
+        <property name="currentTime" type="timestamp">
+            <column name="current_time" sql-type="datetime"/>
         </property>
 
-        <many-to-one name="device" column="deviceId"/>
+        <many-to-one name="device" class="com.guet.navigator.web.pojo.Device"/>
 
     </class>
 

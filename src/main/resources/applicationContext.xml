@@ -174,12 +174,12 @@
         <!--</mvc:interceptor>-->
     <!--</mvc:interceptors>-->
 
-    <websocket:handlers >
-        <websocket:mapping path="/common/websocket/connect" handler="connectWebSocketHandler"/>
-        <websocket:handshake-interceptors>
-            <ref bean="webSocketInterceptor"/>
-        </websocket:handshake-interceptors>
-    </websocket:handlers>
+    <!--<websocket:handlers >-->
+        <!--<websocket:mapping path="/common/websocket/connect" handler="connectWebSocketHandler"/>-->
+        <!--<websocket:handshake-interceptors>-->
+            <!--<ref bean="webSocketInterceptor"/>-->
+        <!--</websocket:handshake-interceptors>-->
+    <!--</websocket:handlers>-->
 
     <!--  注册 sockJS -->
     <!--<websocket:handlers>-->

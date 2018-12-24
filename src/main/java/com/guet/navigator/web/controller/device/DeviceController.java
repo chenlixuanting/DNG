@@ -3,7 +3,6 @@ package com.guet.navigator.web.controller.device;
 import com.guet.navigator.web.constant.user.DeviceConstant;
 import com.guet.navigator.web.pojo.DeviceLoginRecord;
 import com.guet.navigator.web.pojo.Position;
-import com.guet.navigator.web.pojo.TestPosition;
 import com.guet.navigator.web.pojo.User;
 import com.guet.navigator.web.service.DeviceLoginRecordService;
 import com.guet.navigator.web.service.TestPositionService;
@@ -20,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -36,9 +34,6 @@ public class DeviceController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private TestPositionService testPositionService;
 
     /**
      * 安卓设备请求获取用于生产二维码的字符串
@@ -169,7 +164,7 @@ public class DeviceController {
         return msg;
     }
 
-    @RequestMapping(value = "/pdata/{userId}", method = RequestMethod.GET)
+/*    @RequestMapping(value = "/pdata/{userId}", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getTestPositionData(@PathVariable(value = "userId") String userId) {
         Map<String, Object> msg = new HashMap<String, Object>();
@@ -177,11 +172,11 @@ public class DeviceController {
         msg.put("number", list.size());
         msg.put("positions", list);
         return msg;
-    }
+    }*/
 
-    @RequestMapping("/position")
+/*    @RequestMapping("/position")
     public String testPositionPage() {
         return "test/position";
-    }
+    }*/
 
 }
