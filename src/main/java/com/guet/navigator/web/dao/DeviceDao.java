@@ -4,7 +4,7 @@ import com.guet.navigator.web.pojo.Device;
 
 public interface DeviceDao {
 
-    public Boolean save(Device device);
+     Boolean save(Device device);
 
-    public Device findByDeviceId(String deviceId);
+     Device findByDeviceId(String deviceId);
 }

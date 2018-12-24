@@ -4,14 +4,14 @@ import com.guet.navigator.web.pojo.User;
 
 public interface UserService {
 
-    public boolean accountRegistered(String account);
+     boolean accountRegistered(String account);
 
-    public void createUser(User user);
+     void createUser(User user);
 
-    public User findByUserAccount(String account);
+     User findByUserAccount(String account);
 
-    public User findByUserId(String userId);
+     User findByUserId(String userId);
 
-    public boolean updateUser(User user);
+     boolean updateUser(User user);
 
 }

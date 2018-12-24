@@ -11,7 +11,7 @@ public interface BaseDao<T> {
      * @param entity
      * @return
      */
-    public Boolean save(T entity);
+     Boolean save(T entity);
 
 
     /**
@@ -20,7 +20,7 @@ public interface BaseDao<T> {
      * @param entity
      * @return
      */
-    public Boolean delete(T entity);
+     Boolean delete(T entity);
 
 
     /**
@@ -29,7 +29,7 @@ public interface BaseDao<T> {
      * @param id
      * @return
      */
-    public T findById(String id);
+     T findById(String id);
 
     /**
      * 改
@@ -37,6 +37,6 @@ public interface BaseDao<T> {
      * @param entity
      * @return
      */
-    public Boolean update(T entity);
+     Boolean update(T entity);
 
 }

@@ -9,6 +9,6 @@ import javax.servlet.http.HttpSession;
  */
 public interface AdministratorService {
 
-    public Administrator findByUserAccount(String account);
+     Administrator findByUserAccount(String account);
 
 }

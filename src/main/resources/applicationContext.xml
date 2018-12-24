@@ -136,7 +136,7 @@
             </props>
         </property>
 
-        <property name="mappingLocations" value="classpath:com/guet/navigator/web/pojo/*.hbm.xml"/>
+        <property name="mappingLocations" value="classpath:*.hbm.xml"/>
     </bean>
 
     <!--配置事务管理器-->

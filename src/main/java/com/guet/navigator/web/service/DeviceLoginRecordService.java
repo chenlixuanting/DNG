@@ -4,8 +4,8 @@ import com.guet.navigator.web.pojo.DeviceLoginRecord;
 
 public interface DeviceLoginRecordService {
 
-    public DeviceLoginRecord findByDeviceId(String deviceId);
+     DeviceLoginRecord findByDeviceId(String deviceId);
 
-    public Boolean createDeviceRecord(DeviceLoginRecord deviceRecord);
+     Boolean createDeviceRecord(DeviceLoginRecord deviceRecord);
 
 }

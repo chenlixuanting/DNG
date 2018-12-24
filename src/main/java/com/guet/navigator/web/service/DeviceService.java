@@ -4,7 +4,7 @@ import com.guet.navigator.web.pojo.Device;
 
 public interface DeviceService {
 
-    public Boolean createDevice(Device device);
+     Boolean createDevice(Device device);
 
-    public Device findByDeviceId(String deviceId);
+     Device findByDeviceId(String deviceId);
 }

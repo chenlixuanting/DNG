@@ -4,12 +4,12 @@ import com.guet.navigator.web.pojo.User;
 
 public interface UserDao {
 
-    public User findByUserAccount(String account);
+     User findByUserAccount(String account);
 
-    public void saveUser(User user);
+     void saveUser(User user);
 
-    public User findByUserId(String userId);
+     User findByUserId(String userId);
 
-    public boolean updateUser(User user);
+     boolean updateUser(User user);
 
 }
