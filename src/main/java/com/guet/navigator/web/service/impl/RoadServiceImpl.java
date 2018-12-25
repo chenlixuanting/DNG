@@ -26,4 +26,5 @@ public class RoadServiceImpl implements RoadService {
     public List<Road> listAllRoad() {
         return roadDao.listAllRoad();
     }
+
 }

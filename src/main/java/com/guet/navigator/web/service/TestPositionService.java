@@ -1,6 +1,6 @@
 package com.guet.navigator.web.service;
 
-import com.guet.navigator.web.pojo.TestPosition;
+import com.guet.navigator.web.pojo.backup.TestPosition;
 
 import java.util.List;
 

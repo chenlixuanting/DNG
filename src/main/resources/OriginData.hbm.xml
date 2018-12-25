@@ -3,16 +3,14 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.guet.navigator.web.pojo.backup.TestPosition" table="d_vehicle_trajectory">
-        <id name="id" column="id">
+    <class name="com.guet.navigator.web.pojo.OriginData" table="d_origin_data">
+        <id name="positionId" column="position_id">
             <generator class="increment"/>
         </id>
-        <property name="userId" type="string" column="user_id"/>
-        <property name="orderId" type="string" column="order_id"/>
-        <property name="createTime" >
-            <column name="create_time" sql-type="datetime"/>
-        </property>
+        <property name="deviceId" column="device_id" type="string"/>
+        <property name="orderId" column="order_id" type="string"/>
         <property name="longitude" column="longitude" type="double"/>
         <property name="latitude" column="latitude" type="double"/>
+        <property name="currentTime" column="current_time" type="long"/>
     </class>
 </hibernate-mapping>

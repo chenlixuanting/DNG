@@ -1,41 +1,38 @@
 package com.guet.navigator.web.pojo;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 
 /**
  * @author Administrator
  */
-public class TestPosition implements Serializable{
+public class OriginData implements Serializable {
 
-    private static final long serialVersionUID = -6738963714942817016L;
+    private static final long serialVersionUID = 6089238767510005153L;
 
-    private Integer id;
+    private int positionId;
 
-    private String userId;
-
+    private String deviceId;
     private String orderId;
 
-    private Timestamp createTime;
-
     private Double longitude;
-
     private Double latitude;
 
-    public Integer getId() {
-        return id;
+    private long currentTime;
+
+    public int getPositionId() {
+        return positionId;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setPositionId(int positionId) {
+        this.positionId = positionId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getDeviceId() {
+        return deviceId;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setDeviceId(String deviceId) {
+        this.deviceId = deviceId;
     }
 
     public String getOrderId() {
@@ -44,14 +41,6 @@ public class TestPosition implements Serializable{
 
     public void setOrderId(String orderId) {
         this.orderId = orderId;
-    }
-
-    public Timestamp getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(Timestamp createTime) {
-        this.createTime = createTime;
     }
 
     public Double getLongitude() {
@@ -70,6 +59,15 @@ public class TestPosition implements Serializable{
         this.latitude = latitude;
     }
 
-    public TestPosition() {
+    public long getCurrentTime() {
+        return currentTime;
     }
+
+    public void setCurrentTime(long currentTime) {
+        this.currentTime = currentTime;
+    }
+
+    public OriginData() {
+    }
+
 }

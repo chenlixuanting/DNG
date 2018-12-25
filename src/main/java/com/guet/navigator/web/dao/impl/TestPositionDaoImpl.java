@@ -1,7 +1,7 @@
 package com.guet.navigator.web.dao.impl;
 
 import com.guet.navigator.web.dao.TestPositionDao;
-import com.guet.navigator.web.pojo.TestPosition;
+import com.guet.navigator.web.pojo.backup.TestPosition;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+    <class name="com.guet.navigator.web.pojo.TrainData" table="d_train_data">
+
+        <id name="trainDataId" column="train_data_id">
+            <generator class="uuid"/>
+        </id>
+
+        <timestamp name="updateTime" column="update_time" access="field"/>
+
+        <property name="roadId" column="road_id" type="string"/>
+        <property name="startLongitude" column="start_longitude" type="double"/>
+        <property name="startLatitude" column="start_latitude" type="double"/>
+        <property name="endLongitude" column="end_longitude" type="double"/>
+        <property name="endLatitude" column="end_latitude" type="double"/>
+        <property name="carNumber" column="car_number" type="integer"/>
+
+        <property name="startTime" type="timestamp">
+            <column name="start_time" sql-type="datetime"/>
+        </property>
+
+        <property name="endTime" type="timestamp">
+            <column name="end_time" sql-type="datetime"/>
+        </property>
+
+        <property name="createTime" type="timestamp">
+            <column name="create_time" sql-type="datetime"/>
+        </property>
+
+    </class>
+</hibernate-mapping>
