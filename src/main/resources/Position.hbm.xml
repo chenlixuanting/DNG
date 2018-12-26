@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.guet.navigator.web.pojo.Position" table="d_position">
+
+        <id name="positionId" column="position_id">
+            <generator class="uuid"/>
+        </id>
+
+        <property name="latitude" column="latitude" type="double"/>
+        <property name="longitude" column="longitude" type="double"/>
+
+        <property name="speed" column="speed" type="double"/>
+        
+        <property name="roadState" column="road_state" type="boolean"/>
+
+        <property name="presentTime" type="timestamp">
+            <column name="present_time" sql-type="datetime"/>
+        </property>
+
+        <many-to-one name="device" column="deviceId" class="com.guet.navigator.web.pojo.Device"/>
+
+    </class>
+
+</hibernate-mapping>

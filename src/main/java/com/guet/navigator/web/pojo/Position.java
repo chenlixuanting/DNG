@@ -23,6 +23,11 @@ public class Position implements Serializable {
     private Device device;
 
     /**
+     * 速度
+     */
+    private Double speed;
+
+    /**
      * 经度
      */
     private Double longitude;
@@ -40,7 +45,28 @@ public class Position implements Serializable {
     /**
      * 创建时间
      */
-    private Timestamp currentTime;
+    private Timestamp presentTime;
+
+    /**
+     * 乐观锁
+     */
+    private Timestamp updateTime;
+
+    public Double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Double speed) {
+        this.speed = speed;
+    }
+
+    public Timestamp getPresentTime() {
+        return presentTime;
+    }
+
+    public void setPresentTime(Timestamp presentTime) {
+        this.presentTime = presentTime;
+    }
 
     public Boolean getRoadState() {
         return roadState;
@@ -48,14 +74,6 @@ public class Position implements Serializable {
 
     public void setRoadState(Boolean roadState) {
         this.roadState = roadState;
-    }
-
-    public Timestamp getCurrentTime() {
-        return currentTime;
-    }
-
-    public void setCurrentTime(Timestamp currentTime) {
-        this.currentTime = currentTime;
     }
 
     public String getPositionId() {

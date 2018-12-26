@@ -53,8 +53,8 @@ public class TrainDataTest {
         }
 
         long step1 = 600;
-        long startTime1 = sf.parse("2016-10-31 00:00:00").getTime() / 1000;
-        long endTime1 = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
+        long startTime1 = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
+        long endTime1 = sf.parse("2016-10-31 12:20:00").getTime() / 1000;
 
         while (startTime1 < endTime1) {
             List<OriginData> originDataList = originDataService.listSpecifyTimeOriginData(startTime1, startTime1 + step1);
@@ -68,29 +68,14 @@ public class TrainDataTest {
                 Road road = roadList.get(x);
                 long step = 600;
 
-                long startTime = sf.parse("2016-10-31 00:00:00").getTime() / 1000;
-                long endTime = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
+                long startTime = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
+                long endTime = sf.parse("2016-10-31 12:20:00").getTime() / 1000;
 
                 while (startTime < endTime) {
 
                     set.clear();
 
                     List<OriginData> originDataList = map.get(String.valueOf(startTime));
-
-                    TrainData trainData = trainDataService.getTrainDataByRoadIdAndSpecifyTime(road.getRoadId(), startTime * 1000, (startTime + step) * 1000);
-                    if (StringUtils.isEmpty(trainData)) {
-                        TrainData t = new TrainData();
-                        t.setRoadId(road.getRoadId());
-                        t.setStartLongitude(road.getStartLongitude());
-                        t.setStartLatitude(road.getStartLatitude());
-                        t.setEndLongitude(road.getEndLongitude());
-                        t.setEndLatitude(road.getEndLatitude());
-                        t.setCarNumber(0);
-                        t.setStartTime(new Timestamp(startTime * 1000));
-                        t.setEndTime(new Timestamp((startTime + step) * 1000));
-                        t.setCreateTime(new Timestamp(System.currentTimeMillis()));
-                        trainDataService.saveTrainData(t);
-                    }
 
                     for (int z = 0; z < originDataList.size(); z++) {
 
@@ -103,9 +88,24 @@ public class TrainDataTest {
                             if (set.contains(originDataList.get(z).getDeviceId())) {
                                 continue;
                             } else {
+                                TrainData trainData = trainDataService.getTrainDataByRoadIdAndSpecifyTime(road.getRoadId(), startTime * 1000, (startTime + step) * 1000);
                                 set.add(originDataList.get(z).getDeviceId());
-                                trainData.setCarNumber(trainData.getCarNumber() + 1);
-                                trainDataService.updateTrainData(trainData);
+                                if (StringUtils.isEmpty(trainData)) {
+                                    TrainData t = new TrainData();
+                                    t.setRoadId(road.getRoadId());
+                                    t.setStartLongitude(road.getStartLongitude());
+                                    t.setStartLatitude(road.getStartLatitude());
+                                    t.setEndLongitude(road.getEndLongitude());
+                                    t.setEndLatitude(road.getEndLatitude());
+                                    t.setCarNumber(1);
+                                    t.setStartTime(new Timestamp(startTime * 1000));
+                                    t.setEndTime(new Timestamp((startTime + step) * 1000));
+                                    t.setCreateTime(new Timestamp(System.currentTimeMillis()));
+                                    trainDataService.saveTrainData(t);
+                                }else{
+                                    trainData.setCarNumber(trainData.getCarNumber() + 1);
+                                    trainDataService.updateTrainData(trainData);
+                                }
                             }
                         }
                     }

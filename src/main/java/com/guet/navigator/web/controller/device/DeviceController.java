@@ -158,14 +158,21 @@ public class DeviceController {
      * @param positionData
      * @return
      */
-    @RequestMapping(value = "/drivedata", method = RequestMethod.POST)
+    @RequestMapping(value = "/position", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> stroeDriveData(@RequestBody Position positionData) {
+    public Map<String, Object> stroeDevicePosition(@RequestBody Position positionData) {
         Map<String, Object> msg = new HashMap<String, Object>();
         return msg;
     }
 
-    @RequestMapping(value = "/calcongestion", method = RequestMethod.POST)
+    /**
+     * 根据路径规划的
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/planpath", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> congestionCalculation(HttpServletRequest request, HttpServletResponse response) {
         String data = request.getParameter("data");
