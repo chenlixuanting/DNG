@@ -17,10 +17,7 @@ import org.springframework.util.StringUtils;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author Administrator
@@ -52,54 +49,51 @@ public class TrainDataTest {
             }
         }
 
-        List<String> originDeviceIdList = originDataService.listOriginDataByDistinctDeviceId();
-
         try {
             for (int x = 0; x < roadList.size(); x++) {
-                for (int y = 0; y < originDeviceIdList.size(); y++) {
+                Road road = roadList.get(x);
+                long step = 600;
+                long startTime = sf.parse("2016-10-31 00:00:00").getTime() / 1000;
+                long endTime = sf.parse("2016-11-01 00:00:00").getTime() / 1000;
+                while (startTime < endTime) {
+                    set.clear();
+                    List<OriginData> originDataList = originDataService.listSpecifyTimeOriginData(startTime, startTime + step);
 
-                    Road road = roadList.get(x);
-                    long step = 600;
-                    long startTime = sf.parse("2016-10-31 00:00:00").getTime() / 1000;
-                    long endTime = sf.parse("2016-11-01 00:00:00").getTime() / 1000;
-                    TrainData trainData = null;
+                    for (int z = 0; z < originDataList.size(); z++) {
 
-                    List<OriginData> originDataList = originDataService.listOriginDataSpecifyDeviceId(originDeviceIdList.get(y));
+                        if (originDataList.get(z).getCurrentTime() < startTime || originDataList.get(z).getCurrentTime() > endTime) {
+                            System.out.println("数据出错!");
+                            return;
+                        }
 
-                    while (startTime < endTime) {
-                        set.clear();
-                        for (int z = 0; z < originDataList.size(); z++) {
-                            if (originDataList.get(z).getCurrentTime() < startTime || originDataList.get(z).getCurrentTime() > endTime) {
+                        if (PathQuery.query(originDataList.get(z).getLongitude(), originDataList.get(z).getLatitude(), roadList).equals(road.getRoadId())) {
+                            if (set.contains(originDataList.get(z).getDeviceId())) {
                                 continue;
                             } else {
-                                if (!PathQuery.query(originDataList.get(z).getLongitude(), originDataList.get(z).getLatitude(), roadList).equals("None")) {
-                                    if (set.contains(originDataList.get(z).getDeviceId())) {
-                                        continue;
-                                    } else {
-                                        set.add(originDataList.get(z).getDeviceId());
-                                        trainData = trainDataService.getTrainDataByRoadIdAndSpecifyTime(road.getRoadId(), startTime * 1000, (startTime + step) * 1000);
-                                        if (StringUtils.isEmpty(trainData)) {
-                                            TrainData t = new TrainData();
-                                            t.setRoadId(road.getRoadId());
-                                            t.setStartLongitude(road.getStartLongitude());
-                                            t.setStartLatitude(road.getStartLatitude());
-                                            t.setEndLongitude(road.getEndLongitude());
-                                            t.setEndLatitude(road.getEndLatitude());
-                                            t.setCarNumber(1);
-                                            t.setStartTime(new Timestamp(startTime * 1000));
-                                            t.setEndTime(new Timestamp((startTime + step) * 1000));
-                                            t.setCreateTime(new Timestamp(System.currentTimeMillis()));
-                                            trainDataService.saveTrainData(t);
-                                        } else {
-                                            trainData.setCarNumber(trainData.getCarNumber() + 1);
-                                            trainDataService.updateTrainData(trainData);
-                                        }
-                                    }
+                                set.add(originDataList.get(z).getDeviceId());
+                                TrainData trainData = trainDataService.getTrainDataByRoadIdAndSpecifyTime(road.getRoadId(), startTime * 1000, (startTime + step) * 1000);
+                                if (StringUtils.isEmpty(trainData)) {
+                                    TrainData t = new TrainData();
+                                    t.setRoadId(road.getRoadId());
+                                    t.setStartLongitude(road.getStartLongitude());
+                                    t.setStartLatitude(road.getStartLatitude());
+                                    t.setEndLongitude(road.getEndLongitude());
+                                    t.setEndLatitude(road.getEndLatitude());
+                                    t.setCarNumber(1);
+                                    t.setStartTime(new Timestamp(startTime * 1000));
+                                    t.setEndTime(new Timestamp((startTime + step) * 1000));
+                                    t.setCreateTime(new Timestamp(System.currentTimeMillis()));
+                                    trainDataService.saveTrainData(t);
+                                } else {
+                                    trainData.setCarNumber(trainData.getCarNumber() + 1);
+                                    trainDataService.updateTrainData(trainData);
                                 }
                             }
                         }
-                        startTime += step;
+
                     }
+
+                    startTime += step;
                 }
             }
         } catch (ParseException e) {

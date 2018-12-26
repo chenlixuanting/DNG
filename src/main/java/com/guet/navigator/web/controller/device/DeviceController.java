@@ -1,10 +1,9 @@
 package com.guet.navigator.web.controller.device;
 
 import com.guet.navigator.web.constant.user.DeviceConstant;
-import com.guet.navigator.web.pojo.DeviceLoginRecord;
-import com.guet.navigator.web.pojo.Position;
-import com.guet.navigator.web.pojo.User;
+import com.guet.navigator.web.pojo.*;
 import com.guet.navigator.web.service.DeviceLoginRecordService;
+import com.guet.navigator.web.service.RoadService;
 import com.guet.navigator.web.service.TestPositionService;
 import com.guet.navigator.web.service.UserService;
 import com.guet.navigator.web.vo.DeviceLoginMessageVo;
@@ -18,9 +17,8 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.io.File;
+import java.util.*;
 
 /**
  * @author Administrator
@@ -34,6 +32,9 @@ public class DeviceController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private RoadService roadService;
 
     /**
      * 安卓设备请求获取用于生产二维码的字符串
@@ -164,19 +165,31 @@ public class DeviceController {
         return msg;
     }
 
-/*    @RequestMapping(value = "/pdata/{userId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/calcongestion", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> getTestPositionData(@PathVariable(value = "userId") String userId) {
+    public Map<String, Object> congestionCalculation(HttpServletRequest request, HttpServletResponse response) {
+        String data = request.getParameter("data");
         Map<String, Object> msg = new HashMap<String, Object>();
-        List<TestPosition> list = testPositionService.getPositionsById(userId);
-        msg.put("number", list.size());
-        msg.put("positions", list);
+        msg.put("statusCode", 200);
         return msg;
-    }*/
+    }
 
-/*    @RequestMapping("/position")
-    public String testPositionPage() {
-        return "test/position";
-    }*/
+//    @RequestMapping(value = "/pdata", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Map<String, Object> getTestPositionData() {
+//        Map<String, Object> msg = new HashMap<String, Object>();
+//        List<Road> roadList = new ArrayList<Road>();
+////        roadList.add(roadService.getRoadByRoadId("40287e8167e12c270167e12c47d80317"));
+////        roadList.add(roadService.getRoadByRoadId("40287e8167e12c270167e12c47dd0318"));
+////        roadList.add(roadService.getRoadByRoadId("40287e8167e12c270167e12c47e30319"));
+//        msg.put("number", roadList.size());
+//        msg.put("positions", roadList);
+//        return msg;
+//    }
+
+//    @RequestMapping("/position")
+//    public String testPositionPage() {
+//        return "test/position";
+//    }
 
 }

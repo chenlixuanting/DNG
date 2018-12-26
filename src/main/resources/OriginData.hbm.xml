@@ -11,6 +11,6 @@
         <property name="orderId" column="order_id" type="string"/>
         <property name="longitude" column="longitude" type="double"/>
         <property name="latitude" column="latitude" type="double"/>
-        <property name="currentTime" column="current_time" type="long"/>
+        <property name="currentTime" column="current" index="origin_idx" type="long"/>
     </class>
 </hibernate-mapping>

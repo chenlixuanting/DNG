@@ -27,6 +27,7 @@ public class OriginDataDaoImpl extends BaseDaoImpl<OriginData> implements Origin
 
     @Override
     public List<OriginData> listSpecifyTimeOriginData(long startTime, long endTime) {
+//        select distinct sage,ssex,sname from Student where sage between 20 and 22
         String hql = "from com.guet.navigator.web.pojo.OriginData as o where o.currentTime between :startTime and :endTime";
         try {
             Query query = getCurrentSession().createQuery(hql);

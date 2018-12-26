@@ -1,4 +1,4 @@
-package com.guet.navigator.web.pojo.backup;
+package com.guet.navigator.web.pojo;
 
 import java.io.Serializable;
 

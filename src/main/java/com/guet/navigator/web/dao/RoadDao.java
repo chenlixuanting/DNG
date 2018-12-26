@@ -13,4 +13,8 @@ public interface RoadDao {
 
     List<Road> listAllRoad();
 
+    List<Road> listRoadByName(String roadName);
+
+    Road getRoadByRoadId(String roadId);
+
 }

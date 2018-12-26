@@ -27,4 +27,14 @@ public class RoadServiceImpl implements RoadService {
         return roadDao.listAllRoad();
     }
 
+    @Override
+    public List<Road> listRoadByName(String roadName) {
+        return roadDao.listRoadByName(roadName);
+    }
+
+    @Override
+    public Road getRoadByRoadId(String roadId) {
+        return roadDao.getRoadByRoadId(roadId);
+    }
+
 }

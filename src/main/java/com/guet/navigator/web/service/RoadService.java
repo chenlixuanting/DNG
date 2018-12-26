@@ -12,4 +12,9 @@ public interface RoadService {
     Boolean saveRoad(Road road);
 
     List<Road> listAllRoad();
+
+    List<Road> listRoadByName(String roadName);
+
+    public Road getRoadByRoadId(String roadId);
+
 }
