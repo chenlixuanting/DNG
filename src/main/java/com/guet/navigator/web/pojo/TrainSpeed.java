@@ -21,7 +21,23 @@ public class TrainSpeed implements Serializable {
     private Timestamp endTime;
     private Timestamp presentTime;
 
+    private Integer currentTime;
+
     private Double speed;
+
+
+    @Override
+    public String toString() {
+        return roadId + "," + deviceId + "," + longitude + "," + latitude + "," + currentTime;
+    }
+
+    public Integer getCurrentTime() {
+        return currentTime;
+    }
+
+    public void setCurrentTime(Integer currentTime) {
+        this.currentTime = currentTime;
+    }
 
     public Double getLongitude() {
         return longitude;

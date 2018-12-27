@@ -358,6 +358,9 @@ public class MobileController {
                 }
                 break;
             }
+            default:{
+
+            }
         }
 
         //更新到用户数据

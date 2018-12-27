@@ -6,6 +6,8 @@ import com.guet.navigator.web.service.TrainSpeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @author Administrator
  */
@@ -18,6 +20,21 @@ public class TrainSpeedServiceImpl implements TrainSpeedService {
     @Override
     public Boolean saveTrainSpeed(TrainSpeed trainSpeed) {
         return trainSpeedDao.save(trainSpeed);
+    }
+
+    @Override
+    public List<TrainSpeed> listTrainSpeedByRoadId(String roadId) {
+        return trainSpeedDao.listTrainSpeedByRoadId(roadId);
+    }
+
+    @Override
+    public List<String> countAllDistinctRoadId() {
+        return trainSpeedDao.countAllDistinctRoadId();
+    }
+
+    @Override
+    public Boolean updateTrainSpeed(TrainSpeed trainSpeed) {
+        return trainSpeedDao.update(trainSpeed);
     }
 
 }

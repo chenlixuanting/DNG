@@ -1,24 +1,30 @@
 package com.guet.navigator.web.controller.device;
 
 import com.guet.navigator.web.constant.user.DeviceConstant;
-import com.guet.navigator.web.pojo.*;
+import com.guet.navigator.web.pojo.DeviceLoginRecord;
+import com.guet.navigator.web.pojo.User;
 import com.guet.navigator.web.service.DeviceLoginRecordService;
 import com.guet.navigator.web.service.RoadService;
-import com.guet.navigator.web.service.TestPositionService;
 import com.guet.navigator.web.service.UserService;
 import com.guet.navigator.web.vo.DeviceLoginMessageVo;
 import com.guet.navigator.web.vo.QRCodeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.util.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author Administrator
@@ -155,18 +161,33 @@ public class DeviceController {
     /**
      * 存储小车实时(间隔为1秒)的定位数据
      *
-     * @param positionData
+     * @param request
+     * @param response
      * @return
      */
     @RequestMapping(value = "/position", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> stroeDevicePosition(@RequestBody Position positionData) {
+    public Map<String, Object> stroeDevicePosition(HttpServletRequest request, HttpServletResponse response) {
+
         Map<String, Object> msg = new HashMap<String, Object>();
+        StringBuilder sb = new StringBuilder();
+        byte[] bytes = new byte[1000];
+
+        try {
+            InputStream inputStream = request.getInputStream();
+            while (inputStream.read(bytes) != -1) {
+                sb.append(new String(bytes, "utf-8"));
+            }
+            System.out.println(sb.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         return msg;
     }
 
     /**
-     * 根据路径规划的
+     * 选择最佳的规划路线
      *
      * @param request
      * @param response

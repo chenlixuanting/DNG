@@ -2,7 +2,6 @@ package com.guet.navigator.web.test;
 
 import com.guet.navigator.web.pojo.OriginData;
 import com.guet.navigator.web.pojo.Road;
-import com.guet.navigator.web.pojo.TrainData;
 import com.guet.navigator.web.pojo.TrainSpeed;
 import com.guet.navigator.web.python.PathQuery;
 import com.guet.navigator.web.service.OriginDataService;
@@ -13,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
@@ -69,7 +67,6 @@ public class TrainSpeedTest {
 
             Road road = roadList.get(x);
             long step = 600;
-
             long startTime = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
             long endTime = sf.parse("2016-10-31 12:20:00").getTime() / 1000;
 
@@ -79,31 +76,27 @@ public class TrainSpeedTest {
 
                 for (int z = 0; z < originDataList.size(); z++) {
 
-                    if (originDataList.get(z).getCurrentTime() < startTime || originDataList.get(z).getCurrentTime() > endTime) {
-                        System.out.println("数据出错!");
-                        return;
-                    }
+                    OriginData originData = originDataList.get(z);
 
-                    if (PathQuery.query(originDataList.get(z).getLongitude(), originDataList.get(z).getLatitude(), roadList).equals(road.getRoadId())) {
-
-                        OriginData originData = originDataList.get(z);
+                    if (PathQuery.query(originData.getLongitude(), originData.getLatitude(), roadList).equals(road.getRoadId())) {
                         TrainSpeed trainSpeed = new TrainSpeed();
-
                         trainSpeed.setRoadId(road.getRoadId());
                         trainSpeed.setDeviceId(originData.getDeviceId());
                         trainSpeed.setLongitude(originData.getLongitude());
                         trainSpeed.setLatitude(originData.getLatitude());
                         trainSpeed.setStartTime(new Timestamp(startTime * 1000L));
-                        trainSpeed.setEndTime(new Timestamp((startTime+step) * 1000L));
+                        trainSpeed.setEndTime(new Timestamp((startTime + step) * 1000L));
                         trainSpeed.setPresentTime(new Timestamp(originData.getCurrentTime() * 1000L));
                         trainSpeed.setSpeed(0.0);
-
                         trainSpeedService.saveTrainSpeed(trainSpeed);
                     }
+
                 }
+
+                startTime += step;
+
             }
 
-            startTime += step;
         }
     }
 
