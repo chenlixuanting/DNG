@@ -38,11 +38,6 @@ public class Position implements Serializable {
     private Double latitude;
 
     /**
-     * 当前路况
-     */
-    private Boolean roadState;
-
-    /**
      * 创建时间
      */
     private Timestamp presentTime;
@@ -51,6 +46,19 @@ public class Position implements Serializable {
      * 乐观锁
      */
     private Timestamp updateTime;
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "positionId='" + positionId + '\'' +
+                ", device=" + device +
+                ", speed=" + speed +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", presentTime=" + presentTime +
+                ", updateTime=" + updateTime +
+                '}';
+    }
 
     public Double getSpeed() {
         return speed;
@@ -66,14 +74,6 @@ public class Position implements Serializable {
 
     public void setPresentTime(Timestamp presentTime) {
         this.presentTime = presentTime;
-    }
-
-    public Boolean getRoadState() {
-        return roadState;
-    }
-
-    public void setRoadState(Boolean roadState) {
-        this.roadState = roadState;
     }
 
     public String getPositionId() {

@@ -1,11 +1,11 @@
 package com.guet.navigator.web.controller.device;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.guet.navigator.web.constant.user.DeviceConstant;
-import com.guet.navigator.web.pojo.DeviceLoginRecord;
-import com.guet.navigator.web.pojo.User;
-import com.guet.navigator.web.service.DeviceLoginRecordService;
-import com.guet.navigator.web.service.RoadService;
-import com.guet.navigator.web.service.UserService;
+import com.guet.navigator.web.pojo.*;
+import com.guet.navigator.web.python.PathQuery;
+import com.guet.navigator.web.service.*;
 import com.guet.navigator.web.vo.DeviceLoginMessageVo;
 import com.guet.navigator.web.vo.QRCodeVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * @author Administrator
@@ -41,6 +42,15 @@ public class DeviceController {
 
     @Autowired
     private RoadService roadService;
+
+    @Autowired
+    private DeviceService deviceService;
+
+    @Autowired
+    private PositionService positionService;
+
+    @Autowired
+    private TrainSpeedService trainSpeedService;
 
     /**
      * 安卓设备请求获取用于生产二维码的字符串
@@ -168,21 +178,45 @@ public class DeviceController {
     @RequestMapping(value = "/position", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> stroeDevicePosition(HttpServletRequest request, HttpServletResponse response) {
-
         Map<String, Object> msg = new HashMap<String, Object>();
         StringBuilder sb = new StringBuilder();
         byte[] bytes = new byte[1000];
-
         try {
             InputStream inputStream = request.getInputStream();
             while (inputStream.read(bytes) != -1) {
                 sb.append(new String(bytes, "utf-8"));
             }
-            System.out.println(sb.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        String[] datas = sb.toString().split(".");
+        for (int x=0;x<datas.length;x++){
+            if (StringUtils.isEmpty(datas[x])){
+                msg.put("statusCode",500);
+                return msg;
+            }
+        }
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Device device = deviceService.findByDeviceId(datas[0]);
+            if(StringUtils.isEmpty(device)){
+                msg.put("statusCode",600);
+            }else{
+                Position position = new Position();
+                position.setDevice(device);
+                position.setLongitude(Double.valueOf(datas[1]));
+                position.setLatitude(Double.valueOf(datas[2]));
+                position.setSpeed(Double.valueOf(datas[3]));
+                position.setPresentTime(new Timestamp(sf.parse(datas[4]).getTime()));
+                if(positionService.save(position)){
+                    msg.put("statusCode",200);
+                }else{
+                    msg.put("statusCode",500);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return msg;
     }
 
@@ -197,7 +231,44 @@ public class DeviceController {
     @ResponseBody
     public Map<String, Object> congestionCalculation(HttpServletRequest request, HttpServletResponse response) {
         String data = request.getParameter("data");
+        List<PlanRoute> planRouteList = JSON.parseArray(data, PlanRoute.class);
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        List<Road> roadListOld = roadService.listAllRoad();
+        List<Road> roadList = new ArrayList<Road>();
+        List<Double> avgSpeed = new ArrayList<Double>();
         Map<String, Object> msg = new HashMap<String, Object>();
+        for (int d = 0; d < roadListOld.size(); d++) {
+            if (roadListOld.get(d).getRoadName().equals("咸宁西路")) {
+                roadList.add(roadListOld.get(d));
+            }
+        }
+        try {
+            for (int x= 0;x<planRouteList.size();x++){
+                Date date = sf.parse("2016-10-31 12:05:23");
+                Timestamp startTime = new Timestamp(sf.parse("2016-10-31 12:00:00").getTime());
+                Timestamp endTime = new Timestamp(sf.parse("2016-10-31 12:10:00").getTime());
+                List<String> roadIds = new ArrayList<String>();
+                PlanRoute planRoute = planRouteList.get(x);
+                List<Point> totals = new ArrayList<Point>();
+                totals.addAll(planRoute.getFrom());
+                totals.addAll(planRoute.getPoints());
+                totals.addAll(planRoute.getTo());
+                for (int y=0;y<totals.size();y++){
+                    roadIds.add(PathQuery.query(totals.get(y).getLongitude(),totals.get(y).getLatitude(),roadList));
+                }
+                for (int z = 0;z<roadIds.size();z++){
+                    double totalSpeed = 0.0;
+                    List<TrainSpeed> trainSpeedList = trainSpeedService.listTrainSpeedBySpecifyTimeAndRoadId(startTime,endTime,roadIds.get(z));
+                    for (int d=0;d<trainSpeedList.size();d++){
+                        totalSpeed += trainSpeedList.get(d).getSpeed();
+                    }
+                    avgSpeed.add(totalSpeed/trainSpeedList.size());
+                }
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        msg.put("avgSppedArr",avgSpeed);
         msg.put("statusCode", 200);
         return msg;
     }

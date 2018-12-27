@@ -6,6 +6,7 @@ import com.guet.navigator.web.service.TrainSpeedService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -35,6 +36,11 @@ public class TrainSpeedServiceImpl implements TrainSpeedService {
     @Override
     public Boolean updateTrainSpeed(TrainSpeed trainSpeed) {
         return trainSpeedDao.update(trainSpeed);
+    }
+
+    @Override
+    public List<TrainSpeed> listTrainSpeedBySpecifyTimeAndRoadId(Timestamp startTime, Timestamp endTime, String roadId) {
+        return trainSpeedDao.listTrainSpeedBySpecifyTimeAndRoadId(startTime,endTime,roadId);
     }
 
 }

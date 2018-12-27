@@ -2,6 +2,7 @@ package com.guet.navigator.web.dao;
 
 import com.guet.navigator.web.pojo.TrainSpeed;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -16,5 +17,7 @@ public interface TrainSpeedDao {
     List<String> countAllDistinctRoadId();
 
     Boolean update(TrainSpeed trainSpeed);
+
+    List<TrainSpeed> listTrainSpeedBySpecifyTimeAndRoadId(Timestamp startTime,Timestamp endTime,String roadId);
 
 }

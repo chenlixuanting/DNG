@@ -39,7 +39,6 @@ public class CalTrainSpeedTest {
         for (int z = 0; z < total.size(); z++) {
             long time = total.get(z).getPresentTime().getTime() / 1000L;
             total.get(z).setCurrentTime((int) time);
-//            System.out.println(total.get(z).toString());
         }
 
         String speeds = CalSpeed.cal(total);
@@ -47,6 +46,7 @@ public class CalTrainSpeedTest {
         System.out.println(Arrays.toString(sp));
         for (int y = 0; y < sp.length; y++) {
             total.get(y).setSpeed(Double.valueOf(sp[y]));
+            trainSpeedService.updateTrainSpeed(total.get(y));
         }
 
     }
