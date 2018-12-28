@@ -1,9 +1,9 @@
-<%@ page import="com.guet.navigator.web.constant.SessionKey" %>
 <%@ page import="com.guet.navigator.web.pojo.Administrator" %>
+<%@ page import="com.guet.navigator.web.constant.administrator.AdministratorConstant" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%
-    Administrator administrator = (Administrator) request.getSession().getAttribute(SessionKey.ADMINISTRATOR);
+    Administrator administrator = (Administrator) request.getSession().getAttribute(AdministratorConstant.ADMINISTRATOR);
 %>
 
 <!-- Navbar-->

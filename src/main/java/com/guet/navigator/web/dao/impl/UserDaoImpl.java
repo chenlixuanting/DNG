@@ -5,8 +5,6 @@ import com.guet.navigator.web.pojo.User;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
-
 /**
  * @author Administrator
  */

@@ -177,7 +177,7 @@ public class DeviceController {
      */
     @RequestMapping(value = "/position", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> stroeDevicePosition(HttpServletRequest request, HttpServletResponse response) {
+    public Map<String, Object> stroeDevicePosition(HttpServletRequest request, HttpServletResponse response) throws InterruptedException {
         Map<String, Object> msg = new HashMap<String, Object>();
         StringBuilder sb = new StringBuilder();
         byte[] bytes = new byte[1000];
@@ -189,34 +189,57 @@ public class DeviceController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        String[] datas = sb.toString().split(".");
-        for (int x=0;x<datas.length;x++){
-            if (StringUtils.isEmpty(datas[x])){
-                msg.put("statusCode",500);
+
+        String[] datas = sb.toString().split(",");
+        for (int x = 0; x < datas.length; x++) {
+            if (StringUtils.isEmpty(datas[x])) {
+                msg.put("statusCode", 500);
                 return msg;
             }
         }
-        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        try {
-            Device device = deviceService.findByDeviceId(datas[0]);
-            if(StringUtils.isEmpty(device)){
-                msg.put("statusCode",600);
-            }else{
-                Position position = new Position();
-                position.setDevice(device);
-                position.setLongitude(Double.valueOf(datas[1]));
-                position.setLatitude(Double.valueOf(datas[2]));
-                position.setSpeed(Double.valueOf(datas[3]));
-                position.setPresentTime(new Timestamp(sf.parse(datas[4]).getTime()));
-                if(positionService.save(position)){
-                    msg.put("statusCode",200);
-                }else{
-                    msg.put("statusCode",500);
-                }
+
+        String str = sb.toString();
+
+        if ((datas[3].split(":")[1]).equals("0")) {
+            if ((datas[3].split(":")[1]).equals("0")) {
+                System.out.println(str + "," + "carState:crash");
+                System.out.println("error:检测到车辆前方发生车祸!!!");
+                System.out.println("正在回传给导航平台...................................");
+                Thread.sleep(2000);
+                System.out.println("正在重新规划路线.....................................");
+                Thread.sleep(2000);
+                System.out.println("同步新的导航信息完成!");
+                Thread.sleep(300000);
+            } else {
+                System.out.println(str.substring(0, str.indexOf("}")) + "," + "carState:crash");
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        } else {
+            System.out.println(str.substring(0, str.indexOf("}")) + "," + "carState:normal");
         }
+
+//        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        try {
+//            Device device = deviceService.findByDeviceId(datas[0]);
+//            if(StringUtils.isEmpty(device)){
+//                msg.put("statusCode",600);
+//            }else{
+//                Position position = new Position();
+//                position.setDevice(device);
+//                position.setLongitude(Double.valueOf(datas[1]));
+//                position.setLatitude(Double.valueOf(datas[2]));
+//                position.setSpeed(Double.valueOf(datas[3]));
+//                position.setPresentTime(new Timestamp(sf.parse(datas[4]).getTime()));
+//                if(positionService.save(position)){
+//                    msg.put("statusCode",200);
+//                }else{
+//                    msg.put("statusCode",500);
+//                }
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+
         return msg;
     }
 
@@ -243,7 +266,7 @@ public class DeviceController {
             }
         }
         try {
-            for (int x= 0;x<planRouteList.size();x++){
+            for (int x = 0; x < planRouteList.size(); x++) {
                 Date date = sf.parse("2016-10-31 12:05:23");
                 Timestamp startTime = new Timestamp(sf.parse("2016-10-31 12:00:00").getTime());
                 Timestamp endTime = new Timestamp(sf.parse("2016-10-31 12:10:00").getTime());
@@ -253,22 +276,22 @@ public class DeviceController {
                 totals.addAll(planRoute.getFrom());
                 totals.addAll(planRoute.getPoints());
                 totals.addAll(planRoute.getTo());
-                for (int y=0;y<totals.size();y++){
-                    roadIds.add(PathQuery.query(totals.get(y).getLongitude(),totals.get(y).getLatitude(),roadList));
+                for (int y = 0; y < totals.size(); y++) {
+                    roadIds.add(PathQuery.query(totals.get(y).getLongitude(), totals.get(y).getLatitude(), roadList));
                 }
-                for (int z = 0;z<roadIds.size();z++){
+                for (int z = 0; z < roadIds.size(); z++) {
                     double totalSpeed = 0.0;
-                    List<TrainSpeed> trainSpeedList = trainSpeedService.listTrainSpeedBySpecifyTimeAndRoadId(startTime,endTime,roadIds.get(z));
-                    for (int d=0;d<trainSpeedList.size();d++){
+                    List<TrainSpeed> trainSpeedList = trainSpeedService.listTrainSpeedBySpecifyTimeAndRoadId(startTime, endTime, roadIds.get(z));
+                    for (int d = 0; d < trainSpeedList.size(); d++) {
                         totalSpeed += trainSpeedList.get(d).getSpeed();
                     }
-                    avgSpeed.add(totalSpeed/trainSpeedList.size());
+                    avgSpeed.add(totalSpeed / trainSpeedList.size());
                 }
             }
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        msg.put("avgSppedArr",avgSpeed);
+        msg.put("avgSppedArr", avgSpeed);
         msg.put("statusCode", 200);
         return msg;
     }
@@ -286,9 +309,9 @@ public class DeviceController {
 //        return msg;
 //    }
 
-//    @RequestMapping("/position")
-//    public String testPositionPage() {
-//        return "test/position";
-//    }
+    @RequestMapping("/position")
+    public String testPositionPage() {
+        return "test/position";
+    }
 
 }

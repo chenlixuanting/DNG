@@ -53,8 +53,8 @@ public class TrainDataTest {
         }
 
         long step1 = 600;
-        long startTime1 = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
-        long endTime1 = sf.parse("2016-10-31 12:20:00").getTime() / 1000;
+        long startTime1 = sf.parse("2016-10-31 00:00:00").getTime() / 1000;
+        long endTime1 = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
 
         while (startTime1 < endTime1) {
             List<OriginData> originDataList = originDataService.listSpecifyTimeOriginData(startTime1, startTime1 + step1);
@@ -68,8 +68,8 @@ public class TrainDataTest {
                 Road road = roadList.get(x);
                 long step = 600;
 
-                long startTime = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
-                long endTime = sf.parse("2016-10-31 12:20:00").getTime() / 1000;
+                long startTime = sf.parse("2016-10-31 00:00:00").getTime() / 1000;
+                long endTime = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
 
                 while (startTime < endTime) {
 
