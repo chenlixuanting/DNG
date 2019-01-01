@@ -1,16 +1,14 @@
-package com.guet.navigator.web.pojo;
+package com.guet.navigator.web.vo;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
- * 设备实时坐标
- *
  * @author Administrator
  */
-public class Position implements Serializable {
+public class PositionVo implements Serializable {
 
-    private static final long serialVersionUID = -7064651417990704311L;
+    private static final long serialVersionUID = 6225714881759685127L;
 
     /**
      * 主键
@@ -20,7 +18,7 @@ public class Position implements Serializable {
     /**
      * 设备Id
      */
-    private Device deviceId;
+    private String deviceId;
 
     /**
      * 速度
@@ -47,35 +45,6 @@ public class Position implements Serializable {
      */
     private String roadState;
 
-    /**
-     * 乐观锁
-     */
-    private Timestamp updateTime;
-
-    public String getRoadState() {
-        return roadState;
-    }
-
-    public void setRoadState(String roadState) {
-        this.roadState = roadState;
-    }
-
-    public Double getSpeed() {
-        return speed;
-    }
-
-    public void setSpeed(Double speed) {
-        this.speed = speed;
-    }
-
-    public Timestamp getPresentTime() {
-        return presentTime;
-    }
-
-    public void setPresentTime(Timestamp presentTime) {
-        this.presentTime = presentTime;
-    }
-
     public String getPositionId() {
         return positionId;
     }
@@ -84,12 +53,20 @@ public class Position implements Serializable {
         this.positionId = positionId;
     }
 
-    public Device getDeviceId() {
+    public String getDeviceId() {
         return deviceId;
     }
 
-    public void setDeviceId(Device deviceId) {
+    public void setDeviceId(String deviceId) {
         this.deviceId = deviceId;
+    }
+
+    public Double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(Double speed) {
+        this.speed = speed;
     }
 
     public Double getLongitude() {
@@ -108,6 +85,22 @@ public class Position implements Serializable {
         this.latitude = latitude;
     }
 
-    public Position() {
+    public Timestamp getPresentTime() {
+        return presentTime;
+    }
+
+    public void setPresentTime(Timestamp presentTime) {
+        this.presentTime = presentTime;
+    }
+
+    public String getRoadState() {
+        return roadState;
+    }
+
+    public void setRoadState(String roadState) {
+        this.roadState = roadState;
+    }
+
+    public PositionVo() {
     }
 }

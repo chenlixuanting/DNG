@@ -92,34 +92,24 @@ public class AdminController {
 
                 //判断账号，密码是否为空
                 if (StringUtils.isEmpty(account) || StringUtils.isEmpty(password)) {
-
                     //返回账户或密码为空的错误信息
                     return LoginMessageVo.loginFailMessage(Messages.USERNAME_OR_PASSWORD_EMPTY);
-
                 } else {
-
                     //从数据中查询管理员账号
                     Administrator admin = administratorService.findByUserAccount(account);
-
                     if (StringUtils.isEmpty(admin)) {
-
                         //返回账户不存在的错误信息
                         return LoginMessageVo.loginFailMessage(Messages.ACCOUNT_NOT_EXIST);
-
                     } else {
-
                         if (password.equals(admin.getPassword())) {
-
                             //清除密码
                             admin.setPassword("");
                             session.setAttribute(AdministratorConstant.ADMINISTRATOR, admin);
                             return LoginMessageVo.loginSuccessMessage(Messages.LOGIN_SUCCESS);
-
                         } else {
                             //返回密码错误信息
                             return LoginMessageVo.loginFailMessage(Messages.PASSWORD_ERROR);
                         }
-
                     }
                 }
             }

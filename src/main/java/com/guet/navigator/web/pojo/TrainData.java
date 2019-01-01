@@ -28,6 +28,21 @@ public class TrainData implements Serializable {
     private Timestamp createTime;
     private Timestamp updateTime;
 
+    @Override
+    public int hashCode() {
+        return roadId.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof TrainData) {
+            if (((TrainData) obj).getStartTime().equals(startTime) && ((TrainData) obj).getEndTime().equals(endTime)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public String getTrainDataId() {
         return trainDataId;
     }

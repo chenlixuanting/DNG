@@ -1,13 +1,15 @@
 package com.guet.navigator.web.controller.device;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.guet.navigator.web.constant.user.DeviceConstant;
+import com.guet.navigator.web.morpher.TimestampMorpher;
 import com.guet.navigator.web.pojo.*;
 import com.guet.navigator.web.python.PathQuery;
 import com.guet.navigator.web.service.*;
 import com.guet.navigator.web.vo.DeviceLoginMessageVo;
+import com.guet.navigator.web.vo.PositionVo;
 import com.guet.navigator.web.vo.QRCodeVo;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -20,12 +22,13 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+
+import net.sf.json.util.JSONUtils;
 
 /**
  * @author Administrator
@@ -186,60 +189,41 @@ public class DeviceController {
             while (inputStream.read(bytes) != -1) {
                 sb.append(new String(bytes, "utf-8"));
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        String[] datas = sb.toString().split(",");
-        for (int x = 0; x < datas.length; x++) {
-            if (StringUtils.isEmpty(datas[x])) {
-                msg.put("statusCode", 500);
-                return msg;
-            }
-        }
-
-        String str = sb.toString();
-
-        if ((datas[3].split(":")[1]).equals("0")) {
-            if ((datas[3].split(":")[1]).equals("0")) {
-                System.out.println(str + "," + "carState:crash");
-                System.out.println("error:检测到车辆前方发生车祸!!!");
-                System.out.println("正在回传给导航平台...................................");
-                Thread.sleep(2000);
-                System.out.println("正在重新规划路线.....................................");
-                Thread.sleep(2000);
-                System.out.println("同步新的导航信息完成!");
-                Thread.sleep(300000);
+            String[] formats = {"yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd"};
+            JSONUtils.getMorpherRegistry().registerMorpher(new TimestampMorpher(formats));
+            JSONObject jsonObject = JSONObject.fromObject(sb.toString());
+            PositionVo positionVo = (PositionVo) JSONObject.toBean(jsonObject, PositionVo.class);
+            if (StringUtils.isEmpty(positionVo.getDeviceId()) || StringUtils.isEmpty(positionVo.getLatitude())
+                    || StringUtils.isEmpty(positionVo.getLongitude()) || StringUtils.isEmpty(positionVo.getPositionId())
+                    || StringUtils.isEmpty(positionVo.getPresentTime()) || StringUtils.isEmpty(positionVo.getRoadState()) || StringUtils.isEmpty(positionVo.getSpeed())) {
+                //非法请求
+                msg.put("statusCode", 405);
             } else {
-                System.out.println(str.substring(0, str.indexOf("}")) + "," + "carState:crash");
+                Device device = deviceService.findByDeviceId(positionVo.getDeviceId());
+                if (StringUtils.isEmpty(device)) {
+                    //非法设备
+                    msg.put("statusCode", 600);
+                } else {
+                    Position position = new Position();
+                    position.setLongitude(positionVo.getLongitude());
+                    position.setLatitude(positionVo.getLatitude());
+                    position.setSpeed(positionVo.getSpeed());
+                    position.setDeviceId(device);
+                    position.setRoadState(positionVo.getRoadState());
+                    position.setPresentTime(positionVo.getPresentTime());
+                    if (positionService.save(position)) {
+                        //存储成功
+                        msg.put("statusCode", 200);
+                    } else {
+                        //服务器内部错误
+                        msg.put("statusCode", 500);
+                    }
+                }
             }
-
-        } else {
-            System.out.println(str.substring(0, str.indexOf("}")) + "," + "carState:normal");
+        } catch (Exception e) {
+            //非法请求
+            msg.put("statusCode", 405);
         }
-
-//        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//        try {
-//            Device device = deviceService.findByDeviceId(datas[0]);
-//            if(StringUtils.isEmpty(device)){
-//                msg.put("statusCode",600);
-//            }else{
-//                Position position = new Position();
-//                position.setDevice(device);
-//                position.setLongitude(Double.valueOf(datas[1]));
-//                position.setLatitude(Double.valueOf(datas[2]));
-//                position.setSpeed(Double.valueOf(datas[3]));
-//                position.setPresentTime(new Timestamp(sf.parse(datas[4]).getTime()));
-//                if(positionService.save(position)){
-//                    msg.put("statusCode",200);
-//                }else{
-//                    msg.put("statusCode",500);
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
         return msg;
     }
 
@@ -294,24 +278,6 @@ public class DeviceController {
         msg.put("avgSppedArr", avgSpeed);
         msg.put("statusCode", 200);
         return msg;
-    }
-
-//    @RequestMapping(value = "/pdata", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Map<String, Object> getTestPositionData() {
-//        Map<String, Object> msg = new HashMap<String, Object>();
-//        List<Road> roadList = new ArrayList<Road>();
-////        roadList.add(roadService.getRoadByRoadId("40287e8167e12c270167e12c47d80317"));
-////        roadList.add(roadService.getRoadByRoadId("40287e8167e12c270167e12c47dd0318"));
-////        roadList.add(roadService.getRoadByRoadId("40287e8167e12c270167e12c47e30319"));
-//        msg.put("number", roadList.size());
-//        msg.put("positions", roadList);
-//        return msg;
-//    }
-
-    @RequestMapping("/position")
-    public String testPositionPage() {
-        return "test/position";
     }
 
 }

@@ -12,12 +12,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.util.StringUtils;
 
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author Administrator
@@ -35,86 +38,122 @@ public class TrainDataTest {
     @Autowired
     private TrainDataService trainDataService;
 
+    /**
+     * TrainData缓存
+     */
+    Map<Long, TrainData> trainDataMap = new HashMap<Long, TrainData>();
+
+    List<Road> roads;
+
+    /**
+     * 并发统计每个路段车流量的情况
+     *
+     * @throws ParseException
+     */
     @Test
     public void createTrainData() throws ParseException {
 
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<Road> roadListOld = roadService.listAllRoad();
-        List<Road> roadList = new ArrayList<Road>();
-        List<OriginData> total = new ArrayList<OriginData>();
 
-        Set<String> set = new HashSet<String>();
-        Map<String, List<OriginData>> map = new HashMap<String, List<OriginData>>();
+        /**
+         * 10分钟间隔秒数
+         */
+        long minuteStep = 600;
 
-        for (int d = 0; d < roadListOld.size(); d++) {
-            if (roadListOld.get(d).getRoadName().equals("咸宁西路")) {
-                roadList.add(roadListOld.get(d));
+        /**
+         * 1小时间隔秒数
+         */
+        long hourStep = 3600;
+
+        /**
+         * 开始时间
+         */
+        long startTime = sf.parse("2016-10-31 00:00:00").getTime() / 1000L;
+
+        /**
+         * 结束时间
+         */
+        long endTime = sf.parse("2016-11-01 00:00:00").getTime() / 1000L;
+
+        /**
+         * 咸宁西路的所有路段集合
+         */
+        roads = roadService.listRoadByName("咸宁西路");
+
+
+        for (int x = 0; x < roads.size(); x++) {
+            long start = startTime;
+            long end = endTime;
+            while (start < end) {
+                TrainData trainData = new TrainData();
+                trainData.setRoadId(roads.get(x).getRoadId());
+                trainData.setStartTime(new Timestamp(start * 1000L));
+                trainData.setEndTime(new Timestamp((start + minuteStep) * 1000L));
+                trainData.setCarNumber(0);
+                trainDataMap.put(start, trainData);
+                start += minuteStep;
             }
         }
 
-        long step1 = 600;
-        long startTime1 = sf.parse("2016-10-31 00:00:00").getTime() / 1000;
-        long endTime1 = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
+        Iterator<Map.Entry<Long, TrainData>> iterator = trainDataMap.entrySet().iterator();
 
-        while (startTime1 < endTime1) {
-            List<OriginData> originDataList = originDataService.listSpecifyTimeOriginData(startTime1, startTime1 + step1);
-            map.put(String.valueOf(startTime1), originDataList);
-            startTime1+=step1;
+        while (iterator.hasNext()) {
+            CountDownLatch countDownLatch = new CountDownLatch(6);
+            Map.Entry<Long, TrainData> entry = iterator.next();
+            TrainData trainData = entry.getValue();
+            new Thread(new countThread(trainData.getStartTime(), trainData.getEndTime(), countDownLatch)).start();
         }
 
-        try {
-            for (int x = 0; x < roadList.size(); x++) {
+    }
 
-                Road road = roadList.get(x);
-                long step = 600;
+    class countThread implements Runnable {
 
-                long startTime = sf.parse("2016-10-31 00:00:00").getTime() / 1000;
-                long endTime = sf.parse("2016-10-31 12:00:00").getTime() / 1000;
+        private Timestamp subStartTime;
+        private Timestamp subEndTime;
 
-                while (startTime < endTime) {
+        private CountDownLatch countDownLatch;
 
-                    set.clear();
+        public Timestamp getSubStartTime() {
+            return subStartTime;
+        }
 
-                    List<OriginData> originDataList = map.get(String.valueOf(startTime));
+        public void setSubStartTime(Timestamp subStartTime) {
+            this.subStartTime = subStartTime;
+        }
 
-                    for (int z = 0; z < originDataList.size(); z++) {
+        public Timestamp getSubEndTime() {
+            return subEndTime;
+        }
 
-                        if (originDataList.get(z).getCurrentTime() < startTime || originDataList.get(z).getCurrentTime() > endTime) {
-                            System.out.println("数据出错!");
-                            return;
-                        }
+        public void setSubEndTime(Timestamp subEndTime) {
+            this.subEndTime = subEndTime;
+        }
 
-                        if (PathQuery.query(originDataList.get(z).getLongitude(), originDataList.get(z).getLatitude(), roadList).equals(road.getRoadId())) {
-                            if (set.contains(originDataList.get(z).getDeviceId())) {
-                                continue;
-                            } else {
-                                TrainData trainData = trainDataService.getTrainDataByRoadIdAndSpecifyTime(road.getRoadId(), startTime * 1000, (startTime + step) * 1000);
-                                set.add(originDataList.get(z).getDeviceId());
-                                if (StringUtils.isEmpty(trainData)) {
-                                    TrainData t = new TrainData();
-                                    t.setRoadId(road.getRoadId());
-                                    t.setStartLongitude(road.getStartLongitude());
-                                    t.setStartLatitude(road.getStartLatitude());
-                                    t.setEndLongitude(road.getEndLongitude());
-                                    t.setEndLatitude(road.getEndLatitude());
-                                    t.setCarNumber(1);
-                                    t.setStartTime(new Timestamp(startTime * 1000));
-                                    t.setEndTime(new Timestamp((startTime + step) * 1000));
-                                    t.setCreateTime(new Timestamp(System.currentTimeMillis()));
-                                    trainDataService.saveTrainData(t);
-                                }else{
-                                    trainData.setCarNumber(trainData.getCarNumber() + 1);
-                                    trainDataService.updateTrainData(trainData);
-                                }
-                            }
-                        }
-                    }
+        public countThread(Timestamp subStartTime, Timestamp subEndTime, CountDownLatch countDownLatch) {
+            this.subStartTime = subStartTime;
+            this.subEndTime = subEndTime;
+            this.countDownLatch = countDownLatch;
+        }
 
-                    startTime += step;
+        @Override
+        public void run() {
+
+            Long start = subStartTime.getTime() / 1000L;
+            Long end = subEndTime.getTime() / 1000L;
+
+            /**
+             * 获取这个路段特定的点
+             */
+            List<OriginData> originData = originDataService.listSpecifyTimeOriginData(start, end);
+
+            for (int x = 0; x < originData.size(); x++) {
+                OriginData o = originData.get(x);
+                if (!PathQuery.query(o.getLongitude(), o.getLatitude(), roads).equals("None")) {
+                    TrainData t = trainDataMap.get(start);
+                    t.setCarNumber(t.getCarNumber() + 1);
                 }
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
+            countDownLatch.countDown();
         }
 
     }

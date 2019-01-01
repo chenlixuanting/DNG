@@ -19,7 +19,7 @@
             <column name="present_time" sql-type="datetime"/>
         </property>
 
-        <many-to-one name="device" column="deviceId" class="com.guet.navigator.web.pojo.Device"/>
+        <many-to-one name="deviceId" column="deviceId" class="com.guet.navigator.web.pojo.Device"/>
 
     </class>
 
