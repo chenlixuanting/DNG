@@ -2,14 +2,11 @@ package com.guet.navigator.web.controller.device;
 
 import com.alibaba.fastjson.JSON;
 import com.guet.navigator.web.constant.user.DeviceConstant;
-import com.guet.navigator.web.morpher.TimestampMorpher;
 import com.guet.navigator.web.pojo.*;
 import com.guet.navigator.web.python.PathQuery;
 import com.guet.navigator.web.service.*;
 import com.guet.navigator.web.vo.DeviceLoginMessageVo;
-import com.guet.navigator.web.vo.PositionVo;
 import com.guet.navigator.web.vo.QRCodeVo;
-import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -17,18 +14,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import net.sf.json.util.JSONUtils;
 
 /**
  * @author Administrator
@@ -54,6 +52,8 @@ public class DeviceController {
 
     @Autowired
     private TrainSpeedService trainSpeedService;
+
+    public static WebSocketSession webSocketSession;
 
     /**
      * 安卓设备请求获取用于生产二维码的字符串
@@ -160,15 +160,10 @@ public class DeviceController {
     @RequestMapping(value = "/detail/{deviceId}", method = RequestMethod.GET)
     @ResponseBody
     public User getDetailInfo(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId") String deviceId) {
-
         DeviceLoginRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
-
         User u = deviceRecord.getUser();
-
         User user = userService.findByUserId(u.getUserId());
-
         return user;
-
     }
 
     /**
@@ -180,104 +175,114 @@ public class DeviceController {
      */
     @RequestMapping(value = "/position", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> stroeDevicePosition(HttpServletRequest request, HttpServletResponse response) throws InterruptedException {
+    public Map<String, Object> stroeDevicePosition(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
         Map<String, Object> msg = new HashMap<String, Object>();
         StringBuilder sb = new StringBuilder();
         byte[] bytes = new byte[1000];
-        try {
+//        try {
             InputStream inputStream = request.getInputStream();
             while (inputStream.read(bytes) != -1) {
                 sb.append(new String(bytes, "utf-8"));
             }
-            String[] formats = {"yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd"};
-            JSONUtils.getMorpherRegistry().registerMorpher(new TimestampMorpher(formats));
-            JSONObject jsonObject = JSONObject.fromObject(sb.toString());
-            PositionVo positionVo = (PositionVo) JSONObject.toBean(jsonObject, PositionVo.class);
-            if (StringUtils.isEmpty(positionVo.getDeviceId()) || StringUtils.isEmpty(positionVo.getLatitude())
-                    || StringUtils.isEmpty(positionVo.getLongitude()) || StringUtils.isEmpty(positionVo.getPositionId())
-                    || StringUtils.isEmpty(positionVo.getPresentTime()) || StringUtils.isEmpty(positionVo.getRoadState()) || StringUtils.isEmpty(positionVo.getSpeed())) {
-                //非法请求
-                msg.put("statusCode", 405);
-            } else {
-                Device device = deviceService.findByDeviceId(positionVo.getDeviceId());
-                if (StringUtils.isEmpty(device)) {
-                    //非法设备
-                    msg.put("statusCode", 600);
-                } else {
-                    Position position = new Position();
-                    position.setLongitude(positionVo.getLongitude());
-                    position.setLatitude(positionVo.getLatitude());
-                    position.setSpeed(positionVo.getSpeed());
-                    position.setDeviceId(device);
-                    position.setRoadState(positionVo.getRoadState());
-                    position.setPresentTime(positionVo.getPresentTime());
-                    if (positionService.save(position)) {
-                        //存储成功
-                        msg.put("statusCode", 200);
-                    } else {
-                        //服务器内部错误
-                        msg.put("statusCode", 500);
+
+            if (!StringUtils.isEmpty(webSocketSession) && webSocketSession.isOpen()) {
+                webSocketSession.sendMessage(new TextMessage(sb.toString()));
+            }
+
+            System.out.println("接收来自小车的数据" + sb.toString());
+
+//            String json = "{\"deviceId\":1,\"distance\":1.555,\"Longitude\":0.000000000000000,\"latitude\":0.000000000000000,\"speed\":1.223,\"currentTime\":\"2018-12-27 14:10:0\",}";
+
+//            String temp = sb.toString();
+//            String[] formats = {"yyyy-MM-dd HH:mm:ss", "yyyy-MM-dd"};
+//            JSONUtils.getMorpherRegistry().registerMorpher(new TimestampMorpher(formats));
+//            JSONObject jsonObject = JSONObject.fromObject(sb.toString());
+//            PositionVo positionVo = (PositionVo) JSONObject.toBean(jsonObject, PositionVo.class);
+//            if (StringUtils.isEmpty(positionVo.getDeviceId()) || StringUtils.isEmpty(positionVo.getLatitude())
+//                    || StringUtils.isEmpty(positionVo.getLongitude()) || StringUtils.isEmpty(positionVo.getPositionId())
+//                    || StringUtils.isEmpty(positionVo.getPresentTime()) || StringUtils.isEmpty(positionVo.getRoadState()) || StringUtils.isEmpty(positionVo.getSpeed())) {
+//                //非法请求
+//                msg.put("statusCode", 405);
+//            } else {
+//                Device device = deviceService.findByDeviceId(positionVo.getDeviceId());
+//                if (StringUtils.isEmpty(device)) {
+//                    //非法设备
+//                    msg.put("statusCode", 600);
+//                } else {
+//                    Position position = new Position();
+//                    position.setLongitude(positionVo.getLongitude());
+//                    position.setLatitude(positionVo.getLatitude());
+//                    position.setSpeed(positionVo.getSpeed());
+//                    position.setDeviceId(device);
+//                    position.setRoadState(positionVo.getRoadState());
+//                    position.setPresentTime(new Timestamp(System.currentTimeMillis()));
+//                    if (positionService.save(position)) {
+//                        //存储成功
+//                        msg.put("statusCode", 200);
+//                    } else {
+//                        //服务器内部错误
+//                        msg.put("statusCode", 500);
+//                    }
+//                }
+//            }
+//        } catch (Exception e) {
+//            //非法请求
+//            msg.put("statusCode", 405);
+//        }
+            return msg;
+        }
+
+        /**
+         * 选择最佳的规划路线
+         *
+         * @param request
+         * @param response
+         * @return
+         */
+        @RequestMapping(value = "/planpath", method = RequestMethod.POST)
+        @ResponseBody
+        public Map<String, Object> congestionCalculation (HttpServletRequest request, HttpServletResponse response){
+            String data = request.getParameter("data");
+            List<PlanRoute> planRouteList = JSON.parseArray(data, PlanRoute.class);
+            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            List<Road> roadListOld = roadService.listAllRoad();
+            List<Road> roadList = new ArrayList<Road>();
+            List<Double> avgSpeed = new ArrayList<Double>();
+            Map<String, Object> msg = new HashMap<String, Object>();
+            for (int d = 0; d < roadListOld.size(); d++) {
+                if (roadListOld.get(d).getRoadName().equals("咸宁西路")) {
+                    roadList.add(roadListOld.get(d));
+                }
+            }
+            try {
+                for (int x = 0; x < planRouteList.size(); x++) {
+                    Date date = sf.parse("2016-10-31 12:05:23");
+                    Timestamp startTime = new Timestamp(sf.parse("2016-10-31 12:00:00").getTime());
+                    Timestamp endTime = new Timestamp(sf.parse("2016-10-31 12:10:00").getTime());
+                    List<String> roadIds = new ArrayList<String>();
+                    PlanRoute planRoute = planRouteList.get(x);
+                    List<Point> totals = new ArrayList<Point>();
+                    totals.addAll(planRoute.getFrom());
+                    totals.addAll(planRoute.getPoints());
+                    totals.addAll(planRoute.getTo());
+                    for (int y = 0; y < totals.size(); y++) {
+                        roadIds.add(PathQuery.query(totals.get(y).getLongitude(), totals.get(y).getLatitude(), roadList));
+                    }
+                    for (int z = 0; z < roadIds.size(); z++) {
+                        double totalSpeed = 0.0;
+                        List<TrainSpeed> trainSpeedList = trainSpeedService.listTrainSpeedBySpecifyTimeAndRoadId(startTime, endTime, roadIds.get(z));
+                        for (int d = 0; d < trainSpeedList.size(); d++) {
+                            totalSpeed += trainSpeedList.get(d).getSpeed();
+                        }
+                        avgSpeed.add(totalSpeed / trainSpeedList.size());
                     }
                 }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            //非法请求
-            msg.put("statusCode", 405);
+            msg.put("avgSppedArr", avgSpeed);
+            msg.put("statusCode", 200);
+            return msg;
         }
-        return msg;
-    }
 
-    /**
-     * 选择最佳的规划路线
-     *
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping(value = "/planpath", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> congestionCalculation(HttpServletRequest request, HttpServletResponse response) {
-        String data = request.getParameter("data");
-        List<PlanRoute> planRouteList = JSON.parseArray(data, PlanRoute.class);
-        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        List<Road> roadListOld = roadService.listAllRoad();
-        List<Road> roadList = new ArrayList<Road>();
-        List<Double> avgSpeed = new ArrayList<Double>();
-        Map<String, Object> msg = new HashMap<String, Object>();
-        for (int d = 0; d < roadListOld.size(); d++) {
-            if (roadListOld.get(d).getRoadName().equals("咸宁西路")) {
-                roadList.add(roadListOld.get(d));
-            }
-        }
-        try {
-            for (int x = 0; x < planRouteList.size(); x++) {
-                Date date = sf.parse("2016-10-31 12:05:23");
-                Timestamp startTime = new Timestamp(sf.parse("2016-10-31 12:00:00").getTime());
-                Timestamp endTime = new Timestamp(sf.parse("2016-10-31 12:10:00").getTime());
-                List<String> roadIds = new ArrayList<String>();
-                PlanRoute planRoute = planRouteList.get(x);
-                List<Point> totals = new ArrayList<Point>();
-                totals.addAll(planRoute.getFrom());
-                totals.addAll(planRoute.getPoints());
-                totals.addAll(planRoute.getTo());
-                for (int y = 0; y < totals.size(); y++) {
-                    roadIds.add(PathQuery.query(totals.get(y).getLongitude(), totals.get(y).getLatitude(), roadList));
-                }
-                for (int z = 0; z < roadIds.size(); z++) {
-                    double totalSpeed = 0.0;
-                    List<TrainSpeed> trainSpeedList = trainSpeedService.listTrainSpeedBySpecifyTimeAndRoadId(startTime, endTime, roadIds.get(z));
-                    for (int d = 0; d < trainSpeedList.size(); d++) {
-                        totalSpeed += trainSpeedList.get(d).getSpeed();
-                    }
-                    avgSpeed.add(totalSpeed / trainSpeedList.size());
-                }
-            }
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        msg.put("avgSppedArr", avgSpeed);
-        msg.put("statusCode", 200);
-        return msg;
     }
-
-}

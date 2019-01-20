@@ -7,7 +7,7 @@
     <class name="com.guet.navigator.web.pojo.Position" table="d_position">
 
         <id name="positionId" column="position_id">
-            <generator class="uuid"/>
+            <generator class="assigned"/>
         </id>
 
         <property name="latitude" column="latitude" type="double"/>

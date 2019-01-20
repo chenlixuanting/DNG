@@ -7,5 +7,11 @@
         <id name="deviceId" column="device_id">
             <generator class="uuid"/>
         </id>
+        <timestamp name="updateTime" access="field"/>
+        <property name="deviceName" column="device_name" type="string"/>
+        <property name="deviceVersion" column="device_version" type="string"/>
+        <property name="createTime">
+            <column name="create_time" sql-type="datetime"/>
+        </property>
     </class>
 </hibernate-mapping>

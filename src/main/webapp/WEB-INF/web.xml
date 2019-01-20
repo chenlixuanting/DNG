@@ -5,7 +5,7 @@
          version="3.1">
 
     <!-- WebSocket 需要Servlet3.0 需要web.xml 3.0及以上，并要配置此 -->
-    <absolute-ordering />
+    <absolute-ordering/>
 
     <welcome-file-list>
         <welcome-file>index</welcome-file>
@@ -76,4 +76,5 @@
     <session-config>
         <session-timeout>240</session-timeout>
     </session-config>
+
 </web-app>

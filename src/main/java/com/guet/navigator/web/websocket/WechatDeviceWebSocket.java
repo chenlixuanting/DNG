@@ -1,5 +1,6 @@
 package com.guet.navigator.web.websocket;
 
+import com.guet.navigator.web.controller.device.DeviceController;
 import com.guet.navigator.web.service.DeviceLoginRecordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.socket.*;
@@ -42,6 +43,7 @@ public class WechatDeviceWebSocket implements WebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession webSocketSession) throws Exception {
         //连接建立时,存储 key=sessionId,value=WebSocketSession
         sessionMap.put(webSocketSession.getId(), webSocketSession);
+        DeviceController.webSocketSession = webSocketSession;
     }
 
     /**
@@ -54,9 +56,6 @@ public class WechatDeviceWebSocket implements WebSocketHandler {
     @Override
     public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
         System.out.println(webSocketMessage.getPayload());
-        webSocketSession.sendMessage(new TextMessage("welcome websocket!"));
-        System.out.println("websocket send:" + webSocketSession.getId());
-        System.out.println(webSocketSession.isOpen());
     }
 
     /**

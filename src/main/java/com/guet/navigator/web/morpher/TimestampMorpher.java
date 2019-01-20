@@ -7,6 +7,9 @@ import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+/**
+ * @author Administrator
+ */
 public class TimestampMorpher extends AbstractObjectMorpher {
 
     /*** 日期字符串格式*/
