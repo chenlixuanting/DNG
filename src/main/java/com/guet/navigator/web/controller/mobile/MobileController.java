@@ -11,6 +11,7 @@ import com.guet.navigator.web.pojo.User;
 import com.guet.navigator.web.service.DeviceLoginRecordService;
 import com.guet.navigator.web.service.DeviceService;
 import com.guet.navigator.web.service.UserService;
+import com.guet.navigator.web.utils.GetDefaultHeadPicUtil;
 import com.guet.navigator.web.vo.DeviceConfirmVo;
 import com.guet.navigator.web.vo.ScanQRCodeVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +41,8 @@ public class MobileController {
 
     @Autowired
     private UserService userService;
-
     @Autowired
     private DeviceService deviceService;
-
     @Autowired
     private DeviceLoginRecordService deviceRecordService;
 
@@ -120,7 +119,7 @@ public class MobileController {
      * @param response
      * @return
      */
-    @RequestMapping("/register")
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> register(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) {
 
@@ -147,6 +146,17 @@ public class MobileController {
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 //设置账户的创建时间和更新时间
                 user.setCreateTime(timestamp);
+
+                String sex = Integer.valueOf(user.getIdCardNumber().charAt(16)) % 2 == 0 ? "女" : "男";
+
+                user.setSex(sex);
+                user.setHeadPic(GetDefaultHeadPicUtil.getDefaultHeadPicBySex(sex));
+
+                user.setIdCardFrontPic(CommonConstant.LOCAL_NET_WEB + CommonConstant.ID_CARD_PIC_DEFAULT + CommonConstant.ID_CARD_FRONT_DEFAULT_PIC);
+                user.setIdCardReversePic(CommonConstant.LOCAL_NET_WEB + CommonConstant.ID_CARD_PIC_DEFAULT + CommonConstant.ID_CARD_REVERSE_DEFAULT_PIC);
+                user.setDriverLicenserPic(CommonConstant.LOCAL_NET_WEB + CommonConstant.DRIVER_LICENSE_PIC_DEFAULT + CommonConstant.DRIVER_LICENSE_DEFAULT_PIC);
+                user.setDriverPermistPic(CommonConstant.LOCAL_NET_WEB + CommonConstant.DRIVER_PERMIT_PIC_DEFAULT + CommonConstant.DRIVER_PERMIT_DEFAULT_PIC);
+
                 //存入数据库
                 userService.createUser(user);
                 //从数据库中获取刚存入的user
@@ -389,14 +399,10 @@ public class MobileController {
     @RequestMapping(value = "detail", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getDetailInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-
         Map<String, Object> msg = new HashMap<String, Object>();
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
         //从当前会话中获取User对象
         User user = (User) session.getAttribute(UserConstant.USER);
-
         msg.put("account", user.getAccount());
         msg.put("icCardNumber", user.getIdCardNumber());
         msg.put("plateNumber", user.getUsername());
@@ -407,10 +413,9 @@ public class MobileController {
         msg.put("headPic", user.getHeadPic());
         msg.put("idCardFrontPic", user.getIdCardFrontPic());
         msg.put("idCardReversePic", user.getIdCardReversePic());
-        msg.put("driverLicenserPic", user.getDriverLicenserPic());
-        msg.put("driverPermistPic", user.getDriverPermistPic());
+        msg.put("driverLicensePic", user.getDriverLicenserPic());
+        msg.put("driverPermitPic", user.getDriverPermistPic());
         msg.put("createTime", sdf.format(user.getCreateTime()));
-
         return msg;
     }
 
@@ -421,7 +426,7 @@ public class MobileController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "detail", method = RequestMethod.PUT)
+    @RequestMapping(value = "detail", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> updateDetailInfo(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> msg = new HashMap<String, Object>();

@@ -2,7 +2,10 @@ package com.guet.navigator.web.controller.device;
 
 import com.alibaba.fastjson.JSON;
 import com.guet.navigator.web.constant.user.DeviceConstant;
-import com.guet.navigator.web.pojo.*;
+import com.guet.navigator.web.pojo.Device;
+import com.guet.navigator.web.pojo.LoginRecord;
+import com.guet.navigator.web.pojo.Position;
+import com.guet.navigator.web.pojo.User;
 import com.guet.navigator.web.pojo.backup.PlanRoute;
 import com.guet.navigator.web.pojo.backup.Point;
 import com.guet.navigator.web.pojo.backup.Road;
@@ -15,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.socket.WebSocketSession;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -36,23 +38,16 @@ public class DeviceController {
 
     @Autowired
     private DeviceLoginRecordService deviceRecordService;
-
     @Autowired
     private UserService userService;
-
     @Autowired
     private RoadService roadService;
-
     @Autowired
     private DeviceService deviceService;
-
     @Autowired
     private PositionService positionService;
-
     @Autowired
     private TrainSpeedService trainSpeedService;
-
-    public static WebSocketSession webSocketSession;
 
     /**
      * 安卓设备请求获取用于生产二维码的字符串
@@ -64,34 +59,24 @@ public class DeviceController {
     @RequestMapping(value = "/login/{deviceId}", method = RequestMethod.GET)
     @ResponseBody
     public QRCodeVo requestQRCode(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId") String deviceId) {
-
         //生成qrCodeStr唯一标识
         String qrCodeStr = UUID.randomUUID().toString();
-
         //获取当前会话的session
         HttpSession httpSession = request.getSession();
-
-        //设置session的最大的生命周期为2分钟
-        httpSession.setMaxInactiveInterval(60);
-
+        //设置session的最大的生命周期为70秒，不设置默认为30分钟
+        httpSession.setMaxInactiveInterval(70);
         //将当前的qrCodeStr存储到session中
         httpSession.setAttribute(DeviceConstant.QRCODE_STR, qrCodeStr);
-
         //将当前的hdId存储到session中
         httpSession.setAttribute(DeviceConstant.DEVICE_ID, deviceId);
-
         //设置二维码状态为用户未扫码
         httpSession.setAttribute(DeviceConstant.QRCODE_STATUS, false);
-
         //获取ServerContext
         ServletContext servletContext = request.getServletContext();
-
         //将当前的qrCodeStr和session存入ServletContext中
         servletContext.setAttribute(qrCodeStr, httpSession);
-
         //封装qrCodeStr以json格式返回
         return new QRCodeVo(qrCodeStr);
-
     }
 
     /**
@@ -101,7 +86,7 @@ public class DeviceController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/login/{deviceId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/login/{deviceId}", method = RequestMethod.POST)
     @ResponseBody
     public DeviceLoginMessageVo login(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId") String deviceId) {
 
@@ -115,14 +100,11 @@ public class DeviceController {
             long currentTime = System.currentTimeMillis();
 
             //session的时间超过60秒
-            if ((currentTime - recordTime) >= 60000 * 60) {
-
+            if ((currentTime - recordTime) >= 60) {
                 //设置Session失效
                 httpSession.invalidate();
-
                 //若session失效
                 return new DeviceLoginMessageVo(3);
-
             } else {
                 //查询数据库
                 LoginRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
@@ -139,11 +121,8 @@ public class DeviceController {
                 } else {
                     return new DeviceLoginMessageVo(0);
                 }
-
             }
-
         }
-
         //若session失效
         return new DeviceLoginMessageVo(3);
     }
@@ -187,7 +166,6 @@ public class DeviceController {
             //数据存在空项
             msg.put("statusCode", 300);
         } else {
-
             Device device = deviceService.findByDeviceId(deviceId);
             if (!StringUtils.isEmpty(device)) {
                 Position position = new Position();
@@ -207,9 +185,7 @@ public class DeviceController {
                 //非法设备
                 msg.put("statusCode", 600);
             }
-
         }
-
         //判断是否发送车祸
         return msg;
     }
