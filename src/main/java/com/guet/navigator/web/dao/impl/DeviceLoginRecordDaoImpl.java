@@ -1,7 +1,7 @@
 package com.guet.navigator.web.dao.impl;
 
 import com.guet.navigator.web.dao.DeviceLoginRecordDao;
-import com.guet.navigator.web.pojo.DeviceLoginRecord;
+import com.guet.navigator.web.pojo.LoginRecord;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 
@@ -9,17 +9,17 @@ import org.springframework.stereotype.Repository;
  * @author Administrator
  */
 @Repository
-public class DeviceLoginRecordDaoImpl extends BaseDaoImpl<DeviceLoginRecord> implements DeviceLoginRecordDao {
+public class DeviceLoginRecordDaoImpl extends BaseDaoImpl<LoginRecord> implements DeviceLoginRecordDao {
 
     @Override
-    public DeviceLoginRecord findByDeviceId(String deviceId) {
+    public LoginRecord findByDeviceId(String deviceId) {
 
-        DeviceLoginRecord deviceRecord = null;
-        String hql = "from com.guet.navigator.web.pojo.DeviceLoginRecord as d where d.deviceId=:deviceId";
+        LoginRecord deviceRecord = null;
+        String hql = "from com.guet.navigator.web.pojo.LoginRecord as d where d.deviceId=:deviceId";
 
         try {
             Query query = getCurrentSession().createQuery(hql).setParameter("deviceId",deviceId);
-            deviceRecord = (DeviceLoginRecord) query.uniqueResult();
+            deviceRecord = (LoginRecord) query.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -29,7 +29,7 @@ public class DeviceLoginRecordDaoImpl extends BaseDaoImpl<DeviceLoginRecord> imp
     }
 
     @Override
-    public Boolean saveDeviceRecord(DeviceLoginRecord deviceRecord) {
+    public Boolean saveDeviceRecord(LoginRecord deviceRecord) {
         return save(deviceRecord);
     }
 

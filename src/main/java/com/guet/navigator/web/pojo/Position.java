@@ -15,12 +15,12 @@ public class Position implements Serializable {
     /**
      * 主键
      */
-    private Integer positionId;
+    private String positionId;
 
     /**
      * 设备Id
      */
-    private Device deviceId;
+    private Device device;
 
     /**
      * 速度
@@ -40,24 +40,22 @@ public class Position implements Serializable {
     /**
      * 创建时间
      */
-    private Timestamp presentTime;
+    private Timestamp createTime;
 
-    /**
-     * 当前路况
-     */
-    private String roadState;
-
-    /**
-     * 乐观锁
-     */
-    private Timestamp updateTime;
-
-    public String getRoadState() {
-        return roadState;
+    public String getPositionId() {
+        return positionId;
     }
 
-    public void setRoadState(String roadState) {
-        this.roadState = roadState;
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
+    }
+
+    public Timestamp getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(Timestamp createTime) {
+        this.createTime = createTime;
     }
 
     public Double getSpeed() {
@@ -68,28 +66,12 @@ public class Position implements Serializable {
         this.speed = speed;
     }
 
-    public Timestamp getPresentTime() {
-        return presentTime;
+    public Device getDevice() {
+        return device;
     }
 
-    public void setPresentTime(Timestamp presentTime) {
-        this.presentTime = presentTime;
-    }
-
-    public Integer getPositionId() {
-        return positionId;
-    }
-
-    public void setPositionId(Integer positionId) {
-        this.positionId = positionId;
-    }
-
-    public Device getDeviceId() {
-        return deviceId;
-    }
-
-    public void setDeviceId(Device deviceId) {
-        this.deviceId = deviceId;
+    public void setDevice(Device device) {
+        this.device = device;
     }
 
     public Double getLongitude() {

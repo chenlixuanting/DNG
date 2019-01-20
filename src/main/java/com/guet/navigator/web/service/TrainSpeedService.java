@@ -1,6 +1,6 @@
 package com.guet.navigator.web.service;
 
-import com.guet.navigator.web.pojo.TrainSpeed;
+import com.guet.navigator.web.pojo.backup.TrainSpeed;
 
 import java.sql.Timestamp;
 import java.util.List;

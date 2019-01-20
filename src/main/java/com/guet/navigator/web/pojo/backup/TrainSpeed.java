@@ -1,4 +1,4 @@
-package com.guet.navigator.web.pojo;
+package com.guet.navigator.web.pojo.backup;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

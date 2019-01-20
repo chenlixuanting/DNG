@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.guet.navigator.web.pojo.TrainSpeed" table="d_train_speed">
+    <class name="com.guet.navigator.web.pojo.backup.TrainSpeed" table="d_train_speed">
 
         <id name="speedId" column="speed_id">
             <generator class="uuid"/>

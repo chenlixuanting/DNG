@@ -6,7 +6,7 @@ import com.guet.navigator.web.constant.Messages;
 import com.guet.navigator.web.constant.user.MobileConstant;
 import com.guet.navigator.web.constant.user.UserConstant;
 import com.guet.navigator.web.pojo.Device;
-import com.guet.navigator.web.pojo.DeviceLoginRecord;
+import com.guet.navigator.web.pojo.LoginRecord;
 import com.guet.navigator.web.pojo.User;
 import com.guet.navigator.web.service.DeviceLoginRecordService;
 import com.guet.navigator.web.service.DeviceService;
@@ -142,7 +142,6 @@ public class MobileController {
                 //状态码为300
                 msg.put(MobileConstant.STATUS_CODE, 300);
                 return msg;
-
             } else {
                 //获取当前时间
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -162,7 +161,6 @@ public class MobileController {
                 httpSession.setAttribute(UserConstant.USER, user);
                 return msg;
             }
-
         } else {
             //服务器内部错误
             msg.put(MobileConstant.MESSAGES, Messages.SERVER_INNER_ERROR);
@@ -211,7 +209,7 @@ public class MobileController {
                 //从数据库中获取user
                 User u = userService.findByUserId(user.getUserId());
                 //创建登录记录
-                DeviceLoginRecord deviceRecord = new DeviceLoginRecord(u, device, crruentTime, crruentTime);
+                LoginRecord deviceRecord = new LoginRecord(u, device, crruentTime, crruentTime);
                 //存入设备登录状态表
                 deviceRecordService.createDeviceRecord(deviceRecord);
                 //二维码过期
@@ -278,11 +276,11 @@ public class MobileController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "detailpic", method = RequestMethod.POST)
+    @RequestMapping(value = "/detailpic", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> uploadDetailPic(HttpServletRequest request, HttpServletResponse response,
                                                @RequestParam(value = "img", required = true) MultipartFile img,
-                                               @RequestParam(value = "type", required = false) Integer type,HttpSession session) {
+                                               @RequestParam(value = "type", required = false) Integer type, HttpSession session) {
 
         //消息集合
         Map<String, Object> msg = new HashMap<String, Object>();
@@ -297,18 +295,26 @@ public class MobileController {
         Integer splitMark = originalFilename.indexOf(".");
 
         //获取文件后缀
-        String stuffix = (splitMark == -1 ? originalFilename.substring( splitMark + 1, originalFilename.length()) : null);
+        String stuffix = (splitMark == -1 ? null : originalFilename.substring(splitMark + 1, originalFilename.length()));
 
         //获取新文件名
-        String newImgName = UUID.randomUUID().toString()+stuffix;
+        String newImgName = UUID.randomUUID().toString() + "." + stuffix;
 
         switch (type) {
             //上传的是用户头像
             case MobileConstant.USER_PIC_HEAD: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB+CommonConstant.USER_PROFILE_PIC+newImgName;
+                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_PROFILE_PIC + newImgName;
 //                    user.setHeadPic(imgAddress);
-                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC)+"\\"+newImgName));
+
+                    File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
+
+                    if (!dest.exists()) {
+                        dest.mkdirs();
+                    }
+
+                    img.transferTo(dest);
+                    msg.put("statusCode", 200);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -317,9 +323,10 @@ public class MobileController {
             //上传的时候身份证正面
             case MobileConstant.USER_ID_CARD_FRONT_PIC: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB+CommonConstant.USER_ID_CARD_PIC+newImgName;
+                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_ID_CARD_PIC + newImgName;
 //                    user.setIdCardFrontPic(imgAddress);
-                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC)+"\\"+newImgName));
+                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName));
+                    msg.put("statusCode", 200);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -328,9 +335,10 @@ public class MobileController {
             //上传的是身份证反面
             case MobileConstant.USER_IC_CARD_REVERSE_PIC: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB+CommonConstant.USER_ID_CARD_PIC+newImgName;
+                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_ID_CARD_PIC + newImgName;
 //                    user.setIdCardReversePic(imgAddress);
-                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC)+"\\"+newImgName));
+                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName));
+                    msg.put("statusCode", 200);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -339,9 +347,10 @@ public class MobileController {
             //上传的是驾驶证
             case MobileConstant.USER_DRIVER_LICENSER_PIC: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB+CommonConstant.USER_LICENSER_PIC+newImgName;
+                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_LICENSER_PIC + newImgName;
 //                    user.setDriverLicenserPic(imgAddress);
-                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC)+"\\"+newImgName));
+                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName));
+                    msg.put("statusCode", 200);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -350,15 +359,16 @@ public class MobileController {
             //上传的是行车证
             case MobileConstant.USER_DRIVER_PERMIST_PIC: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB+CommonConstant.USER_DRIVER_PERMIST_PIC+newImgName;
+                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_DRIVER_PERMIST_PIC + newImgName;
 //                    user.setDriverPermistPic(imgAddress);
-                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC)+"\\"+newImgName));
+                    img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName));
+                    msg.put("statusCode", 200);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
             }
-            default:{
+            default: {
 
             }
         }

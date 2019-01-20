@@ -1,7 +1,5 @@
 package com.guet.navigator.web.pojo.backup;
 
-import com.guet.navigator.web.pojo.Point;
-
 import java.io.Serializable;
 
 /**

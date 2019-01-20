@@ -1,7 +1,7 @@
 package com.guet.navigator.web.dao.impl;
 
 import com.guet.navigator.web.dao.TrainDataDao;
-import com.guet.navigator.web.pojo.TrainData;
+import com.guet.navigator.web.pojo.backup.TrainData;
 import org.hibernate.Query;
 import org.springframework.stereotype.Repository;
 

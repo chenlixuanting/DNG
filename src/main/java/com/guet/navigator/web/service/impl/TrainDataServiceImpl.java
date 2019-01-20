@@ -1,7 +1,7 @@
 package com.guet.navigator.web.service.impl;
 
 import com.guet.navigator.web.dao.TrainDataDao;
-import com.guet.navigator.web.pojo.TrainData;
+import com.guet.navigator.web.pojo.backup.TrainData;
 import com.guet.navigator.web.service.TrainDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

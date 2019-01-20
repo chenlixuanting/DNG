@@ -1,14 +1,14 @@
 package com.guet.navigator.web.dao;
 
-import com.guet.navigator.web.pojo.DeviceLoginRecord;
+import com.guet.navigator.web.pojo.LoginRecord;
 
 /**
  * @author Administrator
  */
 public interface DeviceLoginRecordDao {
 
-    DeviceLoginRecord findByDeviceId(String deviceId);
+    LoginRecord findByDeviceId(String deviceId);
 
-    Boolean saveDeviceRecord(DeviceLoginRecord deviceRecord);
+    Boolean saveDeviceRecord(LoginRecord deviceRecord);
 
 }

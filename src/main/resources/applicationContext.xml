@@ -163,23 +163,23 @@
     </aop:config>
 
     <!--需要放到applicationContext.xml，放置在springmvc-servlet.xml下无效-->
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <!--拦截指定的路径-->
-            <!--/ 代表网站根目录-->
-            <!--/* -->
-            <!--/** 拦截所有路径-->
-            <mvc:mapping path="/mobile/user/**"/>
-            <bean class="com.guet.navigator.web.interceptor.LoginInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
+    <!--<mvc:interceptors>-->
+        <!--<mvc:interceptor>-->
+            <!--&lt;!&ndash;拦截指定的路径&ndash;&gt;-->
+            <!--&lt;!&ndash;/ 代表网站根目录&ndash;&gt;-->
+            <!--&lt;!&ndash;/* &ndash;&gt;-->
+            <!--&lt;!&ndash;/** 拦截所有路径&ndash;&gt;-->
+            <!--<mvc:mapping path="/mobile/user/**"/>-->
+            <!--<bean class="com.guet.navigator.web.interceptor.LoginInterceptor"/>-->
+        <!--</mvc:interceptor>-->
+    <!--</mvc:interceptors>-->
 
-    <websocket:handlers>
-        <websocket:mapping path="/common/websocket/connect" handler="connectWebSocketHandler"/>
-        <websocket:handshake-interceptors>
-            <ref bean="webSocketInterceptor"/>
-        </websocket:handshake-interceptors>
-    </websocket:handlers>
+    <!--<websocket:handlers>-->
+        <!--<websocket:mapping path="/common/websocket/connect" handler="connectWebSocketHandler"/>-->
+        <!--<websocket:handshake-interceptors>-->
+            <!--<ref bean="webSocketInterceptor"/>-->
+        <!--</websocket:handshake-interceptors>-->
+    <!--</websocket:handlers>-->
 
     <!--  注册 sockJS -->
     <!--<websocket:handlers>-->

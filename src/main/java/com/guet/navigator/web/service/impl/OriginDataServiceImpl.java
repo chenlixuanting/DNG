@@ -1,7 +1,7 @@
 package com.guet.navigator.web.service.impl;
 
 import com.guet.navigator.web.dao.OriginDataDao;
-import com.guet.navigator.web.pojo.OriginData;
+import com.guet.navigator.web.pojo.backup.OriginData;
 import com.guet.navigator.web.service.OriginDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

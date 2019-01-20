@@ -1,6 +1,6 @@
 package com.guet.navigator.web.python;
 
-import com.guet.navigator.web.pojo.Road;
+import com.guet.navigator.web.pojo.backup.Road;
 import org.python.core.PyFloat;
 import org.python.core.PyFunction;
 import org.python.core.PyList;

@@ -1,11 +1,11 @@
 package com.guet.navigator.web.service;
 
-import com.guet.navigator.web.pojo.DeviceLoginRecord;
+import com.guet.navigator.web.pojo.LoginRecord;
 
 public interface DeviceLoginRecordService {
 
-     DeviceLoginRecord findByDeviceId(String deviceId);
+     LoginRecord findByDeviceId(String deviceId);
 
-     Boolean createDeviceRecord(DeviceLoginRecord deviceRecord);
+     Boolean createDeviceRecord(LoginRecord deviceRecord);
 
 }

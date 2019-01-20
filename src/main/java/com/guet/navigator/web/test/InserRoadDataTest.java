@@ -1,7 +1,7 @@
 package com.guet.navigator.web.test;
 
 import com.alibaba.fastjson.JSON;
-import com.guet.navigator.web.pojo.Road;
+import com.guet.navigator.web.pojo.backup.Road;
 import com.guet.navigator.web.pojo.backup.Line;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

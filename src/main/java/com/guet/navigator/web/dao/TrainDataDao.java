@@ -1,6 +1,6 @@
 package com.guet.navigator.web.dao;
 
-import com.guet.navigator.web.pojo.TrainData;
+import com.guet.navigator.web.pojo.backup.TrainData;
 
 /**
  * @author Administrator

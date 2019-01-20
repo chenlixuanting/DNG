@@ -1,9 +1,8 @@
 package com.guet.navigator.web.dao.impl;
 
 import com.guet.navigator.web.dao.RoadDao;
-import com.guet.navigator.web.pojo.Road;
+import com.guet.navigator.web.pojo.backup.Road;
 import org.hibernate.Query;
-import org.python.antlr.ast.Str;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

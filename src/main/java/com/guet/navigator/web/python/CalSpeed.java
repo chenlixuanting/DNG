@@ -1,9 +1,8 @@
 package com.guet.navigator.web.python;
 
-import com.guet.navigator.web.pojo.TrainSpeed;
+import com.guet.navigator.web.pojo.backup.TrainSpeed;
 import org.python.core.PyFunction;
 import org.python.core.PyList;
-import org.python.core.PyObject;
 import org.python.util.PythonInterpreter;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package com.guet.navigator.web.test;
 
-import com.guet.navigator.web.pojo.TrainSpeed;
+import com.guet.navigator.web.pojo.backup.TrainSpeed;
 import com.guet.navigator.web.python.CalSpeed;
 import com.guet.navigator.web.service.TrainSpeedService;
 import org.junit.Test;

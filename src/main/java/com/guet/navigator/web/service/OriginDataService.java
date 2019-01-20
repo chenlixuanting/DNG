@@ -1,6 +1,6 @@
 package com.guet.navigator.web.service;
 
-import com.guet.navigator.web.pojo.OriginData;
+import com.guet.navigator.web.pojo.backup.OriginData;
 
 import java.util.List;
 

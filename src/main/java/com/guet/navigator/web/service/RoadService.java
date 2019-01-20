@@ -1,6 +1,6 @@
 package com.guet.navigator.web.service;
 
-import com.guet.navigator.web.pojo.Road;
+import com.guet.navigator.web.pojo.backup.Road;
 
 import java.util.List;
 

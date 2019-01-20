@@ -1,10 +1,10 @@
 package com.guet.navigator.web.test;
 
 import com.alibaba.fastjson.JSON;
-import com.guet.navigator.web.pojo.PlanRoute;
-import com.guet.navigator.web.pojo.Point;
-import com.guet.navigator.web.pojo.Road;
-import com.guet.navigator.web.pojo.TrainSpeed;
+import com.guet.navigator.web.pojo.backup.PlanRoute;
+import com.guet.navigator.web.pojo.backup.Point;
+import com.guet.navigator.web.pojo.backup.Road;
+import com.guet.navigator.web.pojo.backup.TrainSpeed;
 import com.guet.navigator.web.python.PathQuery;
 import com.guet.navigator.web.service.RoadService;
 import com.guet.navigator.web.service.TrainSpeedService;

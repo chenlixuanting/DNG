@@ -1,7 +1,7 @@
 package com.guet.navigator.web.service.impl;
 
 import com.guet.navigator.web.dao.RoadDao;
-import com.guet.navigator.web.pojo.Road;
+import com.guet.navigator.web.pojo.backup.Road;
 import com.guet.navigator.web.service.RoadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

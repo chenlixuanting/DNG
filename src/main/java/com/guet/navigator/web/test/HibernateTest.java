@@ -16,7 +16,6 @@ import java.sql.Timestamp;
 import java.util.UUID;
 
 /**
- *
  * @author Administrator
  * @date 9/13/2018
  */
@@ -49,6 +48,10 @@ public class HibernateTest {
     @Test
     public void insertDevice() {
         Device d = new Device();
+        d.setDeviceId("ac9cfc4e-d28b-3f18-a9e1-4e62b8cf97d3");
+        d.setCreateTime(new Timestamp(System.currentTimeMillis()));
+        d.setDeviceName("dng");
+        d.setDeviceVersion("1.0");
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         session.save(d);

@@ -5,9 +5,10 @@ import java.sql.Timestamp;
 
 /**
  * 设备登录记录
+ *
  * @author Administrator
  */
-public class DeviceLoginRecord implements Serializable{
+public class LoginRecord implements Serializable {
 
     private static final long serialVersionUID = -8730116173418419595L;
 
@@ -73,14 +74,14 @@ public class DeviceLoginRecord implements Serializable{
         this.updateTime = updateTime;
     }
 
-    public DeviceLoginRecord(User user, Device device, Timestamp createTime, Timestamp updateTime) {
+    public LoginRecord(User user, Device device, Timestamp createTime, Timestamp updateTime) {
         this.user = user;
         this.device = device;
         this.createTime = createTime;
         this.updateTime = updateTime;
     }
 
-    public DeviceLoginRecord() {
+    public LoginRecord() {
     }
 
 }
