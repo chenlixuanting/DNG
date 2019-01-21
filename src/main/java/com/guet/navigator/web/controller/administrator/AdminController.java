@@ -105,6 +105,34 @@ public class AdminController {
     }
 
     /**
+     * 新增设备信息
+     *
+     * @param device
+     * @return
+     */
+    @RequestMapping(value = "/device/add",method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String,Object> addDevice(@RequestBody Device device){
+        Map<String,Object> msg = new HashMap<String, Object>();
+        if(StringUtils.isEmpty(device.getCdKey()) || StringUtils.isEmpty(device.getCreateTime()) ||
+                StringUtils.isEmpty(device.getDeviceId()) || StringUtils.isEmpty(device.getDeviceName())||
+                StringUtils.isEmpty(device.getDeviceVersion())){
+            //存在空项
+            msg.put("statusCode",300);
+        }else{
+            if(deviceService.saveDevice(device)){
+                //保存成功
+                msg.put("statusCode",200);
+                msg.put("device",device);
+            }else{
+                //服务器内部错误
+                msg.put("statusCode",500);
+            }
+        }
+        return msg;
+    }
+
+    /**
      * 分页查询设备记录
      *
      * @return

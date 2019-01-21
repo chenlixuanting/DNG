@@ -209,26 +209,66 @@
         $("#addModel").modal("show");
     });
 
+    //添加新设备
     $("#addSubmit").click(function () {
-
-        /*
-        private String deviceId;
-        private String deviceVersion;
-        private String deviceName;
-        private String cdKey;
-        private Timestamp createTime;
-        * */
-
         var device = {
             deviceId:$("#add_device_id").val(),
-            deviceVersion:
-        }
-
-        ;
-        $("#add_product_version").val("");
-        $("#add_device_name").val("");
-        $("#add_cdKey").val("");
-        $("#add_create_date").val("");
+            deviceVersion:$("#add_product_version").val(),
+            deviceName:$("#add_device_name").val(),
+            cdKey:$("#add_cdKey").val(),
+            createTime:$("#add_create_date").val()
+        };
+        //开始界面loading特效
+        var loadingEffects = layer.load(2);
+        $.ajax({
+            url:"administrator/device/add",
+            type:"post",
+            dataType:"json",
+            contentType:"application/json",
+            data:JSON.stringify(device),
+            success:function (d) {
+                layer.close(loadingEffects);
+                var data = eval(d);
+                if(data.statusCode == 200){
+                    layer.msg("新增设备成功!",{
+                        icon: 1,
+                        time: 1500
+                    });
+                    var mark = $("tr").length;
+                    $("tbody").append(
+                        "<tr>" +
+                            "<td>"+data.device.deviceId+"</td>"+
+                            "<td>"+data.device.deviceVersion+"</td>"+
+                            "<td>"+data.device.deviceName+"</td>"+
+                            "<td>"+data.device.cdKey+"</td>"+
+                            "<td>"+dateFormatter(data.device.createTime)+"</td>"+
+                            "<td>"+dateFormatter(data.device.updateTime)+"</td>"+
+                            "<td>"+
+                                "<button class='btn btn-primary btn-sm' type='button' name="+data.device.deviceId+" index="+mark+" onclick='openEditModel(this.name)'>编辑</button>"+
+                                "<button class='btn btn-danger btn-sm' type='button' name="+data.device.deviceId+" index="+mark+" onclick='delFun(this.name)'>删除</button>"+
+                            "</td>"+
+                        "</tr>");
+                }else if(data.statusCode == 300){
+                    layer.msg("数据存在空项!",{
+                        icon: 2,
+                        time: 1500
+                    });
+                }else{
+                    layer.msg("服务器内部错误!",{
+                        icon: 2,
+                        time: 1500
+                    });
+                }
+                $("#addModel").modal("hide");
+            },error:function () {
+                layer.close(loadingEffects);
+                $("#addModel").modal("hide");
+                layer.msg("请求操作失败!",{
+                    icon: 2,
+                    time: 1500
+                });
+            }
+        });
 
     });
 
