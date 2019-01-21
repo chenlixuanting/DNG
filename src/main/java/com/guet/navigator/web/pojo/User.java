@@ -6,6 +6,8 @@ import java.util.Date;
 
 /**
  * 用户信息
+ *
+ * @author Administrator
  */
 public class User implements Serializable {
 
@@ -79,12 +81,12 @@ public class User implements Serializable {
     /**
      * 驾驶证
      */
-    private String driverLicenserPic;
+    private String driverLicensePic;
 
     /**
      * 行车证
      */
-    private String driverPermistPic;
+    private String driverPermitPic;
 
     /**
      * 生成时间
@@ -200,20 +202,20 @@ public class User implements Serializable {
         this.idCardReversePic = idCardReversePic;
     }
 
-    public String getDriverLicenserPic() {
-        return driverLicenserPic;
+    public String getDriverLicensePic() {
+        return driverLicensePic;
     }
 
-    public void setDriverLicenserPic(String driverLicenserPic) {
-        this.driverLicenserPic = driverLicenserPic;
+    public void setDriverLicensePic(String driverLicensePic) {
+        this.driverLicensePic = driverLicensePic;
     }
 
-    public String getDriverPermistPic() {
-        return driverPermistPic;
+    public String getDriverPermitPic() {
+        return driverPermitPic;
     }
 
-    public void setDriverPermistPic(String driverPermistPic) {
-        this.driverPermistPic = driverPermistPic;
+    public void setDriverPermitPic(String driverPermitPic) {
+        this.driverPermitPic = driverPermitPic;
     }
 
     public Timestamp getCreateTime() {
@@ -222,29 +224,6 @@ public class User implements Serializable {
 
     public void setCreateTime(Timestamp createTime) {
         this.createTime = createTime;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId='" + userId + '\'' +
-                ", account='" + account + '\'' +
-                ", password='" + password + '\'' +
-                ", username='" + username + '\'' +
-                ", birthday=" + birthday +
-                ", sex='" + sex + '\'' +
-                ", mobile='" + mobile + '\'' +
-                ", idCardNumber='" + idCardNumber + '\'' +
-                ", plateNumber='" + plateNumber + '\'' +
-                ", headPic='" + headPic + '\'' +
-                ", idCardFrontPic='" + idCardFrontPic + '\'' +
-                ", idCardRversePic='" + idCardReversePic + '\'' +
-                ", driverLicenserPic='" + driverLicenserPic + '\'' +
-                ", driverPermistPic='" + driverPermistPic + '\'' +
-                ", cdKey='" + cdKey + '\'' +
-                ", createTime=" + createTime +
-                ", updateTime=" + updateTime +
-                '}';
     }
 
     public User() {

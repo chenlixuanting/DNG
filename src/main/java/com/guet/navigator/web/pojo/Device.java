@@ -28,6 +28,11 @@ public class Device implements Serializable {
     private String deviceName;
 
     /**
+     * cdKey
+     */
+    private String cdKey;
+
+    /**
      * 出厂时间
      */
     private Timestamp createTime;
@@ -36,6 +41,22 @@ public class Device implements Serializable {
      * 乐观锁
      */
     private Timestamp updateTime;
+
+    public Timestamp getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Timestamp updateTime) {
+        this.updateTime = updateTime;
+    }
+
+    public String getCdKey() {
+        return cdKey;
+    }
+
+    public void setCdKey(String cdKey) {
+        this.cdKey = cdKey;
+    }
 
     public String getDeviceVersion() {
         return deviceVersion;

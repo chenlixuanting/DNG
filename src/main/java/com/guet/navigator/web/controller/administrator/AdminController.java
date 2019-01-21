@@ -3,16 +3,22 @@ package com.guet.navigator.web.controller.administrator;
 import com.guet.navigator.web.constant.Messages;
 import com.guet.navigator.web.constant.administrator.AdministratorConstant;
 import com.guet.navigator.web.pojo.Administrator;
+import com.guet.navigator.web.pojo.Device;
 import com.guet.navigator.web.service.AdministratorService;
+import com.guet.navigator.web.service.DeviceService;
 import com.guet.navigator.web.vo.LoginMessageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author Administrator
@@ -24,6 +30,8 @@ public class AdminController {
 
     @Autowired
     private AdministratorService administratorService;
+    @Autowired
+    private DeviceService deviceService;
 
     /**
      * 管理员登录界面
@@ -69,22 +77,46 @@ public class AdminController {
     }
 
     /**
+     * 设备管理界面
+     *
+     * @return
+     */
+    @RequestMapping(value = "/device/device-manage", method = RequestMethod.GET)
+    public ModelAndView deviceManage(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView) {
+        List<Device> devices = deviceService.listAllDevice();
+        modelAndView.addObject("devices",devices);
+        modelAndView.setViewName(AdministratorConstant.DEVICE_MANAGE);
+        return modelAndView;
+    }
+
+    /**
+     * 通过id查询device
+     *
+     * @param deviceId
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/device/query/{deviceId}",method = RequestMethod.GET)
+    @ResponseBody
+    public Device getDeviceById(@PathVariable String deviceId,HttpServletRequest request,HttpServletResponse response){
+       Device device = deviceService.getByDeviceId(deviceId);
+       return device;
+    }
+
+    /**
      * 分页查询设备记录
      *
      * @return
      */
-    @RequestMapping(value = "/device/query/page/{number}", method = RequestMethod.GET)
-    public String queryDevice(@PathVariable Integer number, @RequestParam(name = "pageSize", defaultValue = "10") Integer pageSize) {
-
-        //当搜索页数小于0时，设置为默认1为默认页数
-        if (number <= 0) {
-            number = 1;
-        }
-
-        System.out.println(pageSize);
-
-        return "";
-    }
+//    @RequestMapping(value = "/device/query", method = RequestMethod.GET)
+//    @ResponseBody
+//    public Map<String, Object> queryDevice(HttpServletRequest request, HttpServletResponse response) {
+//        Map<String, Object> msg = new HashMap<String, Object>();
+//        List<Device> devices = deviceService.listAllDevice();
+//        msg.put("data", devices);
+//        return msg;
+//    }
 
     /**
      * 验证登录信息

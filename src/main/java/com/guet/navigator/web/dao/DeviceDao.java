@@ -2,9 +2,42 @@ package com.guet.navigator.web.dao;
 
 import com.guet.navigator.web.pojo.Device;
 
+import java.util.List;
+
+/**
+ * @author Administrator
+ */
 public interface DeviceDao {
 
-     Boolean save(Device device);
+    /**
+     * 保存设备
+     *
+     * @param device
+     * @return
+     */
+    Boolean save(Device device);
 
-     Device findByDeviceId(String deviceId);
+    /**
+     * 通过设备Id获取设备记录
+     *
+     * @param deviceId
+     * @return
+     */
+    Device getByDeviceId(String deviceId);
+
+    /**
+     * 设备信息分页
+     *
+     * @param currentPage
+     * @param size
+     * @return
+     */
+    List<Device> listDeviceByPage(int currentPage, int size);
+
+    /**
+     * 获取所有设备记录
+     *
+     * @return
+     */
+    List<Device> listAllDevice();
 }

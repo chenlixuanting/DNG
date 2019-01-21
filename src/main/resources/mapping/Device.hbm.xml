@@ -9,6 +9,7 @@
         </id>
         <timestamp name="updateTime" access="field"/>
         <property name="deviceName" column="device_name" type="string"/>
+        <property name="cdKey" column="cd_key" type="string"/>
         <property name="deviceVersion" column="device_version" type="string"/>
         <property name="createTime">
             <column name="create_time" sql-type="datetime"/>

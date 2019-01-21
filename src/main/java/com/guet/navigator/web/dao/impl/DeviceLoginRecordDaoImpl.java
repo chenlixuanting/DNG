@@ -18,7 +18,7 @@ public class DeviceLoginRecordDaoImpl extends BaseDaoImpl<LoginRecord> implement
         String hql = "from com.guet.navigator.web.pojo.LoginRecord as d where d.deviceId=:deviceId";
 
         try {
-            Query query = getCurrentSession().createQuery(hql).setParameter("deviceId",deviceId);
+            Query query = getCurrentSession().createQuery(hql).setParameter("deviceId", deviceId);
             deviceRecord = (LoginRecord) query.uniqueResult();
         } catch (Exception e) {
             e.printStackTrace();

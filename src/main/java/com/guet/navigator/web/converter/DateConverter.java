@@ -11,22 +11,18 @@ import java.util.Date;
  *
  * @author Administrator
  */
-public class DateConverter implements Converter<String,Date>{
+public class DateConverter implements Converter<String, Date> {
 
     @Override
     public Date convert(String source) {
-
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
         //设置SimpleDateFormat不自动计算日期
         sdf.setLenient(false);
-
         try {
             return sdf.parse(source);
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 

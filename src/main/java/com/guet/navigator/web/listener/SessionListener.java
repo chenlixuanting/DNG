@@ -11,11 +11,13 @@ import javax.servlet.http.HttpSessionListener;
 /**
  * 监听sess的创建与销毁
  *
+ * @author Administrator
  */
-public class SessionListener implements HttpSessionListener{
+public class SessionListener implements HttpSessionListener {
 
     /**
      * session创建时执行
+     *
      * @param httpSessionEvent
      */
     @Override
@@ -24,6 +26,7 @@ public class SessionListener implements HttpSessionListener{
 
     /**
      * session销毁时执行
+     *
      * @param httpSessionEvent
      */
     @Override
@@ -38,7 +41,7 @@ public class SessionListener implements HttpSessionListener{
         String qrCodeStr = (String) httpSession.getAttribute(DeviceConstant.QRCODE_STR);
 
         //判断该qrCodeStr是否为null
-        if(!StringUtils.isEmpty(qrCodeStr)){
+        if (!StringUtils.isEmpty(qrCodeStr)) {
 
             //获取servletContext
             ServletContext servletContext = httpSession.getServletContext();

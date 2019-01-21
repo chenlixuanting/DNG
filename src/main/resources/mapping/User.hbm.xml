@@ -15,6 +15,7 @@
         <property name="password" type="string" column="password"/>
         <property name="username" type="string" column="user_name"/>
         <property name="birthday" type="date" column="birthday"/>
+        <property name="cdKey" type="string" column="cd_key"/>
         <property name="sex" type="string" column="sex"/>
         <property name="mobile" type="string" column="mobile"/>
         <property name="idCardNumber" type="string" column="id_card_number"/>
@@ -22,8 +23,8 @@
         <property name="headPic" type="string" column="head_pic"/>
         <property name="idCardFrontPic" type="string" column="id_card_front_pic"/>
         <property name="idCardReversePic" type="string" column="id_card_reverse_pic"/>
-        <property name="driverLicenserPic" type="string" column="driver_licenser_pic"/>
-        <property name="driverPermistPic" type="string" column="driver_permist_pic"/>
+        <property name="driverLicensePic" type="string" column="driver_license_pic"/>
+        <property name="driverPermitPic" type="string" column="driver_permit_pic"/>
 
         <property name="createTime" type="timestamp">
             <column name="create_time" sql-type="datetime"/>

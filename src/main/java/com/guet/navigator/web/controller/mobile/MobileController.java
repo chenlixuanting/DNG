@@ -146,17 +146,14 @@ public class MobileController {
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 //设置账户的创建时间和更新时间
                 user.setCreateTime(timestamp);
-
                 String sex = Integer.valueOf(user.getIdCardNumber().charAt(16)) % 2 == 0 ? "女" : "男";
-
                 user.setSex(sex);
                 user.setHeadPic(GetDefaultHeadPicUtil.getDefaultHeadPicBySex(sex));
-
+                user.setCdKey(user.getCdKey());
                 user.setIdCardFrontPic(CommonConstant.LOCAL_NET_WEB + CommonConstant.ID_CARD_PIC_DEFAULT + CommonConstant.ID_CARD_FRONT_DEFAULT_PIC);
                 user.setIdCardReversePic(CommonConstant.LOCAL_NET_WEB + CommonConstant.ID_CARD_PIC_DEFAULT + CommonConstant.ID_CARD_REVERSE_DEFAULT_PIC);
-                user.setDriverLicenserPic(CommonConstant.LOCAL_NET_WEB + CommonConstant.DRIVER_LICENSE_PIC_DEFAULT + CommonConstant.DRIVER_LICENSE_DEFAULT_PIC);
-                user.setDriverPermistPic(CommonConstant.LOCAL_NET_WEB + CommonConstant.DRIVER_PERMIT_PIC_DEFAULT + CommonConstant.DRIVER_PERMIT_DEFAULT_PIC);
-
+                user.setDriverLicensePic(CommonConstant.LOCAL_NET_WEB + CommonConstant.DRIVER_LICENSE_PIC_DEFAULT + CommonConstant.DRIVER_LICENSE_DEFAULT_PIC);
+                user.setDriverPermitPic(CommonConstant.LOCAL_NET_WEB + CommonConstant.DRIVER_PERMIT_PIC_DEFAULT + CommonConstant.DRIVER_PERMIT_DEFAULT_PIC);
                 //存入数据库
                 userService.createUser(user);
                 //从数据库中获取刚存入的user
@@ -215,7 +212,7 @@ public class MobileController {
                 //currentTime
                 Timestamp crruentTime = new Timestamp(System.currentTimeMillis());
                 //从数据库中获取device
-                Device device = deviceService.findByDeviceId(deviceId);
+                Device device = deviceService.getByDeviceId(deviceId);
                 //从数据库中获取user
                 User u = userService.findByUserId(user.getUserId());
                 //创建登录记录
@@ -296,7 +293,7 @@ public class MobileController {
         Map<String, Object> msg = new HashMap<String, Object>();
 
         //从数据库中查询User
-//        User user = userService.findByUserId(((User)session.getAttribute(MobileConstant.USER)).getUserId());
+        User user = userService.findByUserId(((User) session.getAttribute(UserConstant.USER)).getUserId());
 
         //获取原文件名
         String originalFilename = img.getOriginalFilename();
@@ -315,14 +312,11 @@ public class MobileController {
             case MobileConstant.USER_PIC_HEAD: {
                 try {
                     String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_PROFILE_PIC + newImgName;
-//                    user.setHeadPic(imgAddress);
-
+                    user.setHeadPic(imgAddress);
                     File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
-
                     if (!dest.exists()) {
                         dest.mkdirs();
                     }
-
                     img.transferTo(dest);
                     msg.put("statusCode", 200);
                 } catch (IOException e) {
@@ -334,7 +328,12 @@ public class MobileController {
             case MobileConstant.USER_ID_CARD_FRONT_PIC: {
                 try {
                     String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_ID_CARD_PIC + newImgName;
-//                    user.setIdCardFrontPic(imgAddress);
+                    user.setIdCardFrontPic(imgAddress);
+                    user.setHeadPic(imgAddress);
+                    File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
+                    if (!dest.exists()) {
+                        dest.mkdirs();
+                    }
                     img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName));
                     msg.put("statusCode", 200);
                 } catch (IOException e) {
@@ -346,7 +345,12 @@ public class MobileController {
             case MobileConstant.USER_IC_CARD_REVERSE_PIC: {
                 try {
                     String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_ID_CARD_PIC + newImgName;
-//                    user.setIdCardReversePic(imgAddress);
+                    user.setIdCardReversePic(imgAddress);
+                    user.setHeadPic(imgAddress);
+                    File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
+                    if (!dest.exists()) {
+                        dest.mkdirs();
+                    }
                     img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName));
                     msg.put("statusCode", 200);
                 } catch (IOException e) {
@@ -357,8 +361,13 @@ public class MobileController {
             //上传的是驾驶证
             case MobileConstant.USER_DRIVER_LICENSER_PIC: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_LICENSER_PIC + newImgName;
-//                    user.setDriverLicenserPic(imgAddress);
+                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_LICENSE_PIC + newImgName;
+                    user.setDriverLicensePic(imgAddress);
+                    user.setHeadPic(imgAddress);
+                    File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
+                    if (!dest.exists()) {
+                        dest.mkdirs();
+                    }
                     img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName));
                     msg.put("statusCode", 200);
                 } catch (IOException e) {
@@ -369,8 +378,13 @@ public class MobileController {
             //上传的是行车证
             case MobileConstant.USER_DRIVER_PERMIST_PIC: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_DRIVER_PERMIST_PIC + newImgName;
-//                    user.setDriverPermistPic(imgAddress);
+                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_DRIVER_PERMIT_PIC + newImgName;
+                    user.setDriverPermitPic(imgAddress);
+                    user.setHeadPic(imgAddress);
+                    File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
+                    if (!dest.exists()) {
+                        dest.mkdirs();
+                    }
                     img.transferTo(new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName));
                     msg.put("statusCode", 200);
                 } catch (IOException e) {
@@ -379,12 +393,11 @@ public class MobileController {
                 break;
             }
             default: {
-
             }
         }
 
         //更新到用户数据
-//        userService.updateUser(user);
+        userService.updateUser(user);
 
         return msg;
     }
@@ -407,14 +420,14 @@ public class MobileController {
         msg.put("icCardNumber", user.getIdCardNumber());
         msg.put("plateNumber", user.getUsername());
         msg.put("cdKey", user.getCdKey());
-        msg.put("birthday", new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday()));
+//        msg.put("birthday", new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday()));
         msg.put("sex", user.getSex());
         msg.put("mobile", user.getMobile());
         msg.put("headPic", user.getHeadPic());
         msg.put("idCardFrontPic", user.getIdCardFrontPic());
         msg.put("idCardReversePic", user.getIdCardReversePic());
-        msg.put("driverLicensePic", user.getDriverLicenserPic());
-        msg.put("driverPermitPic", user.getDriverPermistPic());
+        msg.put("driverLicensePic", user.getDriverLicensePic());
+        msg.put("driverPermitPic", user.getDriverPermitPic());
         msg.put("createTime", sdf.format(user.getCreateTime()));
         return msg;
     }

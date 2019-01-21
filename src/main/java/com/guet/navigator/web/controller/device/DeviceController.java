@@ -166,7 +166,7 @@ public class DeviceController {
             //数据存在空项
             msg.put("statusCode", 300);
         } else {
-            Device device = deviceService.findByDeviceId(deviceId);
+            Device device = deviceService.getByDeviceId(deviceId);
             if (!StringUtils.isEmpty(device)) {
                 Position position = new Position();
                 position.setSpeed(Double.valueOf(speed));

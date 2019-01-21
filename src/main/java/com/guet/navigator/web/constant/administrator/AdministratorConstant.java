@@ -17,4 +17,9 @@ public class AdministratorConstant {
     //管理员SessionKey
     public static final String ADMINISTRATOR = "administrator";
 
+    /**
+     * 设备管理界面
+     */
+    public static final String DEVICE_MANAGE = "administrator/device-manage";
+
 }

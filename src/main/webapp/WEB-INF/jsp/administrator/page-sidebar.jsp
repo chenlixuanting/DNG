@@ -3,7 +3,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Administrator administrator = (Administrator) request.getSession().getAttribute(AdministratorConstant.ADMINISTRATOR);
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
+<base href="<%=basePath%>">
 <!-- Sidebar menu-->
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
@@ -35,7 +38,7 @@
                 class="app-menu__icon fa fa-car"></i><span class="app-menu__label">设备管理</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" href="bootstrap-components.html"><i
+                <li><a class="treeview-item" href="administrator/device/device-manage"><i
                         class="icon fa fa-circle-o"></i>正式用户</a></li>
                 <li><a class="treeview-item" href="https://fontawesome.com/v4.7.0/icons/" target="_blank"
                        rel="noopener"><i class="icon fa fa-circle-o"></i>待审核用户</a></li>

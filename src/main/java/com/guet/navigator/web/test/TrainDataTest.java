@@ -67,12 +67,12 @@ public class TrainDataTest {
         /**
          * 开始时间
          */
-        long startTime = sf.parse("2016-10-31 16:00:00").getTime() / 1000L;
+        long startTime = sf.parse("2016-10-31 00:00:00").getTime() / 1000L;
 
         /**
          * 结束时间
          */
-        long endTime = sf.parse("2016-10-31 18:00:00").getTime() / 1000L;
+        long endTime = sf.parse("2016-10-31 00:10:00").getTime() / 1000L;
 
 
         long calStart = System.currentTimeMillis();
