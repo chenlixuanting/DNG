@@ -5,22 +5,15 @@ import com.guet.navigator.web.constant.common.CommonConstant;
 import com.guet.navigator.web.constant.user.DeviceConstant;
 import com.guet.navigator.web.constant.user.MobileConstant;
 import com.guet.navigator.web.constant.user.UserConstant;
-import com.guet.navigator.web.pojo.Device;
-import com.guet.navigator.web.pojo.LoginRecord;
 import com.guet.navigator.web.pojo.User;
-import com.guet.navigator.web.service.DeviceLoginRecordService;
-import com.guet.navigator.web.service.DeviceService;
 import com.guet.navigator.web.service.UserService;
 import com.guet.navigator.web.utils.GetDefaultHeadPicUtil;
-import com.guet.navigator.web.vo.DeviceConfirmVo;
-import com.guet.navigator.web.vo.ScanQRCodeVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -37,14 +30,10 @@ import java.util.UUID;
  */
 @Controller
 @RequestMapping("/mobile/user")
-public class UserController {
+public class MobileUserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private DeviceService deviceService;
-    @Autowired
-    private DeviceLoginRecordService deviceRecordService;
 
     /**
      * 微信小程序通过账号密码登录
@@ -178,112 +167,13 @@ public class UserController {
     }
 
     /**
-     * 用户手机扫码后确认登陆登录
-     *
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping("/devicelogin")
-    @ResponseBody
-    public Map<String, Object> deviceLogin(HttpServletRequest request, HttpServletResponse response, @RequestBody DeviceConfirmVo deviceConfirmVo) {
-
-        String qrCodeStr = deviceConfirmVo.getQrCodeStr();
-        Boolean loginFlag = deviceConfirmVo.getLoginFlag();
-
-        Map<String, Object> msg = new HashMap<String, Object>();
-
-        if (!(StringUtils.isEmpty(qrCodeStr) || StringUtils.isEmpty(loginFlag))) {
-
-            ServletContext servletContext = request.getServletContext();
-            HttpSession deviceSession = (HttpSession) servletContext.getAttribute(qrCodeStr);
-
-            //判断二维码是否过期
-            if (StringUtils.isEmpty(deviceSession)) {
-                //二维码过期
-                msg.put(MobileConstant.MESSAGES, Messages.QRCODE_TIME_OUT);
-                //状态码404
-                msg.put(MobileConstant.STATUS_CODE, 404);
-            } else {
-                //获取设备的硬件id
-                String deviceId = (String) deviceSession.getAttribute(DeviceConstant.DEVICE_ID);
-                //获取userId
-                User user = (User) request.getSession().getAttribute(UserConstant.USER);
-                //currentTime
-                Timestamp crruentTime = new Timestamp(System.currentTimeMillis());
-                //从数据库中获取device
-                Device device = deviceService.getByDeviceId(deviceId);
-                //从数据库中获取user
-                User u = userService.findByUserId(user.getUserId());
-                //创建登录记录
-                LoginRecord deviceRecord = new LoginRecord(u, device, crruentTime, crruentTime);
-                //存入设备登录状态表
-                deviceRecordService.createDeviceRecord(deviceRecord);
-                //二维码过期
-                msg.put(MobileConstant.MESSAGES, Messages.SCAN_QRCODE_LOGIN_SUCEESS);
-                //状态码200
-                msg.put(MobileConstant.STATUS_CODE, 200);
-            }
-            return msg;
-        } else {
-            //服务器内部错误
-            msg.put(MobileConstant.MESSAGES, Messages.SERVER_INNER_ERROR);
-            //状态码500
-            msg.put(MobileConstant.STATUS_CODE, 500);
-            return msg;
-        }
-
-    }
-
-    /**
-     * 用户手机已经扫码但未确认
-     *
-     * @param request
-     * @param response
-     * @return
-     */
-    @RequestMapping("/scanqrcode")
-    @ResponseBody
-    public Map<String, Object> scanQRCode(HttpServletRequest request, HttpServletResponse response,
-                                          @RequestBody ScanQRCodeVo scanQRCodeVo) {
-
-        String qrCodeStr = scanQRCodeVo.getQrCodeStr();
-        Boolean scanFlag = scanQRCodeVo.getScanFlag();
-
-        Map<String, Object> msg = new HashMap<String, Object>();
-
-        if (!(StringUtils.isEmpty(qrCodeStr) || StringUtils.isEmpty(scanFlag))) {
-
-            ServletContext servletContext = request.getServletContext();
-
-            //从ServletContext中获取之前存入的Session
-            HttpSession httpSession = (HttpSession) servletContext.getAttribute(qrCodeStr);
-
-            //若Session已经未过期
-            if (!StringUtils.isEmpty(httpSession)) {
-                //更改设备的session扫码标志位为true
-                httpSession.setAttribute(DeviceConstant.QRCODE_STATUS, true);
-                //返回扫码成功
-                msg.put(MobileConstant.STATUS_CODE, 200);
-            } else {
-                //返回二维码已经过期
-                msg.put(MobileConstant.STATUS_CODE, 404);
-            }
-        } else {
-            //服务器内部错误
-            msg.put(MobileConstant.STATUS_CODE, 500);
-        }
-        return msg;
-    }
-
-    /**
      * 上传用户信息图片
      *
      * @param request
      * @param response
      * @return
      */
-    @RequestMapping(value = "/detailpic", method = RequestMethod.POST)
+    @RequestMapping(value = "/upload-picture", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> uploadDetailPic(HttpServletRequest request, HttpServletResponse response,
                                                @RequestParam(value = "img", required = true) MultipartFile img,
@@ -404,7 +294,7 @@ public class UserController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "detail", method = RequestMethod.GET)
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> getDetailInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
         Map<String, Object> msg = new HashMap<String, Object>();
@@ -436,12 +326,11 @@ public class UserController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "detail", method = RequestMethod.POST)
+    @RequestMapping(value = "/info", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> updateDetailInfo(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> msg = new HashMap<String, Object>();
         return msg;
     }
-
 
 }

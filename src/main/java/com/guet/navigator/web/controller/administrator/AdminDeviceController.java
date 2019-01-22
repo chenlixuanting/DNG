@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Controller
 @RequestMapping("/administrator/device")
-public class DeviceController {
+public class AdminDeviceController {
 
     @Autowired
     private DeviceService deviceService;

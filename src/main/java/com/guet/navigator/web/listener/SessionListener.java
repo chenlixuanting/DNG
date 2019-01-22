@@ -32,8 +32,6 @@ public class SessionListener implements HttpSessionListener {
     @Override
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
 
-        System.out.println("session destory");
-
         //获取session
         HttpSession httpSession = httpSessionEvent.getSession();
 

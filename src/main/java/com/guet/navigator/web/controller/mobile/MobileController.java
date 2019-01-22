@@ -9,5 +9,4 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @Controller
 @RequestMapping("/mobile")
 public class MobileController {
-
 }

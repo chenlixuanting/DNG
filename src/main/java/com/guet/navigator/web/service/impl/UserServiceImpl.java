@@ -25,7 +25,6 @@ public class UserServiceImpl implements UserService{
     @Override
     public boolean accountRegistered(String account){
         User user = userDao.findByUserAccount(account);
-
         if(!StringUtils.isEmpty(user)){
             return true;
         }
