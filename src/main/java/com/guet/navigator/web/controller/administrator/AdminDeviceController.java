@@ -73,7 +73,7 @@ public class AdminDeviceController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/query/{deviceId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/get/{deviceId}", method = RequestMethod.GET)
     @ResponseBody
     public Device getDeviceById(@PathVariable String deviceId, HttpServletRequest request, HttpServletResponse response) {
         Device device = deviceService.getByDeviceId(deviceId);

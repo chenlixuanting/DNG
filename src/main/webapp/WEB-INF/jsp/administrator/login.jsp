@@ -161,7 +161,7 @@
                 //使用ajax异步请求发生登录信息的json格式数据
                 $.ajax({
                     type:"post",
-                    url:"administrator/login-validate",
+                    url:"administrator/login",
                     dataType:"json",
                     contentType:"application/json;charset=utf-8",
                     data: JSON.stringify(loginData),

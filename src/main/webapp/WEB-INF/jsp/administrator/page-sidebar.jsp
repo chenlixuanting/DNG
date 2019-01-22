@@ -36,7 +36,7 @@
                 class="app-menu__icon fa fa-car"></i><span class="app-menu__label">设备管理</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" href="administrator/device/device-manage"><i
+                <li><a class="treeview-item" href="administrator/device-manage"><i
                         class="icon fa fa-circle-o"></i>服役产品</a></li>
                 <li><a class="treeview-item" href="https://fontawesome.com/v4.7.0/icons/" target="_blank"
                        rel="noopener"><i class="icon fa fa-circle-o"></i>待审核用户</a></li>

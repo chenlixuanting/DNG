@@ -37,7 +37,7 @@ public class DeviceUserController {
     @Autowired
     private TrainSpeedService trainSpeedService;
     @Autowired
-    private DeviceLoginRecordService deviceRecordService;
+    private LoginRecordService deviceRecordService;
 
     /**
      * 设备获取用户的详细信息
@@ -50,7 +50,7 @@ public class DeviceUserController {
     @RequestMapping(value = "/info/{deviceId}", method = RequestMethod.GET)
     @ResponseBody
     public User getUserInfo(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId") String deviceId) {
-        LoginRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
+        LoginRecord deviceRecord = deviceRecordService.getByDeviceId(deviceId);
         User u = deviceRecord.getUser();
         User user = userService.findByUserId(u.getUserId());
         return user;

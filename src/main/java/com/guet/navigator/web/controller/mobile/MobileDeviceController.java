@@ -7,7 +7,7 @@ import com.guet.navigator.web.constant.user.UserConstant;
 import com.guet.navigator.web.pojo.Device;
 import com.guet.navigator.web.pojo.LoginRecord;
 import com.guet.navigator.web.pojo.User;
-import com.guet.navigator.web.service.DeviceLoginRecordService;
+import com.guet.navigator.web.service.LoginRecordService;
 import com.guet.navigator.web.service.DeviceService;
 import com.guet.navigator.web.service.UserService;
 import com.guet.navigator.web.vo.DeviceConfirmVo;
@@ -40,7 +40,7 @@ public class MobileDeviceController {
     @Autowired
     private DeviceService deviceService;
     @Autowired
-    private DeviceLoginRecordService deviceRecordService;
+    private LoginRecordService deviceRecordService;
 
     /**
      * 用户手机扫码后确认登陆登录

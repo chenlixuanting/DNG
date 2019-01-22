@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.guet.navigator.web.pojo.Position" table="d_position">
+    <class name="com.guet.navigator.web.pojo.Position" table="d_position" lazy="false">
 
         <id name="positionId" column="position_id">
             <generator class="uuid"/>

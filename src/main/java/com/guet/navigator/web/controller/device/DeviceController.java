@@ -34,7 +34,7 @@ public class DeviceController {
     @Autowired
     private PositionService positionService;
     @Autowired
-    private DeviceLoginRecordService deviceRecordService;
+    private LoginRecordService deviceRecordService;
 
     /**
      * 安卓设备请求获取用于生产二维码的字符串
@@ -94,7 +94,7 @@ public class DeviceController {
                 return new DeviceLoginMessageVo(3);
             } else {
                 //查询数据库
-                LoginRecord deviceRecord = deviceRecordService.findByDeviceId(deviceId);
+                LoginRecord deviceRecord = deviceRecordService.getByDeviceId(deviceId);
 
                 //判断数据库中是否存在登录记录
                 if (!StringUtils.isEmpty(deviceRecord)) {
@@ -124,11 +124,11 @@ public class DeviceController {
     @RequestMapping(value = "/collect-location", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> collectCarLocation(HttpServletRequest request, HttpServletResponse response,
-                                                   @RequestParam("deviceId") String deviceId,
-                                                   @RequestParam("latitude") Double latitude,
-                                                   @RequestParam("longitude") Double longitude,
-                                                   @RequestParam("speed") Double speed,
-                                                   @RequestParam("currentTime") Long currentTime) throws InterruptedException, IOException {
+                                                  @RequestParam("deviceId") String deviceId,
+                                                  @RequestParam("latitude") Double latitude,
+                                                  @RequestParam("longitude") Double longitude,
+                                                  @RequestParam("speed") Double speed,
+                                                  @RequestParam("currentTime") Long currentTime) throws InterruptedException, IOException {
 
         Map<String, Object> msg = new HashMap<String, Object>();
 

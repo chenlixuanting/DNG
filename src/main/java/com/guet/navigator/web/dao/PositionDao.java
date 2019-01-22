@@ -12,4 +12,12 @@ public interface PositionDao {
      * @return
      */
     Boolean save(Position positionData);
+
+    /**
+     * 根据deviceId获取一条最新的位置记录
+     *
+     * @param deviceId
+     * @return
+     */
+    Position getLatestPositionByDeviceId(String deviceId);
 }

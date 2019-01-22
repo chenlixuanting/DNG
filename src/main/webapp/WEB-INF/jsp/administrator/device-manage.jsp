@@ -353,7 +353,7 @@
                     //绑定编辑按钮
                     $(".edit").on("click", function () {
                         $.ajax({
-                            url: "administrator/device/query/" + this.name,
+                            url: "administrator/device/get/" + this.name,
                             success: function (d) {
                                 var device = eval(d);
                                 $("#edit_device_id").val(device.deviceId);
@@ -389,7 +389,6 @@
                                         var data = eval(res);
                                         if (data.statusCode == 200) {
                                             swal("删除成功!", "你选择的记录已被删除.", "success");
-//                                            table.
                                             table.api().draw(false);
                                         } else {
                                             swal("删除失败!", "删除操作未执行成功.", "error");

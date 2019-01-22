@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
  * @author Administrator
  */
 @Service
-public class PositionServiceImpl implements PositionService{
+public class PositionServiceImpl implements PositionService {
 
     @Autowired
     private PositionDao positionDao;
@@ -18,6 +18,11 @@ public class PositionServiceImpl implements PositionService{
     @Override
     public Boolean save(Position position) {
         return positionDao.save(position);
+    }
+
+    @Override
+    public Position getLatestPositionByDeviceId(String deviceId) {
+        return positionDao.getLatestPositionByDeviceId(deviceId);
     }
 
 }

@@ -5,10 +5,12 @@ import com.guet.navigator.web.pojo.LoginRecord;
 /**
  * @author Administrator
  */
-public interface DeviceLoginRecordDao {
+public interface LoginRecordDao {
 
-    LoginRecord findByDeviceId(String deviceId);
+    LoginRecord getByDeviceId(String deviceId);
 
     Boolean saveDeviceRecord(LoginRecord deviceRecord);
+
+    LoginRecord getByUserId(String userId);
 
 }

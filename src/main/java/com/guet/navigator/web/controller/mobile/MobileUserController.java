@@ -5,9 +5,15 @@ import com.guet.navigator.web.constant.common.CommonConstant;
 import com.guet.navigator.web.constant.user.DeviceConstant;
 import com.guet.navigator.web.constant.user.MobileConstant;
 import com.guet.navigator.web.constant.user.UserConstant;
+import com.guet.navigator.web.pojo.Device;
+import com.guet.navigator.web.pojo.LoginRecord;
+import com.guet.navigator.web.pojo.Position;
 import com.guet.navigator.web.pojo.User;
+import com.guet.navigator.web.service.LoginRecordService;
+import com.guet.navigator.web.service.PositionService;
 import com.guet.navigator.web.service.UserService;
 import com.guet.navigator.web.utils.GetDefaultHeadPicUtil;
+import javafx.geometry.Pos;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -34,6 +40,10 @@ public class MobileUserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private LoginRecordService loginRecordService;
+    @Autowired
+    private PositionService positionService;
 
     /**
      * 微信小程序通过账号密码登录
@@ -302,6 +312,8 @@ public class MobileUserController {
         //从当前会话中获取User对象
         User tmp = (User) session.getAttribute(UserConstant.USER);
         User user = userService.findByUserId(tmp.getUserId());
+        //更新session中的user对象
+        session.setAttribute(UserConstant.USER, user);
         msg.put("account", user.getAccount());
         msg.put("idCardNumber", user.getIdCardNumber());
         msg.put("plateNumber", user.getPlateNumber());
@@ -331,6 +343,36 @@ public class MobileUserController {
     public Map<String, Object> updateDetailInfo(HttpServletRequest request, HttpServletResponse response) {
         Map<String, Object> msg = new HashMap<String, Object>();
         return msg;
+    }
+
+    static double count = 0.001;
+
+    /**
+     * 微信小程序获取小车当前的位置
+     *
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/current-device-location", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getDeviceCurrentLocation(HttpServletRequest request, HttpServletResponse response) {
+//        Map<String, Object> msg = new HashMap<String, Object>();
+//        HttpSession httpSession = request.getSession();
+//        User u = (User) httpSession.getAttribute(UserConstant.USER);
+//        LoginRecord loginRecord = loginRecordService.getByUserId(u.getUserId());
+//        Device device = loginRecord.getDevice();
+
+        synchronized (MobileUserController.class) {
+            Position position = positionService.getLatestPositionByDeviceId("ac9cfc4e-d28b-3f18-a9e1-4e62b8cf97d3");
+            Map<String, Object> msg = new HashMap<String, Object>();
+            msg.put("longitude", position.getLongitude() + (count += 0.0001));
+            msg.put("latitude", position.getLatitude() + (count += 0.0001));
+            msg.put("statusCode", 200);
+            msg.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(position.getCreateTime()));
+            return msg;
+        }
+
     }
 
 }
