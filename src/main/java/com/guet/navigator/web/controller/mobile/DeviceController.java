@@ -1,4 +1,4 @@
-package com.guet.navigator.web.controller.device;
+package com.guet.navigator.web.controller.mobile;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @author Administrator
  */
 @Controller
-@RequestMapping("/device")
+@RequestMapping("/mobile/device")
 public class DeviceController {
-
 }

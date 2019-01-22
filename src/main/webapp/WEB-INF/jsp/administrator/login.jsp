@@ -161,7 +161,7 @@
                 //使用ajax异步请求发生登录信息的json格式数据
                 $.ajax({
                     type:"post",
-                    url:"administrator/loginValidate",
+                    url:"administrator/login-validate",
                     dataType:"json",
                     contentType:"application/json;charset=utf-8",
                     data: JSON.stringify(loginData),
@@ -189,24 +189,6 @@
                         layer.msg("登录失败!");
                     }
                 });
-
-////            $.notify({
-////                title: "Update Complete : ",
-////                message: "Something cool is just updated!",
-////                icon: 'fa fa-check'
-////            },{
-////                type: "danger"
-////            });
-//                action="" method="post"
-//                var ii = layer.load();
-//
-//                //此处用setTimeout演示ajax的回调
-//                setTimeout(function(){
-//                    layer.close(ii);
-//                }, 1000);
-
-//                layer.msg('hello');
-
             });
         });
     </script>
