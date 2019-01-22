@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -103,6 +102,16 @@ public class AdminController {
     public Device getDeviceById(@PathVariable String deviceId, HttpServletRequest request, HttpServletResponse response) {
         Device device = deviceService.getByDeviceId(deviceId);
         return device;
+    }
+
+    @RequestMapping(value = "/device/del/{deviceId}", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> delDeviceById(@PathVariable String deviceId) {
+
+        Map<String, Object> msg = new HashMap<String, Object>();
+
+//        msg.put("sta")
+        return msg;
     }
 
     /**

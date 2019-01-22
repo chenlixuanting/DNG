@@ -214,17 +214,6 @@
 
     });
 
-    /**
-     * 通过deviceId删除设备记录
-     */
-    var openDelModel = function (deviceId) {
-        $.ajax({
-            url: "administrator/device/query/" + deviceId,
-            success: function (res) {
-            }
-        });
-    };
-
     $(function () {
         var table = $("#sampleTable").dataTable({
             paging: true,//分页
@@ -327,7 +316,7 @@
                     });
 
                     //绑定删除按钮
-                    $(".del").on("click", function (deviceId) {
+                    $(".del").on("click", function () {
                         swal({
                             title: "您确定要删除吗?",
                             text: "删除的记录将无法立即找回!",
@@ -339,6 +328,13 @@
                             closeOnCancel: false
                         }, function (isConfirm) {
                             if (isConfirm) {
+                                alert(this.name);
+                                $.ajax({
+                                    url: "administrator/device/del/" + this.name,
+                                    success: function (res) {
+                                    }
+                                });
+
                                 swal("删除成功!", "你选择的记录已被删除.", "success");
                             } else {
                                 swal("删除取消", "你的删除操作被取消 :)", "error");

@@ -51,4 +51,9 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements DeviceDao {
         return null;
     }
 
+    @Override
+    public Boolean delDeviceById(String deviceId) {
+        return null;
+    }
+
 }

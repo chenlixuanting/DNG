@@ -32,5 +32,21 @@ public interface DeviceDao {
      */
     List<Device> listAllDevice();
 
+    /**
+     * 分页获取设备记录
+     *
+     * @param start
+     * @param length
+     * @return
+     */
     List<Device> listDeviceLimit(int start, int length);
+
+    /**
+     * 通过设备ID删除记录
+     *
+     * @param deviceId
+     * @return
+     */
+    Boolean delDeviceById(String deviceId);
+
 }

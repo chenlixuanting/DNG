@@ -291,19 +291,14 @@ public class MobileController {
 
         //消息集合
         Map<String, Object> msg = new HashMap<String, Object>();
-
         //从数据库中查询User
         User user = userService.findByUserId(((User) session.getAttribute(UserConstant.USER)).getUserId());
-
         //获取原文件名
         String originalFilename = img.getOriginalFilename();
-
         //获取分隔符下标
         Integer splitMark = originalFilename.indexOf(".");
-
         //获取文件后缀
         String stuffix = (splitMark == -1 ? null : originalFilename.substring(splitMark + 1, originalFilename.length()));
-
         //获取新文件名
         String newImgName = UUID.randomUUID().toString() + "." + stuffix;
 

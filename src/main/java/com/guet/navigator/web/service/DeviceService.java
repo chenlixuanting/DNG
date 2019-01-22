@@ -39,5 +39,13 @@ public interface DeviceService {
      * @param length
      * @return
      */
-    List<Device> listDeviceLimit(int start,int length);
+    List<Device> listDeviceLimit(int start, int length);
+
+    /**
+     * 通过ID删除设备记录
+     *
+     * @param deviceId
+     * @return
+     */
+    Boolean delDeviceById(String deviceId);
 }
