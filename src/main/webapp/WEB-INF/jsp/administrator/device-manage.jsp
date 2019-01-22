@@ -317,6 +317,9 @@
 
                     //绑定删除按钮
                     $(".del").on("click", function () {
+
+                        var deviceId = this.name;
+
                         swal({
                             title: "您确定要删除吗?",
                             text: "删除的记录将无法立即找回!",
@@ -328,14 +331,17 @@
                             closeOnCancel: false
                         }, function (isConfirm) {
                             if (isConfirm) {
-                                alert(this.name);
                                 $.ajax({
-                                    url: "administrator/device/del/" + this.name,
+                                    url: "administrator/device/del/" + deviceId,
                                     success: function (res) {
+                                        var data = eval(res);
+                                        if (data.statusCode == 200) {
+                                            swal("删除成功!", "你选择的记录已被删除.", "success");
+                                        } else {
+                                            swal("删除失败!", "删除操作未执行成功.", "error");
+                                        }
                                     }
                                 });
-
-                                swal("删除成功!", "你选择的记录已被删除.", "success");
                             } else {
                                 swal("删除取消", "你的删除操作被取消 :)", "error");
                             }

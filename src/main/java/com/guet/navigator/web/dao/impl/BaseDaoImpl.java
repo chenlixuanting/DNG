@@ -70,14 +70,12 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
     @Override
     public Boolean delete(T entity) {
         Boolean flag = false;
-
         try {
             getHibernateTemplate().delete(entity);
             flag = true;
-        }catch (HibernateException e){
+        } catch (HibernateException e) {
             e.printStackTrace();
         }
-
         return flag;
     }
 
@@ -94,7 +92,7 @@ public abstract class BaseDaoImpl<T> extends HibernateDaoSupport implements Base
         try {
             getHibernateTemplate().update(entity);
             flag = true;
-        }catch (HibernateException e){
+        } catch (HibernateException e) {
             e.printStackTrace();
         }
 

@@ -49,4 +49,12 @@ public interface DeviceDao {
      */
     Boolean delDeviceById(String deviceId);
 
+    /**
+     * 删除设备记录
+     *
+     * @param device
+     * @return
+     */
+    Boolean delDevice(Device device);
+
 }

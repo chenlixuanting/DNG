@@ -107,10 +107,25 @@ public class AdminController {
     @RequestMapping(value = "/device/del/{deviceId}", method = RequestMethod.GET)
     @ResponseBody
     public Map<String, Object> delDeviceById(@PathVariable String deviceId) {
-
         Map<String, Object> msg = new HashMap<String, Object>();
-
-//        msg.put("sta")
+        if (!StringUtils.isEmpty(deviceId)) {
+            Device device = deviceService.getByDeviceId(deviceId);
+            if (!StringUtils.isEmpty(device)) {
+                if (deviceService.delDevice(device)) {
+                    //删除成功
+                    msg.put("statusCode", 200);
+                } else {
+                    //服务器内部错误
+                    msg.put("statusCode", 500);
+                }
+            } else {
+                //要删除的设备记录不存在
+                msg.put("statusCode", 300);
+            }
+        } else {
+            //非法用户
+            msg.put("statusCode", 404);
+        }
         return msg;
     }
 

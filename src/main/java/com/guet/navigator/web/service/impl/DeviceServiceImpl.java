@@ -34,12 +34,17 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     public List<Device> listDeviceLimit(int start, int length) {
-        return deviceDao.listDeviceLimit(start,length);
+        return deviceDao.listDeviceLimit(start, length);
     }
 
     @Override
     public Boolean delDeviceById(String deviceId) {
-        return null;
+        return deviceDao.delDeviceById(deviceId);
+    }
+
+    @Override
+    public Boolean delDevice(Device device) {
+        return deviceDao.delDevice(device);
     }
 
 }
