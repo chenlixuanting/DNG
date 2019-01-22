@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -87,6 +88,38 @@ public class AdminController {
     public ModelAndView deviceManage(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView) {
         modelAndView.setViewName(AdministratorConstant.DEVICE_MANAGE);
         return modelAndView;
+    }
+
+    @RequestMapping(value = "/device/update", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> updateDevice(@RequestBody Device device) {
+
+        Map<String, Object> msg = new HashMap<String, Object>();
+
+        if (StringUtils.isEmpty(device) || StringUtils.isEmpty(device.getDeviceVersion()) ||
+                StringUtils.isEmpty(device.getDeviceName()) || StringUtils.isEmpty(device.getDeviceId()) ||
+                StringUtils.isEmpty(device.getCreateTime()) || StringUtils.isEmpty(device.getCdKey())) {
+            //数据存在空项
+            msg.put("statusCode", 300);
+        } else {
+            Device d = deviceService.getByDeviceId(device.getDeviceId());
+            if (!StringUtils.isEmpty(d)) {
+                d.setDeviceVersion(device.getDeviceVersion());
+                d.setDeviceName(device.getDeviceName());
+                d.setCdKey(device.getCdKey());
+                if (deviceService.updateDevice(d)) {
+                    //记录更新成功
+                    msg.put("statusCode", 200);
+                } else {
+                    //服务器内部错误
+                    msg.put("statusCode", 500);
+                }
+            } else {
+                //设备记录不存在
+                msg.put("statusCode", 404);
+            }
+        }
+        return msg;
     }
 
     /**

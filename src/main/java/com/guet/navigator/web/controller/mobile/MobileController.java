@@ -53,7 +53,7 @@ public class MobileController {
      * @param response
      * @return
      */
-    @RequestMapping("/login")
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> login(HttpServletRequest request, HttpServletResponse response, @RequestBody User user) {
 

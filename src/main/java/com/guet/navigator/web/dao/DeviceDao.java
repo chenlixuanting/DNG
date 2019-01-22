@@ -57,4 +57,12 @@ public interface DeviceDao {
      */
     Boolean delDevice(Device device);
 
+    /**
+     * 更新设备记录
+     *
+     * @param device
+     * @return
+     */
+    Boolean update(Device device);
+
 }

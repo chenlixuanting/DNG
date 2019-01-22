@@ -154,6 +154,8 @@
 <script type="text/javascript" src="js/common/common.js"></script>
 <script type="text/javascript">
 
+    var table;
+
     //添加按钮
     $("#addBtn").click(function () {
         //清空新增模态框中的内容
@@ -163,6 +165,55 @@
         $("#add_cdKey").val("");
         $("#add_create_date").val("");
         $("#addModel").modal("show");
+    });
+
+    //更新设备记录
+    $("#updateSubmit").click(function () {
+        var device = {
+            deviceId: $("#edit_device_id").val(),
+            deviceVersion: $("#edit_product_version").val(),
+            deviceName: $("#edit_device_name").val(),
+            cdKey: $("#edit_cdKey").val(),
+            createTime: $("#edit_create_date").val()
+        };
+        //开始界面loading特效
+        var loadingEffects = layer.load(2);
+        $.ajax({
+            url: "administrator/device/update",
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(device),
+            success: function (d) {
+                layer.close(loadingEffects);
+                var data = eval(d);
+                if (data.statusCode == 200) {
+                    layer.msg("更新设备成功!", {
+                        icon: 1,
+                        time: 1500
+                    });
+                    table.api().draw(false);
+                } else if (data.statusCode == 300) {
+                    layer.msg("数据存在空项!", {
+                        icon: 2,
+                        time: 1500
+                    });
+                } else {
+                    layer.msg("服务器内部错误!", {
+                        icon: 2,
+                        time: 1500
+                    });
+                }
+                $("#editModel").modal("hide");
+            }, error: function () {
+                layer.close(loadingEffects);
+                $("#editModel").modal("hide");
+                layer.msg("请求操作失败!", {
+                    icon: 2,
+                    time: 1500
+                });
+            }
+        });
     });
 
     //添加新设备
@@ -190,6 +241,7 @@
                         icon: 1,
                         time: 1500
                     });
+                    table.api().draw(false);
                 } else if (data.statusCode == 300) {
                     layer.msg("数据存在空项!", {
                         icon: 2,
@@ -215,7 +267,7 @@
     });
 
     $(function () {
-        var table = $("#sampleTable").dataTable({
+        table = $("#sampleTable").dataTable({
             paging: true,//分页
             ordering: true,//是否启用排序
             bLengthChange: true,
@@ -337,6 +389,8 @@
                                         var data = eval(res);
                                         if (data.statusCode == 200) {
                                             swal("删除成功!", "你选择的记录已被删除.", "success");
+//                                            table.
+                                            table.api().draw(false);
                                         } else {
                                             swal("删除失败!", "删除操作未执行成功.", "error");
                                         }

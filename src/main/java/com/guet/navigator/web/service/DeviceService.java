@@ -57,4 +57,12 @@ public interface DeviceService {
      */
     Boolean delDevice(Device device);
 
+    /**
+     * 更新设备信息
+     *
+     * @param device
+     * @return
+     */
+    Boolean updateDevice(Device device);
+
 }

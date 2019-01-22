@@ -47,4 +47,9 @@ public class DeviceServiceImpl implements DeviceService {
         return deviceDao.delDevice(device);
     }
 
+    @Override
+    public Boolean updateDevice(Device device) {
+        return deviceDao.update(device);
+    }
+
 }
