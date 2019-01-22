@@ -26,18 +26,18 @@ public interface DeviceService {
     Device getByDeviceId(String deviceId);
 
     /**
-     * 分页获取设备记录
-     *
-     * @param currentPage
-     * @param size
-     * @return
-     */
-    List<Device> listDeviceByPage(int currentPage, int size);
-
-    /**
      * 获取全部设备记录
      *
      * @return
      */
     List<Device> listAllDevice();
+
+    /**
+     * 分页查询
+     *
+     * @param start
+     * @param length
+     * @return
+     */
+    List<Device> listDeviceLimit(int start,int length);
 }

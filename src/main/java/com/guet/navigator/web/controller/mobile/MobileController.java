@@ -311,7 +311,7 @@ public class MobileController {
             //上传的是用户头像
             case MobileConstant.USER_PIC_HEAD: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_PROFILE_PIC + newImgName;
+                    String imgAddress = CommonConstant.LOCAL_NET_WEB + CommonConstant.USER_PROFILE_PIC + newImgName;
                     user.setHeadPic(imgAddress);
                     File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
                     if (!dest.exists()) {
@@ -327,7 +327,7 @@ public class MobileController {
             //上传的时候身份证正面
             case MobileConstant.USER_ID_CARD_FRONT_PIC: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_ID_CARD_PIC + newImgName;
+                    String imgAddress = CommonConstant.LOCAL_NET_WEB + CommonConstant.USER_ID_CARD_PIC + newImgName;
                     user.setIdCardFrontPic(imgAddress);
                     user.setHeadPic(imgAddress);
                     File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
@@ -344,7 +344,7 @@ public class MobileController {
             //上传的是身份证反面
             case MobileConstant.USER_IC_CARD_REVERSE_PIC: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_ID_CARD_PIC + newImgName;
+                    String imgAddress = CommonConstant.LOCAL_NET_WEB + CommonConstant.USER_ID_CARD_PIC + newImgName;
                     user.setIdCardReversePic(imgAddress);
                     user.setHeadPic(imgAddress);
                     File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
@@ -361,7 +361,7 @@ public class MobileController {
             //上传的是驾驶证
             case MobileConstant.USER_DRIVER_LICENSER_PIC: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_LICENSE_PIC + newImgName;
+                    String imgAddress = CommonConstant.LOCAL_NET_WEB + CommonConstant.USER_LICENSE_PIC + newImgName;
                     user.setDriverLicensePic(imgAddress);
                     user.setHeadPic(imgAddress);
                     File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
@@ -378,7 +378,7 @@ public class MobileController {
             //上传的是行车证
             case MobileConstant.USER_DRIVER_PERMIST_PIC: {
                 try {
-                    String imgAddress = CommonConstant.OUTER_NET_WEB + CommonConstant.USER_DRIVER_PERMIT_PIC + newImgName;
+                    String imgAddress = CommonConstant.LOCAL_NET_WEB + CommonConstant.USER_DRIVER_PERMIT_PIC + newImgName;
                     user.setDriverPermitPic(imgAddress);
                     user.setHeadPic(imgAddress);
                     File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_PROFILE_PIC) + "\\" + newImgName);
@@ -415,10 +415,11 @@ public class MobileController {
         Map<String, Object> msg = new HashMap<String, Object>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         //从当前会话中获取User对象
-        User user = (User) session.getAttribute(UserConstant.USER);
+        User tmp = (User) session.getAttribute(UserConstant.USER);
+        User user = userService.findByUserId(tmp.getUserId());
         msg.put("account", user.getAccount());
-        msg.put("icCardNumber", user.getIdCardNumber());
-        msg.put("plateNumber", user.getUsername());
+        msg.put("idCardNumber", user.getIdCardNumber());
+        msg.put("plateNumber", user.getPlateNumber());
         msg.put("cdKey", user.getCdKey());
 //        msg.put("birthday", new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday()));
         msg.put("sex", user.getSex());
@@ -428,6 +429,7 @@ public class MobileController {
         msg.put("idCardReversePic", user.getIdCardReversePic());
         msg.put("driverLicensePic", user.getDriverLicensePic());
         msg.put("driverPermitPic", user.getDriverPermitPic());
+        msg.put("username", user.getUsername());
         msg.put("createTime", sdf.format(user.getCreateTime()));
         return msg;
     }

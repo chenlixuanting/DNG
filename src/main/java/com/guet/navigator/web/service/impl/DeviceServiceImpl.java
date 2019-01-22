@@ -28,13 +28,13 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     @Override
-    public List<Device> listDeviceByPage(int currentPage, int size) {
-        return null;
+    public List<Device> listAllDevice() {
+        return deviceDao.listAllDevice();
     }
 
     @Override
-    public List<Device> listAllDevice() {
-        return deviceDao.listAllDevice();
+    public List<Device> listDeviceLimit(int start, int length) {
+        return deviceDao.listDeviceLimit(start,length);
     }
 
 }

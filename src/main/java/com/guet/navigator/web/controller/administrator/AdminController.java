@@ -1,11 +1,14 @@
 package com.guet.navigator.web.controller.administrator;
 
+import com.alibaba.fastjson.JSONObject;
 import com.guet.navigator.web.constant.Messages;
 import com.guet.navigator.web.constant.administrator.AdministratorConstant;
 import com.guet.navigator.web.pojo.Administrator;
 import com.guet.navigator.web.pojo.Device;
 import com.guet.navigator.web.service.AdministratorService;
 import com.guet.navigator.web.service.DeviceService;
+import com.guet.navigator.web.utils.Page;
+import com.guet.navigator.web.utils.PageData;
 import com.guet.navigator.web.vo.LoginMessageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -83,8 +86,6 @@ public class AdminController {
      */
     @RequestMapping(value = "/device/device-manage", method = RequestMethod.GET)
     public ModelAndView deviceManage(HttpServletRequest request, HttpServletResponse response, ModelAndView modelAndView) {
-        List<Device> devices = deviceService.listAllDevice();
-        modelAndView.addObject("devices",devices);
         modelAndView.setViewName(AdministratorConstant.DEVICE_MANAGE);
         return modelAndView;
     }
@@ -97,11 +98,11 @@ public class AdminController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/device/query/{deviceId}",method = RequestMethod.GET)
+    @RequestMapping(value = "/device/query/{deviceId}", method = RequestMethod.GET)
     @ResponseBody
-    public Device getDeviceById(@PathVariable String deviceId,HttpServletRequest request,HttpServletResponse response){
-       Device device = deviceService.getByDeviceId(deviceId);
-       return device;
+    public Device getDeviceById(@PathVariable String deviceId, HttpServletRequest request, HttpServletResponse response) {
+        Device device = deviceService.getByDeviceId(deviceId);
+        return device;
     }
 
     /**
@@ -110,23 +111,23 @@ public class AdminController {
      * @param device
      * @return
      */
-    @RequestMapping(value = "/device/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/device/add", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String,Object> addDevice(@RequestBody Device device){
-        Map<String,Object> msg = new HashMap<String, Object>();
-        if(StringUtils.isEmpty(device.getCdKey()) || StringUtils.isEmpty(device.getCreateTime()) ||
-                StringUtils.isEmpty(device.getDeviceId()) || StringUtils.isEmpty(device.getDeviceName())||
-                StringUtils.isEmpty(device.getDeviceVersion())){
+    public Map<String, Object> addDevice(@RequestBody Device device) {
+        Map<String, Object> msg = new HashMap<String, Object>();
+        if (StringUtils.isEmpty(device.getCdKey()) || StringUtils.isEmpty(device.getCreateTime()) ||
+                StringUtils.isEmpty(device.getDeviceId()) || StringUtils.isEmpty(device.getDeviceName()) ||
+                StringUtils.isEmpty(device.getDeviceVersion())) {
             //存在空项
-            msg.put("statusCode",300);
-        }else{
-            if(deviceService.saveDevice(device)){
+            msg.put("statusCode", 300);
+        } else {
+            if (deviceService.saveDevice(device)) {
                 //保存成功
-                msg.put("statusCode",200);
-                msg.put("device",device);
-            }else{
+                msg.put("statusCode", 200);
+                msg.put("device", device);
+            } else {
                 //服务器内部错误
-                msg.put("statusCode",500);
+                msg.put("statusCode", 500);
             }
         }
         return msg;
@@ -137,14 +138,19 @@ public class AdminController {
      *
      * @return
      */
-//    @RequestMapping(value = "/device/query", method = RequestMethod.GET)
-//    @ResponseBody
-//    public Map<String, Object> queryDevice(HttpServletRequest request, HttpServletResponse response) {
-//        Map<String, Object> msg = new HashMap<String, Object>();
-//        List<Device> devices = deviceService.listAllDevice();
-//        msg.put("data", devices);
-//        return msg;
-//    }
+    @RequestMapping(value = "/device/query", method = RequestMethod.GET)
+    @ResponseBody
+    public JSONObject queryDevice(HttpServletRequest request, HttpServletResponse response) {
+        PageData<Device> pageData = new PageData<Device>();
+        Page<Device> page = pageData.requestToPage(request);
+        page.setAaData(deviceService.listDeviceLimit(page.getiDisplayStart(), page.getiDisplayLength()));
+        JSONObject msg = new JSONObject();
+        msg.put("sEcho", page.getsEcho());
+        msg.put("iTotalRecords", page.getiDisplayLength());
+        msg.put("iTotalDisplayRecords", deviceService.listAllDevice().size());
+        msg.put("aaData", page.getAaData());
+        return msg;
+    }
 
     /**
      * 验证登录信息

@@ -26,12 +26,10 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements DeviceDao {
     }
 
     @Override
-    public List<Device> listDeviceByPage(int currentPage, int size) {
+    public List<Device> listAllDevice() {
         String hql = "from com.guet.navigator.web.pojo.Device";
         try {
             Query query = getCurrentSession().createQuery(hql);
-            query.setFirstResult((currentPage - 1) * size);
-            query.setMaxResults(size);
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();
@@ -40,10 +38,12 @@ public class DeviceDaoImpl extends BaseDaoImpl<Device> implements DeviceDao {
     }
 
     @Override
-    public List<Device> listAllDevice() {
+    public List<Device> listDeviceLimit(int start, int length) {
         String hql = "from com.guet.navigator.web.pojo.Device";
         try {
             Query query = getCurrentSession().createQuery(hql);
+            query.setFirstResult(start);
+            query.setMaxResults(length);
             return query.list();
         } catch (Exception e) {
             e.printStackTrace();

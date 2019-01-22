@@ -26,18 +26,11 @@ public interface DeviceDao {
     Device getByDeviceId(String deviceId);
 
     /**
-     * 设备信息分页
-     *
-     * @param currentPage
-     * @param size
-     * @return
-     */
-    List<Device> listDeviceByPage(int currentPage, int size);
-
-    /**
      * 获取所有设备记录
      *
      * @return
      */
     List<Device> listAllDevice();
+
+    List<Device> listDeviceLimit(int start, int length);
 }

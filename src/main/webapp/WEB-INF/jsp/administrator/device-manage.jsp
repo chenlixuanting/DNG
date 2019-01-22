@@ -18,9 +18,7 @@
     <!-- Font-icon css-->
     <link rel="stylesheet" type="text/css"
           href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
     <link rel="stylesheet" type="text/css" href="css/layui.css">
-
 </head>
 <body class="app sidebar-mini rtl">
 <!-- 包含页面头部 -->
@@ -44,32 +42,8 @@
             <div class="tile">
                 <div class="tile-body">
                     <button class="btn btn-success btn-sm" type="button" style="float: left;" id="addBtn">新增</button>
-                    <table class="table table-hover table-bordered" style="text-align: center;" id="sampleTable">
-                        <thead>
-                            <th>设备ID</th>
-                            <th>产品版本</th>
-                            <th>设备名称</th>
-                            <th>产品密钥</th>
-                            <th>生产日期</th>
-                            <th>更新日期</th>
-                            <th>操作</th>
-                        </thead>
-                        <tbody>
-                            <c:forEach var="device" items="${devices}" varStatus="status">
-                                <tr>
-                                    <td>${device.deviceId}</td>
-                                    <td>${device.deviceVersion}</td>
-                                    <td>${device.deviceName}</td>
-                                    <td>${device.cdKey}</td>
-                                    <td><fmt:formatDate value="${device.createTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                    <td><fmt:formatDate value="${device.updateTime}" pattern="yyyy-MM-dd HH:mm:ss"/></td>
-                                    <td>
-                                        <button class="btn btn-primary btn-sm" type="button" name="${device.deviceId}" index="${status.index}" onclick="openEditModel(this.name)">编辑</button>
-                                        <button class="btn btn-danger btn-sm" type="button" name="${device.deviceId}" index="${status.index}" onclick="delFun(this.name)">删除</button>
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
+                    <table class="table table-hover table-bordered" style="text-align: center; width: 100%;"
+                           id="sampleTable">
                     </table>
                 </div>
             </div>
@@ -82,7 +56,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title">编辑</h3>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
                     <form>
@@ -102,7 +77,6 @@
                             <label for="edit_cdKey">产品密钥</label>
                             <input class="form-control" id="edit_cdKey" type="text" placeholder="请输入产品密钥">
                         </div>
-
                         <div class="form-group">
                             <label for="edit_create_date">生产日期</label>
                             <input class="form-control" id="edit_create_date" type="text" readonly>
@@ -127,13 +101,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h3 class="modal-title">新增</h3>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">×</span></button>
                 </div>
                 <div class="modal-body">
                     <form>
                         <div class="form-group">
                             <label for="add_device_id">设备ID</label>
-                            <input class="form-control" id="add_device_id" type="text" placeholder="请输入设备ID" >
+                            <input class="form-control" id="add_device_id" type="text" placeholder="请输入设备ID">
                         </div>
                         <div class="form-group">
                             <label for="add_product_version">产品版本</label>
@@ -145,12 +120,13 @@
                         </div>
                         <div class="form-group">
                             <label for="add_cdKey">产品密钥</label>
-                            <input class="form-control" id="add_cdKey" type="text" placeholder="请输入产品密钥" >
+                            <input class="form-control" id="add_cdKey" type="text" placeholder="请输入产品密钥">
                         </div>
                         <div class="form-group">
                             <label for="add_create_date">生产日期</label>
                             <span>
-                                <input class="form-control" id="add_create_date" type="text" placeholder="请输入生产日期 格式:yyyy-MM-dd HH:mm:ss">
+                                <input class="form-control" id="add_create_date" type="text"
+                                       placeholder="请输入生产日期 格式:yyyy-MM-dd HH:mm:ss">
                             </span>
                         </div>
                     </form>
@@ -176,27 +152,7 @@
 <script type="text/javascript" src="js/plugins/jquery.dataTables.min.js"></script>
 <script type="text/javascript" src="js/plugins/dataTables.bootstrap.min.js"></script>
 <script type="text/javascript" src="js/common/common.js"></script>
-<script type="text/javascript">$("#sampleTable").dataTable();</script>
 <script type="text/javascript">
-
-    /**
-     * 通过ajax获取知道设备信息，并打开编辑框
-     */
-    var openEditModel = function (deviceId) {
-        $.ajax({
-            url:"administrator/device/query/"+deviceId,
-            success:function (d) {
-                var device = eval(d);
-                $("#edit_device_id").val(device.deviceId);
-                $("#edit_product_version").val(device.deviceVersion);
-                $("#edit_device_name").val(device.deviceName);
-                $("#edit_cdKey").val(device.cdKey);
-                $("#edit_create_date").val(dateFormatter(device.createTime));
-                $("#edit_update_date").val(dateFormatter(device.updateTime));
-                $("#editModel").modal('show');
-            }
-        });
-    };
 
     //添加按钮
     $("#addBtn").click(function () {
@@ -212,58 +168,44 @@
     //添加新设备
     $("#addSubmit").click(function () {
         var device = {
-            deviceId:$("#add_device_id").val(),
-            deviceVersion:$("#add_product_version").val(),
-            deviceName:$("#add_device_name").val(),
-            cdKey:$("#add_cdKey").val(),
-            createTime:$("#add_create_date").val()
+            deviceId: $("#add_device_id").val(),
+            deviceVersion: $("#add_product_version").val(),
+            deviceName: $("#add_device_name").val(),
+            cdKey: $("#add_cdKey").val(),
+            createTime: $("#add_create_date").val()
         };
         //开始界面loading特效
         var loadingEffects = layer.load(2);
         $.ajax({
-            url:"administrator/device/add",
-            type:"post",
-            dataType:"json",
-            contentType:"application/json",
-            data:JSON.stringify(device),
-            success:function (d) {
+            url: "administrator/device/add",
+            type: "post",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify(device),
+            success: function (d) {
                 layer.close(loadingEffects);
                 var data = eval(d);
-                if(data.statusCode == 200){
-                    layer.msg("新增设备成功!",{
+                if (data.statusCode == 200) {
+                    layer.msg("新增设备成功!", {
                         icon: 1,
                         time: 1500
                     });
-                    var mark = $("tr").length;
-                    $("tbody").append(
-                        "<tr>" +
-                            "<td>"+data.device.deviceId+"</td>"+
-                            "<td>"+data.device.deviceVersion+"</td>"+
-                            "<td>"+data.device.deviceName+"</td>"+
-                            "<td>"+data.device.cdKey+"</td>"+
-                            "<td>"+dateFormatter(data.device.createTime)+"</td>"+
-                            "<td>"+dateFormatter(data.device.updateTime)+"</td>"+
-                            "<td>"+
-                                "<button class='btn btn-primary btn-sm' type='button' name="+data.device.deviceId+" index="+mark+" onclick='openEditModel(this.name)'>编辑</button>"+
-                                "<button class='btn btn-danger btn-sm' type='button' name="+data.device.deviceId+" index="+mark+" onclick='delFun(this.name)'>删除</button>"+
-                            "</td>"+
-                        "</tr>");
-                }else if(data.statusCode == 300){
-                    layer.msg("数据存在空项!",{
+                } else if (data.statusCode == 300) {
+                    layer.msg("数据存在空项!", {
                         icon: 2,
                         time: 1500
                     });
-                }else{
-                    layer.msg("服务器内部错误!",{
+                } else {
+                    layer.msg("服务器内部错误!", {
                         icon: 2,
                         time: 1500
                     });
                 }
                 $("#addModel").modal("hide");
-            },error:function () {
+            }, error: function () {
                 layer.close(loadingEffects);
                 $("#addModel").modal("hide");
-                layer.msg("请求操作失败!",{
+                layer.msg("请求操作失败!", {
                     icon: 2,
                     time: 1500
                 });
@@ -277,32 +219,140 @@
      */
     var openDelModel = function (deviceId) {
         $.ajax({
-            url:"administrator/device/query/"+deviceId,
-            success:function (res) {
+            url: "administrator/device/query/" + deviceId,
+            success: function (res) {
             }
         });
     };
 
-    //删除按钮功能
-    var delFun = function(deviceId){
-        swal({
-            title: "您确定要删除吗?",
-            text: "删除的记录将无法立即找回!",
-            type: "warning",
-            showCancelButton: true,
-            confirmButtonText: "确定删除!",
-            cancelButtonText: "取消删除!",
-            closeOnConfirm: false,
-            closeOnCancel: false
-        }, function(isConfirm) {
-            if (isConfirm) {
-                swal("删除成功!", "你选择的记录已被删除.", "success");
-            } else {
-                swal("删除取消", "你的删除操作被取消 :)", "error");
-            }
+    $(function () {
+        var table = $("#sampleTable").dataTable({
+            paging: true,//分页
+            ordering: true,//是否启用排序
+            bLengthChange: true,
+            bPaginate: true,  //翻页功能
+            searching: true,//搜索
+            language: {
+                paginate: {//分页的样式内容。
+                    previous: "上一页",
+                    next: "下一页",
+                    first: "第一页",
+                    last: "最后"
+                },
+                zeroRecords: "没有内容",//table tbody内容为空时，tbody的内容。
+//下面三者构成了总体的左下角的内容。
+                info: "总共_PAGES_ 页，显示第_START_ 到第 _END_ ，筛选之后得到 _TOTAL_ 条，初始_MAX_ 条 ",//左下角的信息显示，大写的词为关键字。
+                infoEmpty: "0条记录",//筛选为空时左下角的显示。
+                infoFiltered: ""//筛选之后的左下角筛选提示，
+            },
+            processing: true,//设置为true,就会有表格加载时的提示
+            serverSide: true,
+            sAjaxSource: "administrator/device/query",//这个是请求的地址
+            fnServerData: retrieveData, // 获取数据的处理函数
+            columns: [
+                {data: "deviceId"},
+                {data: "deviceVersion"},
+                {data: "deviceName"},
+                {data: "cdKey"},
+                {data: "createTime"},
+                {data: "updateTime"},
+                {data: null}
+            ],
+            columnDefs: [
+                {//列渲染，可以添加一些操作等
+                    targets: 0,//表示是第8列，所以上面第8列没有对应数据列，就是在这里渲染的。
+                    title: "设备ID"
+                },
+                {//列渲染，可以添加一些操作等
+                    targets: 1,//表示是第8列，所以上面第8列没有对应数据列，就是在这里渲染的。
+                    title: "产品版本"
+                },
+                {//列渲染，可以添加一些操作等
+                    targets: 2,//表示是第8列，所以上面第8列没有对应数据列，就是在这里渲染的。
+                    title: "设备名称"
+                },
+                {//列渲染，可以添加一些操作等
+                    targets: 3,//表示是第8列，所以上面第8列没有对应数据列，就是在这里渲染的。
+                    title: "产品密钥"
+                },
+                {//列渲染，可以添加一些操作等
+                    targets: 4,//表示是第8列，所以上面第8列没有对应数据列，就是在这里渲染的。
+                    title: "生产日期",
+                    render: function (obj) {
+                        return dateFormatter(obj);
+                    }
+                },
+                {//列渲染，可以添加一些操作等
+                    targets: 5,//表示是第8列，所以上面第8列没有对应数据列，就是在这里渲染的。
+                    title: "更新日期",
+                    render: function (obj) {
+                        return dateFormatter(obj);
+                    }
+                },
+                {//列渲染，可以添加一些操作等
+                    targets: 6,//表示是第8列，所以上面第8列没有对应数据列，就是在这里渲染的。
+                    title: "操作",
+                    render: function (obj, a, row, set) {
+                        return "<button class='btn btn-primary btn-sm edit' type='button' name='" + row.deviceId + "'>编辑</button>" + "&nbsp;&nbsp;" +
+                            "<button class='btn btn-danger btn-sm del' type='button' name='" + row.deviceId + "'>删除</button>";
+                    }
+                }],
+            pagingType: "full_numbers"//分页样式的类型
         });
-    };
+
+        function retrieveData(sSource111, aoData111, fnCallback111) {
+            $.ajax({
+                url: sSource111,//这个就是请求地址对应sAjaxSource
+                data: {"aoData": JSON.stringify(aoData111)},//这个是把datatable的一些基本数据传给后台,比如起始位置,每页显示的行数
+                type: 'get',
+                dataType: 'json',
+                async: false,
+                success: function (result) {
+                    fnCallback111(result);//把返回的数据传给这个方法就可以了,datatable会自动绑定数据的
+                    //绑定编辑按钮
+                    $(".edit").on("click", function () {
+                        $.ajax({
+                            url: "administrator/device/query/" + this.name,
+                            success: function (d) {
+                                var device = eval(d);
+                                $("#edit_device_id").val(device.deviceId);
+                                $("#edit_product_version").val(device.deviceVersion);
+                                $("#edit_device_name").val(device.deviceName);
+                                $("#edit_cdKey").val(device.cdKey);
+                                $("#edit_create_date").val(dateFormatter(device.createTime));
+                                $("#edit_update_date").val(dateFormatter(device.updateTime));
+                                $("#editModel").modal('show');
+                            }
+                        });
+                    });
+
+                    //绑定删除按钮
+                    $(".del").on("click", function (deviceId) {
+                        swal({
+                            title: "您确定要删除吗?",
+                            text: "删除的记录将无法立即找回!",
+                            type: "warning",
+                            showCancelButton: true,
+                            confirmButtonText: "确定删除!",
+                            cancelButtonText: "取消删除!",
+                            closeOnConfirm: false,
+                            closeOnCancel: false
+                        }, function (isConfirm) {
+                            if (isConfirm) {
+                                swal("删除成功!", "你选择的记录已被删除.", "success");
+                            } else {
+                                swal("删除取消", "你的删除操作被取消 :)", "error");
+                            }
+                        });
+                    });
+
+                },
+                error: function (msg) {
+                }
+            });
+        }
+
+    });
 </script>
-
 </body>
 </html>
