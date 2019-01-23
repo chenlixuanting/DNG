@@ -17,11 +17,16 @@
         <property name="mobile" type="string" column="mobile"/>
         <property name="idCardNumber" type="string" column="id_card_number"/>
         <property name="plateNumber" type="string" column="plate_number"/>
-        <property name="headPic" type="string" column="head_pic"/>
-        <property name="idCardFrontPic" type="string" column="id_card_front_pic"/>
-        <property name="idCardReversePic" type="string" column="id_card_reverse_pic"/>
-        <property name="driverLicensePic" type="string" column="driver_license_pic"/>
-        <property name="driverPermitPic" type="string" column="driver_permit_pic"/>
+        <many-to-one name="headPic" class="cn.guet.navigator.web.pojo.Photo" column="head_pic" cascade="save-update"
+                     unique="true" lazy="false" fetch="join"/>
+        <many-to-one name="idCardFrontPic" class="cn.guet.navigator.web.pojo.Photo" column="id_card_front"
+                     cascade="save-update" unique="true" lazy="false" fetch="join"/>
+        <many-to-one name="idCardReversePic" class="cn.guet.navigator.web.pojo.Photo" column="id_card_reverse"
+                     cascade="save-update" unique="true" lazy="false" fetch="join"/>
+        <many-to-one name="driverLicensePic" class="cn.guet.navigator.web.pojo.Photo" column="driver_license"
+                     cascade="save-update" unique="true" lazy="false" fetch="join"/>
+        <many-to-one name="driverPermitPic" class="cn.guet.navigator.web.pojo.Photo" column="driver_permit"
+                     cascade="save-update" unique="true" lazy="false" fetch="join"/>
         <property name="createTime" type="timestamp">
             <column name="create_time" sql-type="datetime"/>
         </property>

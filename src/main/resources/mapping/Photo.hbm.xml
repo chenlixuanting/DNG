@@ -10,6 +10,7 @@
         <timestamp name="updateTime" access="field"/>
         <property name="suffix" type="string" column="suffix"/>
         <property name="prefix" type="string" column="prefix"/>
+        <property name="url" type="string" column="url"/>
         <property name="createTime" type="timestamp">
             <column name="create_time" sql-type="datetime"/>
         </property>

@@ -15,10 +15,10 @@ public class GetDefaultHeadPicUtil {
      */
     public static String getDefaultHeadPicBySex(String sex) {
 
-        if (sex.equals("男")) {
-            return CommonConstant.LOCAL_NET_WEB + CommonConstant.USER_PROFILE_PIC_DEFAULT + CommonConstant.MAN_DEFAULT_PROFILE_PIC;
+        if (sex.equals(CommonConstant.MAN)) {
+            return CommonConstant.MAN_PROFILE_URL;
         } else {
-            return CommonConstant.LOCAL_NET_WEB + CommonConstant.USER_PROFILE_PIC_DEFAULT + CommonConstant.WOMAN_DEFAULT_PROFILE_PIC;
+            return CommonConstant.WOMAN_PROFILE_URL;
         }
 
     }

@@ -15,8 +15,17 @@ public class Photo implements Serializable{
     private String photoId;
     private String suffix;
     private String prefix;
+    private String url;
     private Timestamp createTime;
     private Timestamp updateTime;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public String getPhotoId() {
         return photoId;

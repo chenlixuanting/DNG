@@ -66,27 +66,27 @@ public class User implements Serializable {
     /**
      * 头像
      */
-    private String headPic;
+    private Photo headPic;
 
     /**
      * 身份证正面
      */
-    private String idCardFrontPic;
+    private Photo idCardFrontPic;
 
     /**
      * 身份证反面
      */
-    private String idCardReversePic;
+    private Photo idCardReversePic;
 
     /**
      * 驾驶证
      */
-    private String driverLicensePic;
+    private Photo driverLicensePic;
 
     /**
      * 行车证
      */
-    private String driverPermitPic;
+    private Photo driverPermitPic;
 
     /**
      * 生成时间
@@ -186,43 +186,43 @@ public class User implements Serializable {
         this.plateNumber = plateNumber;
     }
 
-    public String getHeadPic() {
+    public Photo getHeadPic() {
         return headPic;
     }
 
-    public void setHeadPic(String headPic) {
+    public void setHeadPic(Photo headPic) {
         this.headPic = headPic;
     }
 
-    public String getIdCardFrontPic() {
+    public Photo getIdCardFrontPic() {
         return idCardFrontPic;
     }
 
-    public void setIdCardFrontPic(String idCardFrontPic) {
+    public void setIdCardFrontPic(Photo idCardFrontPic) {
         this.idCardFrontPic = idCardFrontPic;
     }
 
-    public String getIdCardReversePic() {
+    public Photo getIdCardReversePic() {
         return idCardReversePic;
     }
 
-    public void setIdCardReversePic(String idCardReversePic) {
+    public void setIdCardReversePic(Photo idCardReversePic) {
         this.idCardReversePic = idCardReversePic;
     }
 
-    public String getDriverLicensePic() {
+    public Photo getDriverLicensePic() {
         return driverLicensePic;
     }
 
-    public void setDriverLicensePic(String driverLicensePic) {
+    public void setDriverLicensePic(Photo driverLicensePic) {
         this.driverLicensePic = driverLicensePic;
     }
 
-    public String getDriverPermitPic() {
+    public Photo getDriverPermitPic() {
         return driverPermitPic;
     }
 
-    public void setDriverPermitPic(String driverPermitPic) {
+    public void setDriverPermitPic(Photo driverPermitPic) {
         this.driverPermitPic = driverPermitPic;
     }
 
