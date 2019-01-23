@@ -5,15 +5,17 @@
 <hibernate-mapping>
     <class name="cn.guet.navigator.web.pojo.Administrator" table="d_administrator">
 
-        <id name="id" column="id">
-            <generator class="increment"/>
+        <id name="adminId" column="admin_id">
+            <generator class="uuid"/>
         </id>
 
         <property name="account" type="string" column="account" unique="true"/>
         <property name="password" type="string" column="password"/>
         <property name="position" type="string" column="position"/>
         <property name="username" type="string" column="user_name"/>
-        <property name="headPic" type="string" column="pic_address"/>
+
+        <many-to-one name="headPic" class="cn.guet.navigator.web.pojo.Photo" column="head_pic" lazy="false"
+                     fetch="join" unique="true" cascade="save-update"/>
 
         <property name="createTime" type="timestamp">
             <column name="create_time" sql-type="datetime"/>

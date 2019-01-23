@@ -15,7 +15,7 @@ public class Administrator implements Serializable {
     /**
      * 主键
      */
-    private Integer id;
+    private String adminId;
 
     /**
      * 用户名
@@ -41,7 +41,7 @@ public class Administrator implements Serializable {
     /**
      * 头像地址
      */
-    private String headPic;
+    private Photo headPic;
 
     /**
      * 创建时间
@@ -58,20 +58,20 @@ public class Administrator implements Serializable {
         this.position = position;
     }
 
-    public void setHeadPic(String headPic) {
-        this.headPic = headPic;
-    }
-
-    public String getHeadPic() {
+    public Photo getHeadPic() {
         return headPic;
     }
 
-    public Integer getId() {
-        return id;
+    public void setHeadPic(Photo headPic) {
+        this.headPic = headPic;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public String getAdminId() {
+        return adminId;
+    }
+
+    public void setAdminId(String adminId) {
+        this.adminId = adminId;
     }
 
     public String getUsername() {
@@ -114,5 +114,6 @@ public class Administrator implements Serializable {
         this.account = account;
     }
 
-    public Administrator() {}
+    public Administrator() {
+    }
 }

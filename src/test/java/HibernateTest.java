@@ -3,6 +3,7 @@ package com.guet.navigator.web.test;
 import cn.guet.navigator.web.constant.common.CommonConstant;
 import cn.guet.navigator.web.pojo.Administrator;
 import cn.guet.navigator.web.pojo.Device;
+import cn.guet.navigator.web.pojo.Photo;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -28,17 +29,23 @@ public class HibernateTest {
 
     @Test
     public void insertAdministrator() {
-
         Administrator administrator = new Administrator();
-
         administrator.setAccount("2583744237@qq.com");
         administrator.setPassword("123456");
         administrator.setUsername("陈宣锦");
         administrator.setPosition("后台开发人员");
-        administrator.setHeadPic(CommonConstant.LOCAL_NET_WEB + CommonConstant.ADMIN_PROFILE_PIC + UUID.randomUUID().toString() + ".jpg");
-        administrator.setCreateTime(new Timestamp(System.currentTimeMillis()));
-        administrator.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        Photo photo = new Photo();
+        String prefix = UUID.randomUUID().toString();
+        String suffix = "jpg";
+        photo.setUrl(CommonConstant.LOCAL_NET_WEB + CommonConstant.ADMIN_PROFILE_PIC + prefix + "." + suffix);
+        photo.setPrefix(prefix);
+        photo.setSuffix(suffix);
+        photo.setCreateTime(currentTime);
+        photo.setUpdateTime(currentTime);
+        administrator.setHeadPic(photo);
+        administrator.setCreateTime(currentTime);
+        administrator.setUpdateTime(currentTime);
         Session session = sessionFactory.openSession();
         Transaction tx = session.beginTransaction();
         session.save(administrator);

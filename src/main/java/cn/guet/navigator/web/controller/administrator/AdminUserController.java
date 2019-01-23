@@ -4,6 +4,7 @@ import cn.guet.navigator.web.pojo.User;
 import cn.guet.navigator.web.service.UserService;
 import cn.guet.navigator.web.utils.Page;
 import cn.guet.navigator.web.utils.PageData;
+import cn.guet.navigator.web.vo.UserVo;
 import com.alibaba.fastjson.JSONObject;
 import cn.guet.navigator.web.constant.common.CommonConstant;
 import cn.guet.navigator.web.constant.common.StatusCode;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,10 +41,10 @@ public class AdminUserController {
         if (!StringUtils.isEmpty(userId)) {
             User u = userService.findByUserId(userId);
             if (!StringUtils.isEmpty(u)) {
-                if(userService.delUser(u)){
+                if (userService.delUser(u)) {
                     msg.put(CommonConstant.STATUS_CODE, StatusCode.SUCCESS);
-                }else{
-                    msg.put(CommonConstant.STATUS_CODE,StatusCode.SERVER_INNER_ERROR);
+                } else {
+                    msg.put(CommonConstant.STATUS_CODE, StatusCode.SERVER_INNER_ERROR);
                 }
             } else {
                 //账户不存在
@@ -91,7 +93,26 @@ public class AdminUserController {
             if (!StringUtils.isEmpty(user)) {
                 //成功
                 msg.put(CommonConstant.STATUS_CODE, StatusCode.SUCCESS);
-                msg.put("user", user);
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+                UserVo userVo = new UserVo();
+                userVo.setAccount(user.getAccount());
+                userVo.setBirthday(dateFormat.format(user.getBirthday()));
+                userVo.setCdKey(user.getCdKey());
+                userVo.setCreateTime(user.getCreateTime());
+                userVo.setDriverLicensePic(user.getDriverLicensePic().getUrl());
+                userVo.setDriverPermitPic(user.getDriverPermitPic().getUrl());
+                userVo.setHeadPic(user.getHeadPic().getUrl());
+                userVo.setIdCardFrontPic(user.getIdCardFrontPic().getUrl());
+                userVo.setIdCardNumber(user.getIdCardNumber());
+                userVo.setIdCardReversePic(user.getIdCardReversePic().getUrl());
+                userVo.setMobile(user.getMobile());
+                userVo.setPassword(user.getPassword());
+                userVo.setPlateNumber(user.getPlateNumber());
+                userVo.setSex(user.getSex());
+                userVo.setUpdateTime(user.getUpdateTime());
+                userVo.setUserId(user.getUserId());
+                userVo.setUsername(user.getUsername());
+                msg.put("user", userVo);
             } else {
                 //记录不存在
                 msg.put(CommonConstant.STATUS_CODE, StatusCode.ACCOUNT_NOT_EXIST);

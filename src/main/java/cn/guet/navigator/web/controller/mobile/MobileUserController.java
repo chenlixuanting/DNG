@@ -2,6 +2,7 @@ package cn.guet.navigator.web.controller.mobile;
 
 import cn.guet.navigator.web.constant.Messages;
 import cn.guet.navigator.web.constant.common.CommonConstant;
+import cn.guet.navigator.web.constant.common.StatusCode;
 import cn.guet.navigator.web.constant.user.DeviceConstant;
 import cn.guet.navigator.web.constant.user.MobileConstant;
 import cn.guet.navigator.web.constant.user.UserConstant;
@@ -11,10 +12,7 @@ import cn.guet.navigator.web.pojo.User;
 import cn.guet.navigator.web.service.LoginRecordService;
 import cn.guet.navigator.web.service.PositionService;
 import cn.guet.navigator.web.service.UserService;
-import cn.guet.navigator.web.utils.GetBirthdayFromID;
-import cn.guet.navigator.web.utils.GetDefaultHeadPicUtil;
-import cn.guet.navigator.web.utils.GetSexFromID;
-import cn.guet.navigator.web.utils.Path;
+import cn.guet.navigator.web.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -41,8 +39,6 @@ public class MobileUserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private LoginRecordService loginRecordService;
     @Autowired
     private PositionService positionService;
 
@@ -269,7 +265,7 @@ public class MobileUserController {
                     photo.setCreateTime(currentTime);
                     photo.setUpdateTime(currentTime);
                     user.setHeadPic(photo);
-                    msg.put("statusCode", 200);
+                    msg.put(CommonConstant.STATUS_CODE, StatusCode.SUCCESS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -291,7 +287,7 @@ public class MobileUserController {
                     photo.setCreateTime(currentTime);
                     photo.setUpdateTime(currentTime);
                     user.setIdCardFrontPic(photo);
-                    msg.put("statusCode", 200);
+                    msg.put(CommonConstant.STATUS_CODE, StatusCode.SUCCESS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -313,7 +309,7 @@ public class MobileUserController {
                     photo.setCreateTime(currentTime);
                     photo.setUpdateTime(currentTime);
                     user.setIdCardReversePic(photo);
-                    msg.put("statusCode", 200);
+                    msg.put(CommonConstant.STATUS_CODE, StatusCode.SUCCESS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -335,7 +331,7 @@ public class MobileUserController {
                     photo.setCreateTime(currentTime);
                     photo.setUpdateTime(currentTime);
                     user.setDriverLicensePic(photo);
-                    msg.put("statusCode", 200);
+                    msg.put(CommonConstant.STATUS_CODE, StatusCode.SUCCESS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -357,7 +353,7 @@ public class MobileUserController {
                     photo.setCreateTime(currentTime);
                     photo.setUpdateTime(currentTime);
                     user.setDriverPermitPic(photo);
-                    msg.put("statusCode", 200);
+                    msg.put(CommonConstant.STATUS_CODE, StatusCode.SUCCESS);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -366,7 +362,6 @@ public class MobileUserController {
             default: {
             }
         }
-
         //更新到用户数据
         userService.updateUser(user);
 
@@ -390,20 +385,20 @@ public class MobileUserController {
         User user = userService.findByUserId(tmp.getUserId());
         //更新session中的user对象
         session.setAttribute(UserConstant.USER, user);
-        msg.put("account", user.getAccount());
-        msg.put("idCardNumber", user.getIdCardNumber());
-        msg.put("plateNumber", user.getPlateNumber());
-        msg.put("cdKey", user.getCdKey());
-        msg.put("birthday", new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday()));
-        msg.put("sex", user.getSex());
-        msg.put("mobile", user.getMobile());
-        msg.put("headPic", user.getHeadPic());
-        msg.put("idCardFrontPic", user.getIdCardFrontPic());
-        msg.put("idCardReversePic", user.getIdCardReversePic());
-        msg.put("driverLicensePic", user.getDriverLicensePic());
-        msg.put("driverPermitPic", user.getDriverPermitPic());
-        msg.put("username", user.getUsername());
-        msg.put("createTime", sdf.format(user.getCreateTime()));
+        msg.put(UserConstant.ACCOUNT, user.getAccount());
+        msg.put(UserConstant.ID_CARD_NUMBER, user.getIdCardNumber());
+        msg.put(UserConstant.PLATE_NUMBER, user.getPlateNumber());
+        msg.put(UserConstant.CD_KEY, user.getCdKey());
+        msg.put(UserConstant.BIRTHDAY, new SimpleDateFormat("yyyy-MM-dd").format(user.getBirthday()));
+        msg.put(UserConstant.SEX, user.getSex());
+        msg.put(UserConstant.MOBILE, user.getMobile());
+        msg.put(UserConstant.HEAD_PIC, user.getHeadPic().getUrl());
+        msg.put(UserConstant.ID_CARD_FRONT_PIC, user.getIdCardFrontPic().getUrl());
+        msg.put(UserConstant.ID_CARD_REVERSE_PIC, user.getIdCardReversePic().getUrl());
+        msg.put(UserConstant.DRIVER_LICENSE_PIC, user.getDriverLicensePic().getUrl());
+        msg.put(UserConstant.DRIVER_PERMIT_PIC, user.getDriverPermitPic().getUrl());
+        msg.put(UserConstant.USERNAME, user.getUsername());
+        msg.put(UserConstant.CREATE_TIME, sdf.format(user.getCreateTime()));
         return msg;
     }
 
@@ -438,10 +433,14 @@ public class MobileUserController {
 //        User u = (User) httpSession.getAttribute(UserConstant.USER);
 //        LoginRecord loginRecord = loginRecordService.getByUserId(u.getUserId());
 //        Device device = loginRecord.getDevice();
-        Position position = positionService.getLatestPositionByDeviceId("ac9cfc4e-d28b-3f18-a9e1-4e62b8cf97d3");
+//        Position position = positionService.getLatestPositionByDeviceId("ac9cfc4e-d28b-3f18-a9e1-4e62b8cf97d3");
+        Position position = new Position();
+        position.setLongitude(110.419122);
+        position.setLatitude(25.313339);
+        position.setCreateTime(new Timestamp(System.currentTimeMillis()));
         Map<String, Object> msg = new HashMap<String, Object>();
-        msg.put("longitude", position.getLongitude() + (count += 0.01));
-        msg.put("latitude", position.getLatitude() + (count += 0.01));
+        msg.put("longitude", position.getLongitude());
+        msg.put("latitude", position.getLatitude());
         msg.put("statusCode", 200);
         msg.put("createTime", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(position.getCreateTime()));
         return msg;
@@ -456,8 +455,9 @@ public class MobileUserController {
      */
     @RequestMapping(value = "/multipoint-plan", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> chooseNavigatorPlan(HttpServletRequest request, HttpServletResponse response, @RequestBody Path path) {
+    public Map<String, Object> chooseNavigatorPlan(HttpServletRequest request, HttpServletResponse response, @RequestBody Location path) {
         Map<String, Object> msg = new HashMap<String, Object>();
+        System.out.println(path.getLongitude() + "--" + path.getLatitude());
         return msg;
     }
 
