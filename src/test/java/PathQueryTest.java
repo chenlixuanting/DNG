@@ -1,10 +1,10 @@
 package com.guet.navigator.web.test;
 
-import com.guet.navigator.web.pojo.backup.OriginData;
-import com.guet.navigator.web.pojo.backup.Road;
-import com.guet.navigator.web.python.PathQuery;
-import com.guet.navigator.web.service.OriginDataService;
-import com.guet.navigator.web.service.RoadService;
+import cn.guet.navigator.web.pojo.backup.OriginData;
+import cn.guet.navigator.web.pojo.backup.Road;
+import cn.guet.navigator.web.python.PathQuery;
+import cn.guet.navigator.web.service.OriginDataService;
+import cn.guet.navigator.web.service.RoadService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

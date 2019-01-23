@@ -19,23 +19,23 @@
        http://www.springframework.org/schema/websocket/spring-websocket.xsd">
 
     <!--自动扫描com.guet.myblog包下标注@Controller等注解的类控制器类-->
-    <context:component-scan base-package="com.guet.navigator.web"/>
+    <context:component-scan base-package="cn.guet.navigator.web"/>
 
     <!--注解驱动，自动帮我们注入最新版的处理器映射器和处理器适配器-->
     <!--<mvc:annotation-driven conversion-service="conversionService"/>-->
     <mvc:annotation-driven conversion-service="conversionService"/>
 
     <!-- websocket处理类 -->
-    <bean id="connectWebSocketHandler" class="com.guet.navigator.web.websocket.WechatDeviceWebSocket"/>
+    <bean id="connectWebSocketHandler" class="cn.guet.navigator.web.websocket.WechatDeviceWebSocket"/>
 
     <!-- 握手接口/拦截器 -->
-    <bean id="webSocketInterceptor" class="com.guet.navigator.web.interceptor.HandshakeInterceptor"/>
+    <bean id="webSocketInterceptor" class="cn.guet.navigator.web.interceptor.HandshakeInterceptor"/>
 
     <!--配置日期转换器-->
     <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
         <property name="converters">
             <set>
-                <bean class="com.guet.navigator.web.converter.DateConverter"/>
+                <bean class="cn.guet.navigator.web.converter.DateConverter"/>
             </set>
         </property>
     </bean>
@@ -157,7 +157,7 @@
     <!--aop配置切面和切点的信息 -->
     <aop:config>
         <aop:pointcut id="txPointcut"
-                      expression="execution(* com.guet.navigator.web.service.impl.*.*(..))"/>
+                      expression="execution(* cn.guet.navigator.web.service.impl.*.*(..))"/>
         <aop:advisor advice-ref="txAdvice"
                      pointcut-ref="txPointcut"/>
     </aop:config>
@@ -170,7 +170,7 @@
     <!--&lt;!&ndash;/* &ndash;&gt;-->
     <!--&lt;!&ndash;/** 拦截所有路径&ndash;&gt;-->
     <!--<mvc:mapping path="/mobile/user/**"/>-->
-    <!--<bean class="com.guet.navigator.web.interceptor.LoginInterceptor"/>-->
+    <!--<bean class="LoginInterceptor"/>-->
     <!--</mvc:interceptor>-->
     <!--</mvc:interceptors>-->
 

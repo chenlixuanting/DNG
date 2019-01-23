@@ -42,6 +42,8 @@
             <div class="tile">
                 <div class="tile-body">
                     <button class="btn btn-success btn-sm" type="button" style="float: left;" id="addBtn">新增</button>
+                    <button class="btn btn-info btn-sm" type="button" style="float: right;" id="searchBtn">搜索
+                    </button>
                     <table class="table table-hover table-bordered" style="text-align: center; width: 100%;"
                            id="sampleTable">
                     </table>
@@ -334,7 +336,7 @@
                     targets: 6,//表示是第8列，所以上面第8列没有对应数据列，就是在这里渲染的。
                     title: "操作",
                     render: function (obj, a, row, set) {
-                        return "<button class='btn btn-primary btn-sm edit' type='button' name='" + row.deviceId + "'>编辑</button>" + "&nbsp;&nbsp;" +
+                        return"<button class='btn btn-primary btn-sm edit' type='button' name='" + row.deviceId + "'>编辑</button>" + "&nbsp;&nbsp;" +
                             "<button class='btn btn-danger btn-sm del' type='button' name='" + row.deviceId + "'>删除</button>";
                     }
                 }],

@@ -1,5 +1,5 @@
-<%@ page import="com.guet.navigator.web.pojo.Administrator" %>
-<%@ page import="com.guet.navigator.web.constant.administrator.AdministratorConstant" %>
+<%@ page import="cn.guet.navigator.web.pojo.Administrator" %>
+<%@ page import="cn.guet.navigator.web.constant.administrator.AdministratorConstant" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%

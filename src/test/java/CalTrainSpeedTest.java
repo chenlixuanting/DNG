@@ -1,8 +1,8 @@
 package com.guet.navigator.web.test;
 
-import com.guet.navigator.web.pojo.backup.TrainSpeed;
-import com.guet.navigator.web.python.CalSpeed;
-import com.guet.navigator.web.service.TrainSpeedService;
+import cn.guet.navigator.web.pojo.backup.TrainSpeed;
+import cn.guet.navigator.web.python.CalSpeed;
+import cn.guet.navigator.web.service.TrainSpeedService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

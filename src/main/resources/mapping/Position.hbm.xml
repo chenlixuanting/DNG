@@ -4,7 +4,7 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
 
-    <class name="com.guet.navigator.web.pojo.Position" table="d_position" lazy="false">
+    <class name="cn.guet.navigator.web.pojo.Position" table="d_position" lazy="false">
 
         <id name="positionId" column="position_id">
             <generator class="uuid"/>
@@ -19,7 +19,7 @@
             <column name="create_time" sql-type="datetime"/>
         </property>
 
-        <many-to-one name="device" column="device_id" class="com.guet.navigator.web.pojo.Device" cascade="save-update"/>
+        <many-to-one name="device" column="device_id" class="cn.guet.navigator.web.pojo.Device" cascade="save-update"/>
 
     </class>
 

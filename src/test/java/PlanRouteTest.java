@@ -1,13 +1,13 @@
 package com.guet.navigator.web.test;
 
 import com.alibaba.fastjson.JSON;
-import com.guet.navigator.web.pojo.backup.PlanRoute;
-import com.guet.navigator.web.pojo.backup.Point;
-import com.guet.navigator.web.pojo.backup.Road;
-import com.guet.navigator.web.pojo.backup.TrainSpeed;
-import com.guet.navigator.web.python.PathQuery;
-import com.guet.navigator.web.service.RoadService;
-import com.guet.navigator.web.service.TrainSpeedService;
+import cn.guet.navigator.web.pojo.backup.PlanRoute;
+import cn.guet.navigator.web.pojo.backup.Point;
+import cn.guet.navigator.web.pojo.backup.Road;
+import cn.guet.navigator.web.pojo.backup.TrainSpeed;
+import cn.guet.navigator.web.python.PathQuery;
+import cn.guet.navigator.web.service.RoadService;
+import cn.guet.navigator.web.service.TrainSpeedService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

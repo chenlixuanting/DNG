@@ -3,7 +3,7 @@
         "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 <hibernate-mapping>
-    <class name="com.guet.navigator.web.pojo.backup.OriginData" table="d_origin_data">
+    <class name="cn.guet.navigator.web.pojo.backup.OriginData" table="d_origin_data">
         <id name="positionId" column="position_id">
             <generator class="increment"/>
         </id>

@@ -1,8 +1,8 @@
 package com.guet.navigator.web.test;
 
-import com.guet.navigator.web.constant.common.CommonConstant;
-import com.guet.navigator.web.pojo.Administrator;
-import com.guet.navigator.web.pojo.Device;
+import cn.guet.navigator.web.constant.common.CommonConstant;
+import cn.guet.navigator.web.pojo.Administrator;
+import cn.guet.navigator.web.pojo.Device;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;

@@ -1,5 +1,5 @@
-<%@ page import="com.guet.navigator.web.pojo.Administrator" %>
-<%@ page import="com.guet.navigator.web.constant.administrator.AdministratorConstant" %>
+<%@ page import="cn.guet.navigator.web.pojo.Administrator" %>
+<%@ page import="cn.guet.navigator.web.constant.administrator.AdministratorConstant" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
     Administrator administrator = (Administrator) request.getSession().getAttribute(AdministratorConstant.ADMINISTRATOR);
@@ -26,7 +26,7 @@
                 class="app-menu__icon fa fa-user"></i><span class="app-menu__label">用户管理</span><i
                 class="treeview-indicator fa fa-angle-right"></i></a>
             <ul class="treeview-menu">
-                <li><a class="treeview-item" href="bootstrap-components.html"><i
+                <li><a class="treeview-item" href="administrator/user-manage"><i
                         class="icon fa fa-circle-o"></i>正式用户</a></li>
                 <li><a class="treeview-item" href="https://fontawesome.com/v4.7.0/icons/" target="_blank"
                        rel="noopener"><i class="icon fa fa-circle-o"></i>待审核用户</a></li>
