@@ -35,4 +35,5 @@ public class Location implements Serializable {
 
     public Location() {
     }
+
 }

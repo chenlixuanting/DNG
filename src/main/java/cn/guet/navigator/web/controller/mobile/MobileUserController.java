@@ -13,6 +13,7 @@ import cn.guet.navigator.web.service.LoginRecordService;
 import cn.guet.navigator.web.service.PositionService;
 import cn.guet.navigator.web.service.UserService;
 import cn.guet.navigator.web.utils.*;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -26,9 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Administrator
@@ -461,4 +460,47 @@ public class MobileUserController {
         return msg;
     }
 
+    /***
+     * 单个目的地查询
+     *
+     * @return
+     */
+    @RequestMapping(value = "/point-info", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> singlePointInfo(@RequestBody Location dest) {
+        Map<String, Object> msg = new HashMap<String, Object>();
+        Location start = new Location(110.419122, 25.313339);
+        Navigation navigation = JSONObject.parseObject(PathPlanUtil.path(start, dest), Navigation.class);
+        List<Step> steps = navigation.getRoute().get(0).getPaths().get(0).getSteps();
+        Iterator<Step> stepIterator = steps.iterator();
+        int count = 0;
+        double score = 0.0;
+        double congestion = 0.0;
+        while (stepIterator.hasNext()) {
+            Step step = stepIterator.next();
+            List<Tmc> tmcs = step.getTmcs();
+            count += tmcs.size();
+            Iterator<Tmc> tmcIterator = tmcs.iterator();
+            while (tmcIterator.hasNext()) {
+                Tmc tmc = tmcIterator.next();
+                if (tmc.getStatus().equals("未知")) {
+                    score += 0.0;
+                } else if (tmc.getStatus().equals("畅通")) {
+                    score += 2;
+                } else if (tmc.getStatus().equals("缓行")) {
+                    score += 6;
+                } else if (tmc.getStatus().equals("拥堵")) {
+                    score += 8;
+                } else {
+                    score += 10;
+                }
+            }
+        }
+        congestion = score / count;
+        TransferScheme transferScheme = navigation.getRoute().get(0).getPaths().get(0);
+        msg.put("status", congestion);
+        msg.put("duration", transferScheme.getDuration());
+        msg.put("distance", transferScheme.getDuration());
+        return msg;
+    }
 }
