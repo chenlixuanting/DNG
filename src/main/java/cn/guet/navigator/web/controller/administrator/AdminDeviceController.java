@@ -1,8 +1,8 @@
 package cn.guet.navigator.web.controller.administrator;
 
 import cn.guet.navigator.web.service.DeviceService;
-import cn.guet.navigator.web.utils.Page;
-import cn.guet.navigator.web.utils.PageData;
+import cn.guet.navigator.web.dto.Page;
+import cn.guet.navigator.web.dto.PageData;
 import com.alibaba.fastjson.JSONObject;
 import cn.guet.navigator.web.pojo.Device;
 import org.springframework.beans.factory.annotation.Autowired;

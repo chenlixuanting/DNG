@@ -1,4 +1,4 @@
-package cn.guet.navigator.web.utils;
+package cn.guet.navigator.web.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;

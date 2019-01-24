@@ -6,11 +6,8 @@ import cn.guet.navigator.web.constant.common.StatusCode;
 import cn.guet.navigator.web.constant.user.DeviceConstant;
 import cn.guet.navigator.web.constant.user.MobileConstant;
 import cn.guet.navigator.web.constant.user.UserConstant;
-import cn.guet.navigator.web.pojo.Photo;
-import cn.guet.navigator.web.pojo.Position;
-import cn.guet.navigator.web.pojo.User;
-import cn.guet.navigator.web.service.LoginRecordService;
-import cn.guet.navigator.web.service.PositionService;
+import cn.guet.navigator.web.dto.*;
+import cn.guet.navigator.web.pojo.*;
 import cn.guet.navigator.web.service.UserService;
 import cn.guet.navigator.web.utils.*;
 import com.alibaba.fastjson.JSONObject;
@@ -38,8 +35,6 @@ public class MobileUserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private PositionService positionService;
 
     /**
      * 微信小程序通过账号密码登录
@@ -226,9 +221,9 @@ public class MobileUserController {
      */
     @RequestMapping(value = "/upload-picture", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> uploadDetailPic(HttpServletRequest request, HttpServletResponse response,
-                                               @RequestParam(value = "img", required = true) MultipartFile img,
-                                               @RequestParam(value = "type", required = false) Integer type, HttpSession session) {
+    public Map<String, Object> uploadUserPicture(HttpServletRequest request, HttpServletResponse response,
+                                                 @RequestParam(value = "img", required = true) MultipartFile img,
+                                                 @RequestParam(value = "type", required = false) Integer type, HttpSession session) {
 
         //消息集合
         Map<String, Object> msg = new HashMap<String, Object>();
@@ -315,7 +310,7 @@ public class MobileUserController {
                 break;
             }
             //上传的是驾驶证
-            case MobileConstant.USER_DRIVER_LICENSER_PIC: {
+            case MobileConstant.USER_DRIVER_LICENSE_PIC: {
                 try {
                     File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_LICENSE_PIC) + "\\" + newImgName);
                     if (!dest.exists()) {
@@ -337,7 +332,7 @@ public class MobileUserController {
                 break;
             }
             //上传的是行车证
-            case MobileConstant.USER_DRIVER_PERMIST_PIC: {
+            case MobileConstant.USER_DRIVER_PERMIT_PIC: {
                 try {
                     File dest = new File(session.getServletContext().getRealPath(CommonConstant.USER_DRIVER_PERMIT_PIC) + "\\" + newImgName);
                     if (!dest.exists()) {
@@ -454,9 +449,22 @@ public class MobileUserController {
      */
     @RequestMapping(value = "/multipoint-plan", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> chooseNavigatorPlan(HttpServletRequest request, HttpServletResponse response, @RequestBody Location path) {
+    public Map<String, Object> chooseNavigatorPlan(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Location> destinations) {
         Map<String, Object> msg = new HashMap<String, Object>();
-        System.out.println(path.getLongitude() + "--" + path.getLatitude());
+
+        Location current = new Location(110.336514, 25.283836);
+
+        Iterator<Location> locationIterator = destinations.iterator();
+
+        while (locationIterator.hasNext()) {
+            Location end = locationIterator.next();
+            System.out.println("Current" + current);
+            System.out.println("End" + end);
+//            System.out.println(PathPlanUtil.path(current, end));
+            current = end;
+        }
+
+        System.out.println(destinations.toString());
         return msg;
     }
 
@@ -469,38 +477,43 @@ public class MobileUserController {
     @ResponseBody
     public Map<String, Object> singlePointInfo(@RequestBody Location dest) {
         Map<String, Object> msg = new HashMap<String, Object>();
-        Location start = new Location(110.419122, 25.313339);
-        Navigation navigation = JSONObject.parseObject(PathPlanUtil.path(start, dest), Navigation.class);
-        List<Step> steps = navigation.getRoute().get(0).getPaths().get(0).getSteps();
-        Iterator<Step> stepIterator = steps.iterator();
-        int count = 0;
-        double score = 0.0;
-        double congestion = 0.0;
-        while (stepIterator.hasNext()) {
-            Step step = stepIterator.next();
-            List<Tmc> tmcs = step.getTmcs();
-            count += tmcs.size();
-            Iterator<Tmc> tmcIterator = tmcs.iterator();
-            while (tmcIterator.hasNext()) {
-                Tmc tmc = tmcIterator.next();
-                if (tmc.getStatus().equals("未知")) {
-                    score += 0.0;
-                } else if (tmc.getStatus().equals("畅通")) {
-                    score += 2;
-                } else if (tmc.getStatus().equals("缓行")) {
-                    score += 6;
-                } else if (tmc.getStatus().equals("拥堵")) {
-                    score += 8;
-                } else {
-                    score += 10;
+        Location start = new Location(110.336514, 25.283836);
+        Navigation navigation = JSONObject.parseObject(PathPlanUtil.path(start, dest, PathPlanUtil.STRATEGY_SPEED_FIRST), Navigation.class);
+        if (navigation.getStatus() == MobileConstant.REQUEST_OK) {
+            List<Step> steps = navigation.getRoute().get(0).getPaths().get(0).getSteps();
+            Iterator<Step> stepIterator = steps.iterator();
+            int count = 0;
+            double score = 0.0, status = 0.0;
+            while (stepIterator.hasNext()) {
+                Step step = stepIterator.next();
+                List<Tmc> tmcs = step.getTmcs();
+                count += tmcs.size();
+                Iterator<Tmc> tmcIterator = tmcs.iterator();
+                while (tmcIterator.hasNext()) {
+                    Tmc tmc = tmcIterator.next();
+                    if (tmc.getStatus().equals(MobileConstant.ROAD_STATUS_UNKNOW)) {
+                        score += MobileConstant.ROAD_STATUS_UNKNOW_VALUE;
+                    } else if (tmc.getStatus().equals(MobileConstant.ROAD_STATUS_UNBLOCK)) {
+                        score += MobileConstant.ROAD_STATUS_UNBLOCK_VALUE;
+                    } else if (tmc.getStatus().equals(MobileConstant.ROAD_STATUS_AMBLE)) {
+                        score += MobileConstant.ROAD_STATUS_AMBLE_VALUE;
+                    } else if (tmc.getStatus().equals(MobileConstant.ROAD_STATUS_CONGESTION)) {
+                        score += MobileConstant.ROAD_STATUS_CONGESTION_VALUE;
+                    } else if (tmc.getStatus().equals(MobileConstant.ROAD_STATUS_STRICT_CONGESTION)) {
+                        score += MobileConstant.ROAD_STATUS_STRICT_CONGESTION_VALUE;
+                    }
                 }
             }
+            status = score / count;
+            TransferScheme transferScheme = navigation.getRoute().get(0).getPaths().get(0);
+            msg.put(MobileConstant.ROAD_STATUS, status);
+            msg.put(MobileConstant.ROAD_DURATION, transferScheme.getDuration());
+            msg.put(MobileConstant.ROAD_DISTANCE, transferScheme.getDistance());
+            msg.put(CommonConstant.STATUS_CODE, StatusCode.SUCCESS);
+        } else {
+            //服务器请求失败
+            msg.put(CommonConstant.STATUS_CODE, 500);
         }
-        congestion = score / count;
-        TransferScheme transferScheme = navigation.getRoute().get(0).getPaths().get(0);
-        msg.put("status", congestion);
-        msg.put("duration", transferScheme.getDuration());
-        msg.put("distance", transferScheme.getDuration());
         return msg;
     }
 }

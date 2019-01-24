@@ -1,4 +1,4 @@
-package cn.guet.navigator.web.utils;
+package cn.guet.navigator.web.dto;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;

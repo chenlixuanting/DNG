@@ -49,9 +49,9 @@ public class MobileDeviceController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/confirm-device-login",method = RequestMethod.POST)
+    @RequestMapping(value = "/confirm-device-login", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> deviceLogin(HttpServletRequest request, HttpServletResponse response, @RequestBody DeviceConfirmVo deviceConfirmVo) {
+    public Map<String, Object> confirmDeviceLogin(HttpServletRequest request, HttpServletResponse response, @RequestBody DeviceConfirmVo deviceConfirmVo) {
 
         String qrCodeStr = deviceConfirmVo.getQrCodeStr();
         Boolean loginFlag = deviceConfirmVo.getLoginFlag();
@@ -107,10 +107,10 @@ public class MobileDeviceController {
      * @param response
      * @return
      */
-    @RequestMapping(value = "/confirm-sweep-code",method = RequestMethod.POST)
+    @RequestMapping(value = "/confirm-sweep-code", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> scanQRCode(HttpServletRequest request, HttpServletResponse response,
-                                          @RequestBody ScanQRCodeVo scanQRCodeVo) {
+    public Map<String, Object> mobileScanCode(HttpServletRequest request, HttpServletResponse response,
+                                              @RequestBody ScanQRCodeVo scanQRCodeVo) {
 
         String qrCodeStr = scanQRCodeVo.getQrCodeStr();
         Boolean scanFlag = scanQRCodeVo.getScanFlag();

@@ -97,8 +97,8 @@ public class AdminController {
      */
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     @ResponseBody
-    public LoginMessageVo loginValidate(@RequestBody Administrator administrator, HttpServletRequest request,
-                                        HttpServletResponse response, HttpSession session) {
+    public LoginMessageVo validate(@RequestBody Administrator administrator, HttpServletRequest request,
+                                   HttpServletResponse response, HttpSession session) {
 
         //判断administrator是否为null
         if (!StringUtils.isEmpty(administrator)) {

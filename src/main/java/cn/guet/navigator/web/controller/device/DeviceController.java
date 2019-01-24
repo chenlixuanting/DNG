@@ -47,7 +47,7 @@ public class DeviceController {
      */
     @RequestMapping(value = "/login/{deviceId}", method = RequestMethod.GET)
     @ResponseBody
-    public QRCodeVo requestLogin(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId") String deviceId) {
+    public QRCodeVo requestCodeStr(HttpServletRequest request, HttpServletResponse response, @PathVariable(value = "deviceId") String deviceId) {
         //生成qrCodeStr唯一标识
         String qrCodeStr = UUID.randomUUID().toString();
         //获取当前会话的session

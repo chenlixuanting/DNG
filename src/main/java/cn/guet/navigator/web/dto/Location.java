@@ -1,4 +1,4 @@
-package cn.guet.navigator.web.utils;
+package cn.guet.navigator.web.dto;
 
 import java.io.Serializable;
 
@@ -36,4 +36,11 @@ public class Location implements Serializable {
     public Location() {
     }
 
+    @Override
+    public String toString() {
+        return "Location{" +
+                "longitude=" + longitude +
+                ", latitude=" + latitude +
+                '}';
+    }
 }
