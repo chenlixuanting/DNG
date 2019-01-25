@@ -19,12 +19,12 @@ public class RoutePlan implements Serializable {
     /**
      * 距离
      */
-    private Integer distance;
+    private Integer distance = new Integer(0);
 
     /**
      * 花费时间
      */
-    private Integer duration;
+    private Integer duration = new Integer(0);
 
     /**
      * 步骤

@@ -450,21 +450,74 @@ public class MobileUserController {
     @RequestMapping(value = "/multipoint-plan", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> chooseNavigatorPlan(HttpServletRequest request, HttpServletResponse response, @RequestBody List<Location> destinations) {
+
         Map<String, Object> msg = new HashMap<String, Object>();
 
-        Location current = new Location(110.336514, 25.283836);
+        Location current = new Location(110.336514,25.283836);
+
+        List<Navigation> speed = new ArrayList<Navigation>();
+        List<Navigation> distance = new ArrayList<Navigation>();
+        List<Navigation> congestion = new ArrayList<Navigation>();
 
         Iterator<Location> locationIterator = destinations.iterator();
 
         while (locationIterator.hasNext()) {
-            Location end = locationIterator.next();
-            System.out.println("Current" + current);
-            System.out.println("End" + end);
-//            System.out.println(PathPlanUtil.path(current, end));
-            current = end;
+            Location destination = locationIterator.next();
+            speed.add(JSONObject.parseObject(PathPlanUtil.path(current, destination, PathPlanUtil.STRATEGY_SPEED_FIRST), Navigation.class));
+            distance.add(JSONObject.parseObject(PathPlanUtil.path(current, destination, PathPlanUtil.STRATEGY_DISTANCE_FIRST), Navigation.class));
+            congestion.add(JSONObject.parseObject(PathPlanUtil.path(current, destination, PathPlanUtil.STRATEGY_CONGESTION_FIRST), Navigation.class));
+            current = destination;
         }
 
-        System.out.println(destinations.toString());
+        Iterator<Navigation> speedNav = speed.iterator();
+
+        RoutePlan speedRoutePlan = new RoutePlan();
+        speedRoutePlan.setPlanname("速度最快");
+
+        RoutePlan distanceRoutePlan = new RoutePlan();
+        distanceRoutePlan.setPlanname("距离最短");
+
+        RoutePlan congestionRoutePlan = new RoutePlan();
+        congestionRoutePlan.setPlanname("避免拥堵");
+
+        while (speedNav.hasNext()) {
+            Navigation nav = speedNav.next();
+            Iterator<Route> routeIterator = nav.getRoute().iterator();
+            while (routeIterator.hasNext()) {
+                Route route = routeIterator.next();
+                Iterator<TransferScheme> transferSchemeIterator = route.getPaths().iterator();
+                while (transferSchemeIterator.hasNext()) {
+                    TransferScheme transferScheme = transferSchemeIterator.next();
+                    speedRoutePlan.setDistance(speedRoutePlan.getDistance() + transferScheme.getDistance());
+                    speedRoutePlan.setDuration(speedRoutePlan.getDuration() + transferScheme.getDuration());
+                    Iterator<Step> stepsIterator = transferScheme.getSteps().iterator();
+                    Set<String> nameSet = new LinkedHashSet<String>();
+                    while (stepsIterator.hasNext()) {
+                        Step step = stepsIterator.next();
+                        StepInfo tmp = new StepInfo();
+                        tmp.setDistance(step.getDistance());
+                        tmp.setDuration(step.getDuration());
+                        String[] pos = (step.getPolyline().split(";"))[0].split(",");
+                        Double longitude = Double.valueOf(pos[0]);
+                        Double latitude = Double.valueOf(pos[1]);
+                        Address address = JSONObject.parseObject(LocationQueryUtil.location(new Location(longitude, latitude)), Address.class);
+                        AddressComponent addressComponent = address.getRegeocode().getAddressComponent();
+                        StringBuffer origin = new StringBuffer(address.getRegeocode().getFormatted_address());
+                        StringBuilder prefix = new StringBuilder().append(addressComponent.getProvince()).
+                                append(addressComponent.getCity()).append(addressComponent.getDistrict()).append(addressComponent.getTownship());
+                        origin.delete(0,prefix.length());
+                        if(!nameSet.contains(origin.toString())){
+                            tmp.setStepname(origin.toString());
+                            nameSet.add(origin.toString());
+                            speedRoutePlan.getStepInfos().add(tmp);
+                        }
+                    }
+                }
+            }
+        }
+
+        msg.put("speedRoutePlan",speedRoutePlan);
+
         return msg;
     }
 
