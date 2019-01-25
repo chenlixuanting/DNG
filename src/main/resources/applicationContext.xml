@@ -26,7 +26,7 @@
     <mvc:annotation-driven conversion-service="conversionService"/>
 
     <!-- websocket处理类 -->
-    <bean id="connectWebSocketHandler" class="cn.guet.navigator.web.websocket.WechatDeviceWebSocket"/>
+    <bean id="deviceWebSocketHandler" class="cn.guet.navigator.web.websocket.DeviceWebSocket"/>
 
     <!-- 握手接口/拦截器 -->
     <bean id="webSocketInterceptor" class="cn.guet.navigator.web.interceptor.HandshakeInterceptor"/>
@@ -174,12 +174,12 @@
     <!--</mvc:interceptor>-->
     <!--</mvc:interceptors>-->
 
-    <!--<websocket:handlers>-->
-    <!--<websocket:mapping path="/common/websocket/connect" handler="connectWebSocketHandler"/>-->
-    <!--<websocket:handshake-interceptors>-->
-    <!--<ref bean="webSocketInterceptor"/>-->
-    <!--</websocket:handshake-interceptors>-->
-    <!--</websocket:handlers>-->
+    <websocket:handlers>
+        <websocket:mapping path="/websocket/device/navigation" handler="deviceWebSocketHandler"/>
+        <websocket:handshake-interceptors>
+            <ref bean="webSocketInterceptor"/>
+        </websocket:handshake-interceptors>
+    </websocket:handlers>
 
     <!--  注册 sockJS -->
     <!--<websocket:handlers>-->

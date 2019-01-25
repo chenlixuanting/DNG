@@ -268,7 +268,7 @@ public class NavigationTest {
                             speedTmp.setDistance(speedStep.getDistance());
                             speedTmp.setDuration(speedStep.getDuration());
 
-                            String[] speedPos = (speedStep.getPolyline().split(";"))[0].split(",");
+                            String[] speedPos = (speedStep.getPolyline().split(";"))[1].split(",");
 
                             Double speedLongitude = Double.valueOf(speedPos[0]);
                             Double speedLatitude = Double.valueOf(speedPos[1]);

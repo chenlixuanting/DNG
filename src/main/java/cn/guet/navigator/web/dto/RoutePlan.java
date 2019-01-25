@@ -31,6 +31,19 @@ public class RoutePlan implements Serializable {
      */
     private List<StepInfo> stepInfos = new ArrayList<StepInfo>();
 
+    /**
+     * 途经点
+     */
+    private List<Location> passPoints;
+
+    public List<Location> getPassPoints() {
+        return passPoints;
+    }
+
+    public void setPassPoints(List<Location> passPoints) {
+        this.passPoints = passPoints;
+    }
+
     public String getPlanname() {
         return planname;
     }

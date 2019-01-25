@@ -11,11 +11,11 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * 设备和微信小程序间的WebSocket连接
+ * 服务器和设备的WebSocket连接
  *
  * @author Administrator
  */
-public class WechatDeviceWebSocket implements WebSocketHandler {
+public class DeviceWebSocket implements WebSocketHandler {
 
     @Autowired
     private LoginRecordService deviceRecordService;
@@ -24,11 +24,6 @@ public class WechatDeviceWebSocket implements WebSocketHandler {
      * 线程安全的sesionMap
      */
     private Map<String, Object> sessionMap = new ConcurrentHashMap<String, Object>();
-
-    /**
-     * 用户的WebSocketMap
-     */
-    private Map<String, Object> userSessionMap = new ConcurrentHashMap<String, Object>();
 
     /**
      * 设备的WebSocketMap

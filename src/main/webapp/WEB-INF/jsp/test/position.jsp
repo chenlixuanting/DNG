@@ -10,66 +10,49 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 </head>
 <body>
-<div id="container">
+<div id="container" style="width: 100%;height: 100%;">
     <input type="button" id="send" value="提交">
 </div>
 </body>
 <script type="text/javascript" src="js/jquery-3.2.1.min.js"></script>
+<script src="layer/layer.js"></script>
 <script type="text/javascript"
         src="https://webapi.amap.com/maps?v=1.4.11&key=601e81fa506625f0c4661a0f56243eab&plugin=Map3D"></script>
 <script>
     $(function () {
+        var map;
+        //开始界面loading特效
+        var loadingEffects = layer.load(2);
+        $.ajax({
+            url:"mobile/user/check-route-plan",
+            type:"get",
+            success:function (d) {
+                var data = eval(d);
+                var passPoints = eval(data.speedRoutePlan.passPoints);
+                for(var i=0;i<passPoints.length;i++){
 
-//        var geocoder = new AMap.Geocoder({
-//            radius: 1000,
-//            extensions: "all"
-//        });
-//
-//        function regeocoder(position) {  //逆地理编码
-//            geocoder.getAddress(position, function (status, result) {
-//                if (status === 'complete' && result.info === 'OK') {
-//                    geocoder_CallBack(result);
-//                }
-//            });
-//        }
-//
-//        function geocoder_CallBack(data) {
-//            var address = data.regeocode.formattedAddress; //返回地址描述
-//            console.log(address);
-//        }
+                    var longitude = passPoints[i].longitude;
+                    var latitude = passPoints[i].latitude;
 
-        $("#send").click(function () {
-            $.ajax({
-                url: "device/user/position",
-                contentType: "application/json",
-                method: "post",
-                data: "deviceId:2,Longitude:110.412368774414060,latitude:25.316579818725586,speed:0,currentTime:"+"\"" + dateFormatter(new Date().getTime())+"\"",
-                success: function (d) {
+                    if(i == 0){
+                        map = new AMap.Map('container',{
+                            zoom:12,
+                            center:[longitude,latitude]
+                        });
+                    }else{
+                        // 创建一个 Marker 实例：
+                        var marker = new AMap.Marker({
+                            position: new AMap.LngLat(longitude, latitude),   // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                        });
+                        // 将创建的点标记添加到已有的地图实例：
+                        map.add(marker);
+                    }
+
                 }
-            });
+                //关闭loading特效
+                layer.close(loadingEffects);
+            }
         });
-
-        Date.prototype.Format = function (fmt) { //author: meizz
-            var o = {
-                "M+": this.getMonth() + 1, //月份
-                "d+": this.getDate(), //日
-                "h+": this.getHours(), //小时
-                "m+": this.getMinutes(), //分
-                "s+": this.getSeconds(), //秒
-                "q+": Math.floor((this.getMonth() + 3) / 3), //季度
-                "S": this.getMilliseconds() //毫秒
-            };
-            if (/(y+)/.test(fmt)) fmt = fmt.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
-            for (var k in o)
-                if (new RegExp("(" + k + ")").test(fmt)) fmt = fmt.replace(RegExp.$1, (RegExp.$1.length == 1) ? (o[k]) : (("00" + o[k]).substr(("" + o[k]).length)));
-            return fmt;
-        }
-
-        function dateFormatter(value, row, index) {
-            var result = new Date(value).Format("yyyy-MM-dd hh:mm:ss");
-            return result;
-        }
-
     });
 </script>
 </html>

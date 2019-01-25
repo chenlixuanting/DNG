@@ -510,6 +510,8 @@ public class MobileUserController {
             RoutePlan routePlan = routePlanIterator.next();
             HashSet<String> locationNameSet = new HashSet<String>();
 
+            List<Location> passPoints = new ArrayList<Location>();
+
             while (navigationIterator.hasNext()) {
 
                 Navigation speedNavigation = navigationIterator.next();
@@ -533,12 +535,10 @@ public class MobileUserController {
                             Step speedStep = speedStepsIterator.next();
 
                             StepInfo speedTmp = new StepInfo();
-
                             speedTmp.setDistance(speedStep.getDistance());
                             speedTmp.setDuration(speedStep.getDuration());
 
-                            String[] speedPos = (speedStep.getPolyline().split(";"))[0].split(",");
-
+                            String[] speedPos = (speedStep.getPolyline().split(";"))[1].split(",");
                             Double speedLongitude = Double.valueOf(speedPos[0]);
                             Double speedLatitude = Double.valueOf(speedPos[1]);
 
@@ -561,17 +561,192 @@ public class MobileUserController {
                                     }
                                 }
                             } else {
+                                //抓取道路点，检验道路是否正确
+                                passPoints.add(new Location(speedLongitude, speedLatitude));
                                 speedTmp.setStepname(speedOrigin.toString());
                                 routePlan.getStepInfos().add(speedTmp);
                                 locationNameSet.add(speedOrigin.toString());
                             }
-
                         }
                     }
                 }
+                //为路线设置途经点
+                routePlan.setPassPoints(passPoints);
             }
         }
 
+        msg.put("speedRoutePlan", speedRoutePlan);
+        msg.put("distanceRoutePlan", distanceRoutePlan);
+        msg.put("congestionRoutePlan", congestionRoutePlan);
+
+        return msg;
+    }
+
+    /**
+     * 选择导航方案
+     *
+     * @param routePlan
+     * @return
+     */
+    @RequestMapping(value = "/choose-route-plan", method = RequestMethod.POST)
+    @ResponseBody
+    public String chooseRoutePlan(@RequestBody RoutePlan routePlan) {
+        return "";
+    }
+
+    @RequestMapping(value = "/checkRoutePlanPage", method = RequestMethod.GET)
+    public String checkRoutePlanPage() {
+        return "test/position";
+    }
+
+    @RequestMapping(value = "/check-route-plan", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> checkRoutePlan() {
+
+        Map<String, Object> msg = new HashMap<String, Object>();
+
+        List<Location> destinations = new ArrayList<Location>();
+
+        //途经点
+        destinations.add(new Location(110.295334, 25.277452));
+
+        //起始点
+        Location current = new Location(110.336514, 25.283836);
+
+        List<List<Navigation>> navList = new ArrayList<List<Navigation>>();
+
+        StringBuilder sb = new StringBuilder("https://restapi.amap.com/v3/staticmap?zoom=15&size=500*500&paths=10,0x0000ff,1,,:");
+
+        List<Navigation> speed = new ArrayList<Navigation>();
+        List<Navigation> distance = new ArrayList<Navigation>();
+        List<Navigation> congestion = new ArrayList<Navigation>();
+
+        Iterator<Location> locationIterator = destinations.iterator();
+
+        while (locationIterator.hasNext()) {
+            Location destination = locationIterator.next();
+            speed.add(JSONObject.parseObject(PathPlanUtil.path(current,
+                    destination, PathPlanUtil.STRATEGY_SPEED_FIRST), Navigation.class));
+            distance.add(JSONObject.parseObject(PathPlanUtil.path(current,
+                    destination, PathPlanUtil.STRATEGY_DISTANCE_FIRST), Navigation.class));
+            congestion.add(JSONObject.parseObject(PathPlanUtil.path(current,
+                    destination, PathPlanUtil.STRATEGY_CONGESTION_FIRST), Navigation.class));
+            current = destination;
+        }
+
+        navList.add(speed);
+        navList.add(distance);
+        navList.add(congestion);
+
+        /**
+         * 速度最快方案
+         */
+        RoutePlan speedRoutePlan = new RoutePlan();
+        speedRoutePlan.setPlanname(UserConstant.STRATEGY_SPEED);
+        /**
+         * 距离最短
+         */
+        RoutePlan distanceRoutePlan = new RoutePlan();
+        distanceRoutePlan.setPlanname(UserConstant.STRATEGY_DISTANCE);
+        /**
+         * 避免拥堵
+         */
+        RoutePlan congestionRoutePlan = new RoutePlan();
+        congestionRoutePlan.setPlanname(UserConstant.STRATEGY_VOID_CONGESTION);
+
+        List<RoutePlan> routePlans = new ArrayList<RoutePlan>();
+        routePlans.add(speedRoutePlan);
+        routePlans.add(distanceRoutePlan);
+        routePlans.add(congestionRoutePlan);
+
+        Iterator<List<Navigation>> navIterator = navList.iterator();
+        Iterator<RoutePlan> routePlanIterator = routePlans.iterator();
+
+        while (navIterator.hasNext()) {
+
+            List<Navigation> navigations = navIterator.next();
+            Iterator<Navigation> navigationIterator = navigations.iterator();
+            RoutePlan routePlan = routePlanIterator.next();
+            HashSet<String> locationNameSet = new HashSet<String>();
+
+            List<Location> passPoints = new ArrayList<Location>();
+
+            while (navigationIterator.hasNext()) {
+
+                Navigation speedNavigation = navigationIterator.next();
+                Iterator<Route> speedIterator = speedNavigation.getRoute().iterator();
+
+                while (speedIterator.hasNext()) {
+
+                    Route speedRoute = speedIterator.next();
+                    Iterator<TransferScheme> speedTransferSchemeIterator = speedRoute.getPaths().iterator();
+
+                    while (speedTransferSchemeIterator.hasNext()) {
+
+                        TransferScheme speedTransferScheme = speedTransferSchemeIterator.next();
+                        routePlan.setDistance(routePlan.getDistance() + speedTransferScheme.getDistance());
+                        routePlan.setDuration(routePlan.getDuration() + speedTransferScheme.getDuration());
+
+                        Iterator<Step> speedStepsIterator = speedTransferScheme.getSteps().iterator();
+
+                        while (speedStepsIterator.hasNext()) {
+
+                            Step speedStep = speedStepsIterator.next();
+
+                            StepInfo speedTmp = new StepInfo();
+                            speedTmp.setDistance(speedStep.getDistance());
+                            speedTmp.setDuration(speedStep.getDuration());
+
+                            String[] speedPos = (speedStep.getPolyline().split(";"));
+
+                            Double speedLongitude = null;
+                            Double speedLatitude = null;
+
+                            for (int x = 0; x < speedPos.length; x++) {
+                                Double firstLongitude = Double.valueOf(speedPos[x].split(",")[0]);
+                                Double firstLatitude = Double.valueOf(speedPos[x].split(",")[1]);
+                                if (x == 0) {
+                                    speedLongitude = firstLongitude;
+                                    speedLatitude = firstLatitude;
+                                }
+                                passPoints.add(new Location(firstLongitude, firstLatitude));
+                                sb.append(firstLongitude + "," + firstLatitude + ";");
+                            }
+
+                            Address speedAddress = JSONObject.parseObject(LocationQueryUtil.location(new Location(speedLongitude, speedLatitude)), Address.class);
+
+                            AddressComponent speedAddressComponent = speedAddress.getRegeocode().getAddressComponent();
+
+                            StringBuilder speedOrigin = new StringBuilder(speedAddress.getRegeocode().getFormatted_address());
+                            StringBuilder speedPrefix = new StringBuilder().append(speedAddressComponent.getProvince()).
+                                    append(speedAddressComponent.getCity()).append(speedAddressComponent.getDistrict()).append(speedAddressComponent.getTownship());
+                            speedOrigin.delete(0, speedPrefix.length());
+
+//                            if (locationNameSet.contains(speedOrigin.toString())) {
+//                                Iterator<StepInfo> stepInfoIterator = routePlan.getStepInfos().iterator();
+//                                while (stepInfoIterator.hasNext()) {
+//                                    StepInfo stepInfo = stepInfoIterator.next();
+//                                    if (stepInfo.getStepname().equals(speedOrigin.toString())) {
+//                                        stepInfo.setDuration(stepInfo.getDuration() + speedTmp.getDuration());
+//                                        stepInfo.setDistance(stepInfo.getDistance() + speedTmp.getDistance());
+//                                    }
+//                                }
+//                            } else {
+                            //抓取道路点，检验道路是否正确
+//                                speedTmp.setStepname(speedOrigin.toString());
+
+                            routePlan.getStepInfos().add(speedTmp);
+                            locationNameSet.add(speedOrigin.toString());
+//                            }
+                        }
+                    }
+                }
+                //为路线设置途经点
+                routePlan.setPassPoints(passPoints);
+                String 关键字 = "&key=3cf2cf32d943b809c8281b6ee305576d";
+                System.out.println(sb.append(关键字).toString());
+            }
+        }
         msg.put("speedRoutePlan", speedRoutePlan);
         msg.put("distanceRoutePlan", distanceRoutePlan);
         msg.put("congestionRoutePlan", congestionRoutePlan);
