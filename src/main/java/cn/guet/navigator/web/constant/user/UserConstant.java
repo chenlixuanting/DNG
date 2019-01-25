@@ -80,4 +80,19 @@ public class UserConstant {
      */
     public static final String CREATE_TIME = "createTime";
 
+    /**
+     * 距离最短方案策略
+     */
+    public static final String STRATEGY_DISTANCE = "距离最短";
+
+    /**
+     * 速度最快方案策略
+     */
+    public static final String STRATEGY_SPEED = "速度最快";
+
+    /**
+     * 避免拥堵
+     */
+    public static final String STRATEGY_VOID_CONGESTION = "避免拥堵";
+
 }
